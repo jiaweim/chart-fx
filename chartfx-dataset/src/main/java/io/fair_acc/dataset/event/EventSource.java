@@ -14,6 +14,7 @@ import io.fair_acc.dataset.utils.AggregateException;
  */
 @SuppressWarnings("PMD.DoNotUseThreads") // thread handling is the declared purpose of this class
 public interface EventSource {
+
     /**
      * Adds an {@link EventListener} which will be notified whenever the {@code Observable} becomes invalid. If the same
      * listener is added more than once, then it will be notified more than once. That is, no check is made to ensure
@@ -25,11 +26,12 @@ public interface EventSource {
      * The {@code UpdateSource} stores a strong reference to the listener which will prevent the listener from being
      * garbage collected and may result in a memory leak.
      *
-     * @see #removeListener(EventListener)
      * @param listener The listener to register
      * @throws NullPointerException if the listener is null
+     * @see #removeListener(EventListener)
      */
     default void addListener(EventListener listener) {
+
         synchronized (updateEventListener()) {
             Objects.requireNonNull(listener, "UpdateListener must not be null");
             if (!updateEventListener().contains(listener)) {
@@ -54,6 +56,7 @@ public interface EventSource {
      * invoke object within update listener list
      */
     default void invokeListener() {
+
         invokeListener(null);
     }
 
@@ -63,17 +66,20 @@ public interface EventSource {
      * @param updateEvent the event the listeners are notified with
      */
     default void invokeListener(final UpdateEvent updateEvent) {
+
         invokeListener(updateEvent, true);
     }
 
     /**
      * invoke object within update listener list
      *
-     * @param updateEvent the event the listeners are notified with
+     * @param updateEvent     the event the listeners are notified with
      * @param executeParallel {@code true} execute event listener via parallel executor service
      */
-    @SuppressWarnings("PMD.NPathComplexity") // cannot be further split w/o adding unwanted further public default implementations (N.B. 'private default' ... is forbidden)
+    @SuppressWarnings("PMD.NPathComplexity")
+    // cannot be further split w/o adding unwanted further public default implementations (N.B. 'private default' ... is forbidden)
     default void invokeListener(final UpdateEvent updateEvent, final boolean executeParallel) {
+
         if (updateEventListener() == null || !isAutoNotification()) {
             return;
         }
@@ -140,6 +146,7 @@ public interface EventSource {
      * @return <code>true</code> if automatic notification is enabled
      */
     default boolean isAutoNotification() {
+
         return autoNotification().get();
     }
 
@@ -151,11 +158,12 @@ public interface EventSource {
      * no-op. If it had been previously added then it will be removed. If it had been added more than once, then only
      * the first occurrence will be removed.
      *
-     * @see #addListener(EventListener)
      * @param listener The listener to remove
      * @throws NullPointerException if the listener is null
+     * @see #addListener(EventListener)
      */
     default void removeListener(EventListener listener) {
+
         synchronized (updateEventListener()) {
             Objects.requireNonNull(listener, "UpdateListener must not be null");
             updateEventListener().remove(listener);

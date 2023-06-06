@@ -1,12 +1,17 @@
 package io.fair_acc.sample.chart;
 
-import static io.fair_acc.dataset.DataSet.DIM_X;
-import static io.fair_acc.dataset.DataSet.DIM_Y;
-
-import java.time.ZoneOffset;
-import java.util.Timer;
-import java.util.TimerTask;
-
+import io.fair_acc.chartfx.XYChart;
+import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
+import io.fair_acc.chartfx.axes.spi.format.DefaultTimeFormatter;
+import io.fair_acc.chartfx.plugins.*;
+import io.fair_acc.chartfx.renderer.ErrorStyle;
+import io.fair_acc.chartfx.renderer.datareduction.DefaultDataReducer;
+import io.fair_acc.chartfx.renderer.spi.ErrorDataSetRenderer;
+import io.fair_acc.chartfx.ui.ProfilerInfoBox;
+import io.fair_acc.chartfx.ui.geometry.Side;
+import io.fair_acc.dataset.spi.FifoDoubleErrorDataSet;
+import io.fair_acc.dataset.testdata.spi.RandomDataGenerator;
+import io.fair_acc.dataset.utils.ProcessingProfiler;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Node;
@@ -16,32 +21,18 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.stage.Stage;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.fair_acc.chartfx.XYChart;
-import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
-import io.fair_acc.chartfx.axes.spi.format.DefaultTimeFormatter;
-import io.fair_acc.chartfx.plugins.DataPointTooltip;
-import io.fair_acc.chartfx.plugins.EditAxis;
-import io.fair_acc.chartfx.plugins.Panner;
-import io.fair_acc.chartfx.plugins.ParameterMeasurements;
-import io.fair_acc.chartfx.plugins.XRangeIndicator;
-import io.fair_acc.chartfx.plugins.XValueIndicator;
-import io.fair_acc.chartfx.plugins.YRangeIndicator;
-import io.fair_acc.chartfx.plugins.YValueIndicator;
-import io.fair_acc.chartfx.plugins.Zoomer;
-import io.fair_acc.chartfx.renderer.ErrorStyle;
-import io.fair_acc.chartfx.renderer.datareduction.DefaultDataReducer;
-import io.fair_acc.chartfx.renderer.spi.ErrorDataSetRenderer;
-import io.fair_acc.chartfx.ui.ProfilerInfoBox;
-import io.fair_acc.chartfx.ui.geometry.Side;
-import io.fair_acc.dataset.spi.FifoDoubleErrorDataSet;
-import io.fair_acc.dataset.testdata.spi.RandomDataGenerator;
-import io.fair_acc.dataset.utils.ProcessingProfiler;
+import java.time.ZoneOffset;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import static io.fair_acc.dataset.DataSet.DIM_X;
+import static io.fair_acc.dataset.DataSet.DIM_Y;
 
 public class ChartIndicatorSample extends ChartSample {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(ChartIndicatorSample.class);
     private static final int MIN_PIXEL_DISTANCE = 0; // 0: just drop points that are drawn on the same pixel
     private static final int N_SAMPLES = 3000; // default: 1000000
@@ -63,6 +54,7 @@ public class ChartIndicatorSample extends ChartSample {
     private long startTime;
 
     private void generateData() {
+
         startTime = ProcessingProfiler.getTimeStamp();
         final double now = System.currentTimeMillis() / 1000.0 + 1; // N.B. '+1' to check for resolution
 
@@ -100,6 +92,7 @@ public class ChartIndicatorSample extends ChartSample {
     }
 
     private HBox getHeaderBar(final TimerTask task) {
+
         final Button newDataSet = new Button("new DataSet");
         newDataSet.setOnAction(evt -> Platform.runLater(task));
 
@@ -129,6 +122,7 @@ public class ChartIndicatorSample extends ChartSample {
     }
 
     public BorderPane initComponents() {
+
         final BorderPane root = new BorderPane();
         generateData();
         initErrorDataSetRenderer(beamIntensityRenderer);
@@ -237,6 +231,7 @@ public class ChartIndicatorSample extends ChartSample {
 
             @Override
             public void run() {
+
                 Platform.runLater(() -> {
                     generateData();
 
@@ -273,6 +268,7 @@ public class ChartIndicatorSample extends ChartSample {
     }
 
     protected void initErrorDataSetRenderer(final ErrorDataSetRenderer eRenderer) {
+
         eRenderer.setErrorType(ErrorStyle.ERRORSURFACE);
         eRenderer.setDashSize(ChartIndicatorSample.MIN_PIXEL_DISTANCE); // plot pixel-to-pixel distance
         eRenderer.setDrawMarker(false);
@@ -282,6 +278,7 @@ public class ChartIndicatorSample extends ChartSample {
 
     @Override
     public Node getChartPanel(final Stage primaryStage) {
+
         ProcessingProfiler.setDebugState(false);
 
         final BorderPane root = new BorderPane();
@@ -295,16 +292,18 @@ public class ChartIndicatorSample extends ChartSample {
      * @param args the command line arguments
      */
     public static void main(final String[] args) {
+
         Application.launch(args);
     }
 
     private static double rampFunctionBeamIntensity(final double t) {
+
         final int second = (int) Math.floor(t);
         final double subSecond = t - second;
         double offset = 0.3;
         final double y = (1 - 0.1 * subSecond) * 1e9;
         double gate = ChartIndicatorSample.square(2, subSecond - offset)
-                    * ChartIndicatorSample.square(1, subSecond - offset);
+                * ChartIndicatorSample.square(1, subSecond - offset);
 
         // every 5th cycle is a booster mode cycle
         if (second % 5 == 0) {
@@ -320,6 +319,7 @@ public class ChartIndicatorSample extends ChartSample {
     }
 
     private static double rampFunctionDipoleCurrent(final double t) {
+
         final int second = (int) Math.floor(t);
         final double subSecond = t - second;
         double offset = 0.3;
@@ -339,10 +339,12 @@ public class ChartIndicatorSample extends ChartSample {
     }
 
     private static double sine(final double frequency, final double t) {
+
         return Math.sin(2.0 * Math.PI * frequency * t);
     }
 
     private static double square(final double frequency, final double t) {
+
         final double sine = 100 * Math.sin(2.0 * Math.PI * frequency * t);
         final double squarePoint = Math.signum(sine);
         return squarePoint >= 0 ? squarePoint : 0.0;

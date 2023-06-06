@@ -1,11 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
         <groupId>io.fair-acc</groupId>
         <artifactId>chartfx-parent</artifactId>
-        <version>${revision}${sha1}${changelist}</version>
+        <version>${revision}.${sha1}.${changelist}</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>dataset</artifactId>
@@ -15,32 +15,23 @@
     </properties>
 
     <description>
-		Container for handling different types of datasets with metadata, uncertainties, etc.
-		Provides interfaces for the charting and math library to use.
-	</description>
+        Container for handling different types of datasets with metadata, uncertainties, etc.
+        Provides interfaces for the charting and math library to use.
+    </description>
 
     <dependencies>
         <!-- micro-benchmarking framework -->
         <dependency>
             <groupId>org.openjdk.jmh</groupId>
             <artifactId>jmh-core</artifactId>
-            <version>1.23</version>
+            <version>1.36</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.openjdk.jmh</groupId>
             <artifactId>jmh-generator-annprocess</artifactId>
-            <version>1.23</version>
+            <version>1.36</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>io.fair-acc</groupId>
-                <artifactId>generate</artifactId>
-            </plugin>
-        </plugins>
-    </build>
 </project>

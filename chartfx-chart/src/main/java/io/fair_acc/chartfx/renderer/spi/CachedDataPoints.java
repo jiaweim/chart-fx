@@ -1,14 +1,5 @@
 package io.fair_acc.chartfx.renderer.spi;
 
-import static io.fair_acc.dataset.DataSet.DIM_X;
-import static io.fair_acc.dataset.DataSet.DIM_Y;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-
 import io.fair_acc.chartfx.XYChartCss;
 import io.fair_acc.chartfx.axes.Axis;
 import io.fair_acc.chartfx.renderer.ErrorStyle;
@@ -23,14 +14,24 @@ import io.fair_acc.dataset.utils.DoubleArrayCache;
 import io.fair_acc.dataset.utils.ProcessingProfiler;
 import io.fair_acc.math.ArrayUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+
+import static io.fair_acc.dataset.DataSet.DIM_X;
+import static io.fair_acc.dataset.DataSet.DIM_Y;
+
 /**
  * package private class implementation (data point caching) required by ErrorDataSetRenderer local screen data point
  * cache (minimises re-allocation/garbage collection)
  *
  * @author rstein
  */
-@SuppressWarnings({ "PMD.TooManyMethods", "PMD.TooManyFields" }) // designated purpose of this class
+@SuppressWarnings({"PMD.TooManyMethods", "PMD.TooManyFields"}) // designated purpose of this class
 class CachedDataPoints {
+
     private static final String STYLES2 = "styles";
     private static final String SELECTED2 = "selected";
     private static final double DEG_TO_RAD = Math.PI / 180.0;
@@ -68,6 +69,7 @@ class CachedDataPoints {
     protected int actualDataCount; // number of data points that remain after data reduction
 
     public CachedDataPoints(final int indexMin, final int indexMax, final int dataLength, final boolean full) {
+
         maxDataCount = dataLength;
         xValues = DoubleArrayCache.getInstance().getArrayExact(maxDataCount);
         yValues = DoubleArrayCache.getInstance().getArrayExact(maxDataCount);
@@ -85,6 +87,7 @@ class CachedDataPoints {
     }
 
     protected void computeBoundaryVariables(final Axis xAxis, final Axis yAxis) {
+
         xAxisInverted = xAxis.isInvertedAxis();
         yAxisInverted = yAxis.isInvertedAxis();
 
@@ -126,6 +129,7 @@ class CachedDataPoints {
     }
 
     private void computeFullPolar(final Axis yAxis, final DataSetError dataSet, final int min, final int max) {
+
         dataSet.lock().readLockGuardOptimistic(() -> {
             for (int index = min; index < max; index++) {
                 final double x = dataSet.get(DIM_X, index);
@@ -175,6 +179,7 @@ class CachedDataPoints {
     protected void computeScreenCoordinates(final Axis xAxis, final Axis yAxis, final DataSet dataSet,
             final int dsIndex, final int min, final int max, final ErrorStyle localRendErrorStyle,
             final boolean isPolarPlot, final boolean doAllowForNaNs) {
+
         setBoundaryConditions(xAxis, yAxis, dataSet, dsIndex, min, max, localRendErrorStyle, isPolarPlot,
                 doAllowForNaNs);
 
@@ -184,24 +189,25 @@ class CachedDataPoints {
 
     private void computeScreenCoordinatesEuclidean(final Axis xAxis, final Axis yAxis, final DataSet dataSet,
             final int min, final int max) {
+
         for (int dimIndex = 0; dimIndex < 2; dimIndex++) {
             switch (errorType[dimIndex]) {
-            case NO_ERROR:
-                if (allowForNaNs) {
-                    computeWithNoErrorAllowingNaNs(dimIndex == DIM_X ? xAxis : yAxis, dataSet, dimIndex, min, max);
-                } else {
-                    computeWithNoError(dimIndex == DIM_X ? xAxis : yAxis, dataSet, dimIndex, min, max);
-                }
-                break;
-            case SYMMETRIC:
-            case ASYMMETRIC:
-            default:
-                if (allowForNaNs) {
-                    computeWithErrorAllowingNaNs(dimIndex == DIM_X ? xAxis : yAxis, dataSet, dimIndex, min, max);
-                } else {
-                    computeWithError(dimIndex == DIM_X ? xAxis : yAxis, dataSet, dimIndex, min, max);
-                }
-                break;
+                case NO_ERROR:
+                    if (allowForNaNs) {
+                        computeWithNoErrorAllowingNaNs(dimIndex == DIM_X ? xAxis : yAxis, dataSet, dimIndex, min, max);
+                    } else {
+                        computeWithNoError(dimIndex == DIM_X ? xAxis : yAxis, dataSet, dimIndex, min, max);
+                    }
+                    break;
+                case SYMMETRIC:
+                case ASYMMETRIC:
+                default:
+                    if (allowForNaNs) {
+                        computeWithErrorAllowingNaNs(dimIndex == DIM_X ? xAxis : yAxis, dataSet, dimIndex, min, max);
+                    } else {
+                        computeWithError(dimIndex == DIM_X ? xAxis : yAxis, dataSet, dimIndex, min, max);
+                    }
+                    break;
             }
         }
 
@@ -211,6 +217,7 @@ class CachedDataPoints {
     protected void computeScreenCoordinatesInParallel(final Axis xAxis, final Axis yAxis, final DataSet dataSet,
             final int dsIndex, final int min, final int max, final ErrorStyle localRendErrorStyle,
             final boolean isPolarPlot, final boolean doAllowForNaNs) {
+
         setBoundaryConditions(xAxis, yAxis, dataSet, dsIndex, min, max, localRendErrorStyle, isPolarPlot,
                 doAllowForNaNs);
 
@@ -220,6 +227,7 @@ class CachedDataPoints {
 
     protected void computeScreenCoordinatesNonThreaded(final Axis xAxis, final Axis yAxis, final DataSet dataSet,
             final int min, final int max) {
+
         if (polarPlot) {
             computeScreenCoordinatesPolar(yAxis, dataSet, min, max);
         } else {
@@ -229,9 +237,10 @@ class CachedDataPoints {
 
     protected void computeScreenCoordinatesParallel(final Axis xAxis, final Axis yAxis, final DataSet dataSet,
             final int min, final int max) {
+
         final int minthreshold = 1000;
         final int divThread = (int) Math
-                                      .ceil(Math.abs(max - min) / (double) CachedDaemonThreadFactory.getNumbersOfThreads());
+                .ceil(Math.abs(max - min) / (double) CachedDaemonThreadFactory.getNumbersOfThreads());
         final int stepSize = Math.max(divThread, minthreshold);
         final List<Callable<Boolean>> workers = new ArrayList<>();
         for (int i = min; i < max; i += stepSize) {
@@ -260,6 +269,7 @@ class CachedDataPoints {
     }
 
     private void computeScreenCoordinatesPolar(final Axis yAxis, final DataSet dataSet, final int min, final int max) {
+
         if ((errorType[DIM_X] == ErrorType.NO_ERROR) && (errorType[DIM_Y] == ErrorType.NO_ERROR)) {
             computeNoErrorPolar(yAxis, dataSet, min, max);
         } else if (errorType[DIM_X] == ErrorType.NO_ERROR) {
@@ -273,6 +283,7 @@ class CachedDataPoints {
 
     private void computeWithError(final Axis yAxis, final DataSet dataSet, final int dimIndex, final int min,
             final int max) {
+
         if (dataSet instanceof DataSetError) {
             dataSet.lock().readLockGuardOptimistic(() -> {
                 final double[] values = dimIndex == DIM_X ? xValues : yValues;
@@ -321,6 +332,7 @@ class CachedDataPoints {
 
     private void computeWithErrorAllowingNaNs(final Axis yAxis, final DataSet dataSet, final int dimIndex,
             final int min, final int max) {
+
         if (dataSet instanceof DataSetError) {
             dataSet.lock().readLockGuardOptimistic(() -> {
                 final double[] values = dimIndex == DIM_X ? xValues : yValues;
@@ -412,6 +424,7 @@ class CachedDataPoints {
     }
 
     private void computeYonlyPolar(final Axis yAxis, final DataSet dataSet, final int min, final int max) {
+
         dataSet.lock().readLockGuardOptimistic(() -> {
             for (int index = min; index < max; index++) {
                 final double x = dataSet.get(DIM_X, index);
@@ -443,6 +456,7 @@ class CachedDataPoints {
      * @return min distance
      */
     protected int getMinXDistance() {
+
         if (minDistanceX < Integer.MAX_VALUE) {
             return minDistanceX;
         }
@@ -462,6 +476,7 @@ class CachedDataPoints {
     }
 
     private int minDataPointDistanceX() {
+
         if (actualDataCount <= 1) {
             minDistanceX = 1;
             return minDistanceX;
@@ -477,6 +492,7 @@ class CachedDataPoints {
 
     protected void reduce(final RendererDataReducer cruncher, final boolean isReducePoints,
             final int minRequiredReductionSize) {
+
         final long startTimeStamp = ProcessingProfiler.getTimeStamp();
         actualDataCount = 1;
 
@@ -514,6 +530,7 @@ class CachedDataPoints {
     }
 
     public void release() {
+
         DoubleArrayCache.getInstance().add(xValues);
         DoubleArrayCache.getInstance().add(yValues);
         DoubleArrayCache.getInstance().add(errorYNeg);
@@ -527,6 +544,7 @@ class CachedDataPoints {
     private void setBoundaryConditions(final Axis xAxis, final Axis yAxis, final DataSet dataSet, final int dsIndex,
             final int min, final int max, final ErrorStyle rendererErrorStyle, final boolean isPolarPlot,
             final boolean doAllowForNaNs) {
+
         indexMin = min;
         indexMax = max;
         polarPlot = isPolarPlot;
@@ -539,6 +557,7 @@ class CachedDataPoints {
     }
 
     protected void setErrorType(final DataSet dataSet, final ErrorStyle errorStyle) {
+
         errorType = new ErrorType[dataSet.getDimension()];
         if (dataSet instanceof DataSetError) {
             final DataSetError ds = (DataSetError) dataSet;
@@ -568,6 +587,7 @@ class CachedDataPoints {
     }
 
     protected void setStyleVariable(final DataSet dataSet, final int dsIndex) {
+
         dataSet.lock().readLockGuardOptimistic(() -> defaultStyle = dataSet.getStyle());
         final Integer layoutOffset = StyleParser.getIntegerPropertyValue(defaultStyle,
                 XYChartCss.DATASET_LAYOUT_OFFSET);

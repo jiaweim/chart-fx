@@ -1,5 +1,18 @@
 package io.fair_acc.chartfx.utils;
 
+import ar.com.hjg.pngj.*;
+import ar.com.hjg.pngj.chunks.PngChunkPLTE;
+import ar.com.hjg.pngj.chunks.PngChunkTRNS;
+import io.fair_acc.dataset.utils.ArrayCache;
+import io.fair_acc.dataset.utils.ByteBufferOutputStream;
+import javafx.scene.image.Image;
+import javafx.scene.image.PixelReader;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
+import javafx.scene.paint.Color;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -9,29 +22,9 @@ import java.util.Map;
 import java.util.zip.CRC32;
 import java.util.zip.Deflater;
 
-import javafx.scene.image.Image;
-import javafx.scene.image.PixelReader;
-import javafx.scene.image.PixelWriter;
-import javafx.scene.image.WritableImage;
-import javafx.scene.paint.Color;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import io.fair_acc.dataset.utils.ArrayCache;
-import io.fair_acc.dataset.utils.ByteBufferOutputStream;
-
-import ar.com.hjg.pngj.FilterType;
-import ar.com.hjg.pngj.ImageInfo;
-import ar.com.hjg.pngj.ImageLineHelper;
-import ar.com.hjg.pngj.ImageLineInt;
-import ar.com.hjg.pngj.PngWriter;
-import ar.com.hjg.pngj.chunks.PngChunkPLTE;
-import ar.com.hjg.pngj.chunks.PngChunkTRNS;
-
 /**
  * Writes a JavaFx Image into a ByteBuffer or file
- *
+ * <p>
  * possible improvements: - use multiple IDAT chunks to use fixed buffer size
  * and limit memory footprint - implement filtering of lines before compression
  * for smaller file sizes - Optionally add tEXT chunks for metadata (EXIF)
@@ -40,6 +33,7 @@ import ar.com.hjg.pngj.chunks.PngChunkTRNS;
  */
 @SuppressWarnings("PMD.GodClass")
 public final class WriteFxImage {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(WriteFxImage.class);
     private static final int DEFAULT_PALETTE_COLOR_COUNT = 256;
     private static final String IMAGE_PIXEL_READER_NOT_AVAILABLE = "image PixelReader not available";
@@ -52,15 +46,17 @@ public final class WriteFxImage {
      * private constructor for static utility class
      */
     private WriteFxImage() {
+
     }
 
     /**
      * copy the given Image to a WritableImage
-     * 
+     *
      * @param image the input image
      * @return clone of image
      */
     public static WritableImage clone(Image image) {
+
         int height = (int) image.getHeight();
         int width = (int) image.getWidth();
         WritableImage writableImage = WritableImageCache.getInstance().getImage(width, height);
@@ -83,6 +79,7 @@ public final class WriteFxImage {
     }
 
     public static void copyImageDataToPixelBuffer(final Image image, final int[] uncompressedImageData) {
+
         if (image == null) {
             throw new IllegalArgumentException("image is null");
         }
@@ -98,7 +95,7 @@ public final class WriteFxImage {
         final int requiredSize = w * h;
         if (uncompressedImageData.length < requiredSize) {
             throw new IllegalArgumentException("uncompressedImageData.length = " //
-                                               + uncompressedImageData.length + " too small, should be at least" + requiredSize);
+                    + uncompressedImageData.length + " too small, should be at least" + requiredSize);
         }
         int i = 0;
         for (int y = 0; y < h; y++) {
@@ -117,6 +114,7 @@ public final class WriteFxImage {
      * @see <a href="https://tools.ietf.org/html/rfc2083">rfc2083</a>
      */
     public static ByteBuffer encode(final Image image) {
+
         return encode(image, null, true, Deflater.BEST_SPEED, null);
     }
 
@@ -141,6 +139,7 @@ public final class WriteFxImage {
      * @see "https://tools.ietf.org/html/rfc2083"
      */
     public static ByteBuffer encode(final Image image, final ByteBuffer byteBuffer, final boolean alpha, final int compressionLevel, final FilterType filterType) {
+
         if (image == null) {
             throw new IllegalArgumentException(IMAGE_MUST_NOT_BE_NULL);
         }
@@ -204,6 +203,7 @@ public final class WriteFxImage {
      * @see "https://tools.ietf.org/html/rfc2083"
      */
     public static ByteBuffer encodeAlt(final Image image, final ByteBuffer byteBuffer, final boolean alpha, final int compressionLevel, final Map<String, Object> metaInfo) {
+
         if (image == null) {
             throw new IllegalArgumentException(IMAGE_MUST_NOT_BE_NULL);
         }
@@ -303,6 +303,7 @@ public final class WriteFxImage {
     }
 
     public static PaletteQuantizer estimatePalette(final Image image, final boolean alpha, final int nColors) {
+
         if (image == null) {
             throw new IllegalArgumentException(IMAGE_MUST_NOT_BE_NULL);
         }
@@ -323,6 +324,7 @@ public final class WriteFxImage {
     }
 
     public static PaletteQuantizer estimatePalette(final int[] pixelArray, final int width, final int heigth, final boolean alpha, final int nColors) {
+
         if (pixelArray == null) {
             throw new IllegalArgumentException("pixelArray must not be null");
         }
@@ -347,10 +349,11 @@ public final class WriteFxImage {
      * @param alpha  Alpha enabled
      * @return the upper bound for the size of the resulting png in bytes
      * @see <a href=
-     *      "https://github.com/madler/zlib/blob/master/deflate.c#L659-L661">zlib
-     *      sourcefor deflate upper bound</a>
+     * "https://github.com/madler/zlib/blob/master/deflate.c#L659-L661">zlib
+     * sourcefor deflate upper bound</a>
      */
     public static int getCompressedSizeBound(final int width, final int height, final boolean alpha) {
+
         final int bytesPerPixel = alpha ? 4 : 3;
         final int uncompressedSize = width * height * bytesPerPixel + height + HEADER_SIZE;
         final int compressedSize = uncompressedSize + (uncompressedSize + 7 >> 3) + (uncompressedSize + 63 >> 6) + 5;
@@ -365,6 +368,7 @@ public final class WriteFxImage {
      * @throws IOException if the file cannot be written
      */
     public static void savePng(final Image image, final File file) throws IOException {
+
         try (OutputStream os = Files.newOutputStream(file.toPath())) {
             final ByteBuffer buffer = WriteFxImage.encode(image);
             os.write(buffer.array(), 0, buffer.limit());
@@ -397,6 +401,7 @@ public final class WriteFxImage {
      * @param crc    checksum calculator
      */
     private static void write(final byte[] b, final ByteBuffer buffer, final CRC32 crc) {
+
         buffer.put(b);
         crc.update(b);
     }
@@ -409,7 +414,8 @@ public final class WriteFxImage {
      * @param crc    the checksum to be updated
      */
     private static void write(final int i, final ByteBuffer buffer, final CRC32 crc) {
-        final byte[] b = { (byte) (i >> 24 & 0xff), (byte) (i >> 16 & 0xff), (byte) (i >> 8 & 0xff), (byte) (i & 0xff) };
+
+        final byte[] b = {(byte) (i >> 24 & 0xff), (byte) (i >> 16 & 0xff), (byte) (i >> 8 & 0xff), (byte) (i & 0xff)};
         write(b, buffer, crc);
     }
 
@@ -476,6 +482,7 @@ public final class WriteFxImage {
      * @param crc              The checksum calculator
      */
     private static void writeImageFooter(final ByteBuffer outputByteBuffer, final CRC32 crc) {
+
         outputByteBuffer.putInt(0);
         crc.reset();
         write("IEND".getBytes(), outputByteBuffer, crc);
@@ -493,7 +500,7 @@ public final class WriteFxImage {
      */
     private static void writeImageHeader(final int width, final int height, final boolean alpha, final ByteBuffer outputByteBuffer, final CRC32 crc) {
         // File Signature - "\211PNG\r\n\032\n" - 8950 4e47 0d0a 1a0a
-        outputByteBuffer.put(new byte[] { (byte) 0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a });
+        outputByteBuffer.put(new byte[]{(byte) 0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a});
         // IHDR
         outputByteBuffer.putInt(13); // length of IHDR chunk
         crc.reset(); // checksum starts after length field
@@ -507,7 +514,7 @@ public final class WriteFxImage {
         // window)
         // Filter method: 1 byte 0 (adaptive filtering with five basic filter types)
         // Interlace method: 1 byte 0 (no interlace) or 1 (Adam7 interlace)
-        write(alpha ? new byte[] { 8, 6, 0, 0, 0 } : new byte[] { 8, 2, 0, 0, 0 }, outputByteBuffer, crc); // RGB(A) Mode
+        write(alpha ? new byte[]{8, 6, 0, 0, 0} : new byte[]{8, 2, 0, 0, 0}, outputByteBuffer, crc); // RGB(A) Mode
         outputByteBuffer.putInt((int) crc.getValue());
     }
 }

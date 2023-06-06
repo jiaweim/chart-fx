@@ -1,5 +1,7 @@
 package io.fair_acc.sample.misc.plugins;
 
+import com.sun.javafx.scene.DirtyBits;
+import com.sun.javafx.scene.NodeHelper;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -9,9 +11,6 @@ import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 
-import com.sun.javafx.scene.DirtyBits;
-import com.sun.javafx.scene.NodeHelper;
-
 /**
  * Basic implementation of a fractal Koch snowflake.
  * For details see: https://en.wikipedia.org/wiki/Koch_snowflake
@@ -19,6 +18,7 @@ import com.sun.javafx.scene.NodeHelper;
  * @author rstein
  */
 public class SnowFlake extends Path {
+
     /**
      * Defines the horizontal position of the center of the circle in pixels.
      *
@@ -27,6 +27,7 @@ public class SnowFlake extends Path {
     private final DoubleProperty centerX = new SimpleDoubleProperty(this, "centerX", 0.0) {
         @Override
         public void invalidated() {
+
             NodeHelper.markDirty(SnowFlake.this, DirtyBits.NODE_GEOMETRY);
             NodeHelper.geomChanged(SnowFlake.this);
             setTranslateX(get() - radius.get());
@@ -41,6 +42,7 @@ public class SnowFlake extends Path {
     private final DoubleProperty centerY = new SimpleDoubleProperty(this, "centerY", 0.0) {
         @Override
         public void invalidated() {
+
             NodeHelper.markDirty(SnowFlake.this, DirtyBits.NODE_GEOMETRY);
             NodeHelper.geomChanged(SnowFlake.this);
             setTranslateX(get() - radius.get());
@@ -55,6 +57,7 @@ public class SnowFlake extends Path {
     private final DoubleProperty radius = new SimpleDoubleProperty(this, "radius", 5.0) {
         @Override
         public void invalidated() {
+
             NodeHelper.markDirty(SnowFlake.this, DirtyBits.NODE_GEOMETRY);
             NodeHelper.geomChanged(SnowFlake.this);
             updatePath();
@@ -69,6 +72,7 @@ public class SnowFlake extends Path {
     private final IntegerProperty nIterations = new SimpleIntegerProperty(this, "nIterations", 3) {
         @Override
         public void invalidated() {
+
             NodeHelper.markDirty(SnowFlake.this, DirtyBits.NODE_GEOMETRY);
             NodeHelper.geomChanged(SnowFlake.this);
             updatePath();
@@ -81,6 +85,7 @@ public class SnowFlake extends Path {
 
     public SnowFlake(final double centerX, final double centerY, final double radius, final int recursion,
             final Paint fill) {
+
         super();
         setCenterX(centerX);
         setCenterY(centerY);
@@ -91,62 +96,76 @@ public class SnowFlake extends Path {
     }
 
     public SnowFlake(final double radius, final Paint fill) {
+
         this(0.0, 0.0, radius, 3, fill);
     }
 
     public final DoubleProperty centerXProperty() {
+
         return centerX;
     }
 
     public final DoubleProperty centerYProperty() {
+
         return centerY;
     }
 
     public final double getCenterX() {
+
         return centerX.get();
     }
 
     public final double getCenterY() {
+
         return centerY.get();
     }
 
     public final double getRadius() {
+
         return radius.get();
     }
 
     public final int getRecursion() {
+
         return nIterations.get();
     }
 
     public final DoubleProperty radiusProperty() {
+
         return radius;
     }
 
     public final IntegerProperty recursionProperty() {
+
         return nIterations;
     }
 
     public final void setCenterX(double value) {
+
         if (value != 0.0) {
             centerXProperty().set(value);
         }
     }
 
     public final void setCenterY(double value) {
+
         if (value != 0.0) {
             centerYProperty().set(value);
         }
     }
 
     public final void setRadius(double value) {
+
         radius.set(value);
     }
 
     public final void setRecursion(int value) {
+
         nIterations.set(value);
     }
 
     private void koch(int n, double size) {
+
         if (n == 0) {
             xState += size * Math.cos(Math.toRadians(angleState));
             yState += size * Math.sin(Math.toRadians(angleState));
@@ -163,6 +182,7 @@ public class SnowFlake extends Path {
     }
 
     protected void updatePath() {
+
         getElements().clear();
         final int n = Math.max(getRecursion(), 1);
         final double flakeRadius = getRadius();

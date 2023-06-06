@@ -24,22 +24,27 @@ import io.fair_acc.dataset.testdata.spi.TriangleFunction;
 
 /**
  * Unit-Tests of #io.fair_acc.math.DataSetMath
- *
+ * <p>
  * N.B. to be extended by kind volunteers
  *
  * @author rstein
  */
 class DataSetMathTests {
+
     private static final int N_SAMPLES = 10;
+
     interface TestFunction {
+
         void apply(int index, double a, double b) throws Throwable;
     }
 
     private static class IdentityFunction extends AbstractTestFunction<IdentityFunction> {
+
         private final double value;
         private final double timeOffset;
 
         private IdentityFunction(final String name, final int count, final double value, final double timeOffset) {
+
             super(name, count);
             this.value = value;
             this.timeOffset = timeOffset;
@@ -48,6 +53,7 @@ class DataSetMathTests {
 
         @Override
         public double[] generateY(final int count) {
+
             final double[] retVal = new double[count];
             Arrays.fill(retVal, value);
             return retVal;
@@ -55,12 +61,14 @@ class DataSetMathTests {
 
         @Override
         public double get(final int dimIndex, final int index) {
+
             return dimIndex == DIM_X ? index + timeOffset : super.get(DIM_Y, index);
         }
     }
 
     @Test
     void testCommonBaseFunction() {
+
         final TriangleFunction refFunction1 = new TriangleFunction("triag", N_SAMPLES);
         List<Double> base = DataSetMath.getCommonBase(refFunction1);
         for (int i = 0; i < refFunction1.getDataCount(); i++) {
@@ -199,6 +207,7 @@ class DataSetMathTests {
     }
 
     void testFunctionStrictBase(final String testName, final DataSet refFunction, final DataSet testFunction, final TestFunction xValueCheck, final TestFunction yValueCheck) {
+
         assertEquals(refFunction.getDataCount(), testFunction.getDataCount());
 
         for (int i = 0; i < refFunction.getDataCount(); i++) {
@@ -220,6 +229,7 @@ class DataSetMathTests {
     }
 
     void testFunctionInterpolatedBase(final String testName, final DataSet refFunction, final DataSet testFunction, final TestFunction xValueCheck, final TestFunction yValueCheck) {
+
         List<Double> base = DataSetMath.getCommonBase(refFunction, testFunction);
         int count = 0;
         for (double x : base) {
@@ -241,6 +251,7 @@ class DataSetMathTests {
 
     @Test
     void testIntegralWidthEstimator() {
+
         final int count = 1000;
         final double maxHalfWidth = count / 2.0;
         GaussFunction gaussFunction = new GaussFunction("testGauss", count, 500, 100.0);

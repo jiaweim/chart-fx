@@ -1,17 +1,13 @@
 package io.fair_acc.chartfx.viewer;
 
-import com.sun.javafx.scene.control.ContextMenuContent;
 import io.fair_acc.chartfx.ui.TilingPane.Layout;
 import io.fair_acc.chartfx.ui.utils.JavaFXInterceptorUtils.JavaFxInterceptor;
 import io.fair_acc.chartfx.utils.FXUtils;
-import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.CustomMenuItem;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.skin.ToolBarSkin;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -37,6 +33,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(ApplicationExtension.class)
 @ExtendWith(JavaFxInterceptor.class)
 public class SquareButtonTest {
+
     private Node icon;
     private SquareButton field;
     private StackPane root;
@@ -45,6 +42,7 @@ public class SquareButtonTest {
 
     @Start
     public void start(Stage stage) {
+
         assertDoesNotThrow(() -> new SquareButton(""));
 
         icon = Layout.GRID.getIcon();
@@ -61,11 +59,13 @@ public class SquareButtonTest {
 
     @BeforeEach
     public void beforeEach() {
+
         ensureParentIsNotNull();
     }
 
     @Test
     public void testSetterGetter() throws InterruptedException, ExecutionException {
+
         FXUtils.assertJavaFxThread();
 
         assertNull(field.getText(), "getText()");
@@ -89,6 +89,7 @@ public class SquareButtonTest {
 
     @Test
     public void heightChangeListener_scalingWithSnapToPixel_snappedPreferredHeightWithPaddingsIsCloseToSnappedParentHeightWithoutInsets() {
+
         FXUtils.assertJavaFxThread();
         final boolean originalSnapToPixel = field.isSnapToPixel();
         final double originalRenderScaleY = sceneWindow.getRenderScaleY();
@@ -117,6 +118,7 @@ public class SquareButtonTest {
 
     @Test
     public void heightChangeListener_scalingWithoutSnapToPixel_snappedPreferredHeightWithPaddingsIsCloseToSnappedParentHeightWithoutInsets() {
+
         FXUtils.assertJavaFxThread();
         final boolean originalSnapToPixel = field.isSnapToPixel();
         final double originalRenderScaleY = sceneWindow.getRenderScaleY();
@@ -143,6 +145,7 @@ public class SquareButtonTest {
 
     @Test
     public void heightChangeListener_parentAvailableHeightIsZero_preferredHeightIsMaxButtonSize() {
+
         FXUtils.assertJavaFxThread();
         final CustomMenuItem menuItem = new CustomMenuItem(field);
         final ContextMenu contextMenu = new ContextMenu(menuItem);
@@ -161,10 +164,12 @@ public class SquareButtonTest {
     }
 
     private void forceChangingOfButtonHeightViaParent(Region parent, double targetHeight) {
+
         parent.resize(parent.getWidth(), targetHeight);
     }
 
     private void ensureParentIsNotNull() {
+
         if (!root.getChildren().contains(field)) {
             root.getChildren().add(field);
         }

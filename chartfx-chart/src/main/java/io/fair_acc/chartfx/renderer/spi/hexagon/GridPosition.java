@@ -12,6 +12,7 @@ import java.util.logging.Logger;
  * not depend on how you have placed the Hexagons on the HexagonMap. The axial coordinate system is used.
  */
 public class GridPosition implements Cloneable, Serializable {
+
     private static final long serialVersionUID = -6932865381701419097L;
 
     /**
@@ -29,12 +30,14 @@ public class GridPosition implements Cloneable, Serializable {
      * @param r the axial R coordinate
      */
     public GridPosition(final int q, final int r) {
+
         this.q = q;
         this.r = r;
     }
 
     @Override
     public GridPosition clone() throws CloneNotSupportedException {
+
         try {
             return (GridPosition) super.clone();
         } catch (final CloneNotSupportedException ex) {
@@ -51,6 +54,7 @@ public class GridPosition implements Cloneable, Serializable {
      */
     @Override
     public boolean equals(final Object obj) {
+
         if (obj == null) {
             return false;
         }
@@ -63,6 +67,7 @@ public class GridPosition implements Cloneable, Serializable {
     }
 
     public String getCoordinates() {
+
         final String s = q + ", " + r;
         return s;
     }
@@ -72,6 +77,7 @@ public class GridPosition implements Cloneable, Serializable {
      * @return the direction
      */
     public HexagonMap.Direction getDirectionTo(final GridPosition otherPosition) {
+
         if (equals(otherPosition)) {
             throw new IllegalArgumentException(
                     "Other position (" + otherPosition + ") cannot be same as this (" + this + ")");
@@ -87,6 +93,7 @@ public class GridPosition implements Cloneable, Serializable {
     }
 
     public int getDistance(final GridPosition target) {
+
         return GridPosition.getDistance(this, target);
     }
 
@@ -97,13 +104,15 @@ public class GridPosition implements Cloneable, Serializable {
      * @return the adjacent position
      */
     public GridPosition getNeighborPosition(final HexagonMap.Direction direction) {
+
         final int i = GridPosition.getNumberFromDirection(direction);
-        final int[][] neighbors = new int[][] { { 0, -1 }, { +1, -1 }, { +1, 0 }, { 0, +1 }, { -1, +1 }, { -1, 0 } };
+        final int[][] neighbors = new int[][]{{0, -1}, {+1, -1}, {+1, 0}, {0, +1}, {-1, +1}, {-1, 0}};
         final int[] d = neighbors[i];
         return new GridPosition(q + d[0], r + d[1]);
     }
 
     public List<GridPosition> getPositionsInCircleArea(final int radius) {
+
         final ArrayList<GridPosition> result = new ArrayList<>();
         for (int i = 0; i <= radius; i++) {
             final List<GridPosition> positions = getPositionsOnCircleEdge(i);
@@ -120,6 +129,7 @@ public class GridPosition implements Cloneable, Serializable {
      * @return positions that are on the edge of a circle
      */
     public List<GridPosition> getPositionsOnCircleEdge(final int radius) {
+
         final ArrayList<GridPosition> result = new ArrayList<>();
         if (radius == 0) {
             result.add(this);
@@ -143,15 +153,18 @@ public class GridPosition implements Cloneable, Serializable {
     }
 
     public int getQ() {
+
         return q;
     }
 
     public int getR() {
+
         return r;
     }
 
     @Override
     public int hashCode() {
+
         int hash = 5;
         hash = 97 * hash + q;
         hash = 97 * hash + r;
@@ -163,6 +176,7 @@ public class GridPosition implements Cloneable, Serializable {
      * @return true if the positions are adjacent
      */
     public boolean isAdjacent(final GridPosition otherPosition) {
+
         GridPosition neighbor;
         for (int i = 0; i < 6; i++) {
             neighbor = getNeighborPosition(GridPosition.getDirectionFromNumber(i));
@@ -181,6 +195,7 @@ public class GridPosition implements Cloneable, Serializable {
      * @return an array positions
      */
     public List<GridPosition> line(final GridPosition destination) {
+
         final ArrayList<GridPosition> result = new ArrayList<>();
         GridPosition p;
         double qCalculated;
@@ -199,24 +214,26 @@ public class GridPosition implements Cloneable, Serializable {
 
     @Override
     public String toString() {
+
         return "GridPosition q=" + q + ", r=" + r;
     }
 
     public static HexagonMap.Direction getDirectionFromNumber(final int i) {
+
         switch (i) {
-        case 0:
-            return HexagonMap.Direction.NORTHWEST;
-        case 1:
-            return HexagonMap.Direction.NORTHEAST;
-        case 2:
-            return HexagonMap.Direction.EAST;
-        case 3:
-            return HexagonMap.Direction.SOUTHEAST;
-        case 4:
-            return HexagonMap.Direction.SOUTHWEST;
-        case 5:
-            return HexagonMap.Direction.WEST;
-        default:
+            case 0:
+                return HexagonMap.Direction.NORTHWEST;
+            case 1:
+                return HexagonMap.Direction.NORTHEAST;
+            case 2:
+                return HexagonMap.Direction.EAST;
+            case 3:
+                return HexagonMap.Direction.SOUTHEAST;
+            case 4:
+                return HexagonMap.Direction.SOUTHWEST;
+            case 5:
+                return HexagonMap.Direction.WEST;
+            default:
         }
         throw new InvalidParameterException("unknown direction: " + i);
     }
@@ -229,23 +246,25 @@ public class GridPosition implements Cloneable, Serializable {
      * @return the distance (number of hexagons)
      */
     public static int getDistance(final GridPosition a, final GridPosition b) {
+
         return (Math.abs(a.q - b.q) + Math.abs(a.r - b.r) + Math.abs(a.q + a.r - b.q - b.r)) / 2;
     }
 
     private static int getNumberFromDirection(final HexagonMap.Direction direction) {
+
         switch (direction) {
-        case NORTHWEST:
-            return 0;
-        case NORTHEAST:
-            return 1;
-        case EAST:
-            return 2;
-        case SOUTHEAST:
-            return 3;
-        case SOUTHWEST:
-            return 4;
-        case WEST:
-            return 5;
+            case NORTHWEST:
+                return 0;
+            case NORTHEAST:
+                return 1;
+            case EAST:
+                return 2;
+            case SOUTHEAST:
+                return 3;
+            case SOUTHWEST:
+                return 4;
+            case WEST:
+                return 5;
         }
         throw new InvalidParameterException("direction unknown: " + direction);
     }
@@ -258,6 +277,7 @@ public class GridPosition implements Cloneable, Serializable {
      * @return position that best matches given non-integer coordinates
      */
     public static GridPosition hexRound(final double q, final double r) {
+
         final double cubeX = q;
         final double cubeY = r;
         final double cubeZ = -cubeX - cubeY;

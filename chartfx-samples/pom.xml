@@ -7,8 +7,8 @@
     <parent>
         <groupId>io.fair-acc</groupId>
         <artifactId>chartfx-parent</artifactId>
-        <version>${revision}${sha1}${changelist}</version>
-        <relativePath>..</relativePath>
+        <version>${revision}.${sha1}.${changelist}</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>samples</artifactId>
     <name>chartfx-samples</name>
@@ -24,12 +24,12 @@
      	<dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
-            <version>${chartfx.javafx.version}</version>
+            <version>${javafx.version}</version>
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-web</artifactId>
-            <version>${chartfx.javafx.version}</version>
+            <version>${javafx.version}</version>
         </dependency>
         <dependency>
             <groupId>io.fair-acc</groupId>
@@ -44,7 +44,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
-            <version>${chartfx.slf4j.version}</version>
+            <version>${slf4j.version}</version>
         </dependency>
         <dependency>
             <groupId>net.jafama</groupId>

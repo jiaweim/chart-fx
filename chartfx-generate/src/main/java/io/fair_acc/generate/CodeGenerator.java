@@ -19,30 +19,30 @@ import org.apache.maven.project.MavenProject;
 /**
  * Code generator maven plugin, that performs some simple search and replace rules on template files to generate
  * helper functions and container classes for all primitive types.
- *
+ * <p>
  * By default it looks for input files in src/main/codegen and writes the generated code to
  * target/generated-sources/codegen.
- *
+ * <p>
  * There are two different types of template classes. Classes ending in `Gen` are are rewritten, by repeating the
  * blocks inside `//// codegen: originalType -&gt; outputType1, outputType2, ...` and `//// end codegen` for each
  * output type within the file. This is mostly useful for utility functions.
  * Classes ending in `Proto` have to start with a `//// codegen container: originalType -&gt; outputType1, ....` line
  * and for each outputType a separate class is generated, which is mostly used for data container classes.
- *
+ * <p>
  * In general all occurrences of originalType are replaced with the output type inside of Proto classes and within
  * codegen blocks in Gen classes. For special cases there are 3 simple comment flags to control the behaviour.
- *
+ * <p>
  * //// codegen: skip all
  * //// codegen: skip int, short, long
  * This comment at the end of a line skips all replacing on this line and just copies the line as is.
- *
+ * <p>
  * //// codegen: returncast all
  * Adds a cast to output type after a return or assignment. Note that you might have to add parentheses.
- *
+ * <p>
  * //// codegen: subst:float,double:fnInteger:fnFloating
  * //// codegen: subst%all%a%a &lt; 0 ? -a : a
  * Performs a simple search and replace if the type matches. The separator can be chosen arbitrarily.
- *
+ * <p>
  * Multiple comment flags can be given by separating them with four slashes:
  * //// codegen: returncast short //// subst%all%a%a &lt; 0 ? -a : a
  *
@@ -51,6 +51,7 @@ import org.apache.maven.project.MavenProject;
  */
 @Mojo(name = "generate-sources", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
 public class CodeGenerator extends AbstractMojo {
+
     public static final String JAVA_FILE_SUFFIX = ".java";
     private static final String PROTO_START = "//// codegen container:";
     private static final String LINE_COMMAND = "//// codegen:";
@@ -74,6 +75,7 @@ public class CodeGenerator extends AbstractMojo {
 
     @Override
     public void execute() throws MojoExecutionException {
+
         final Path inputPath = Path.of(this.input);
         final Path outputPath = Path.of(this.output);
 
@@ -91,6 +93,7 @@ public class CodeGenerator extends AbstractMojo {
     }
 
     private void addDataTypeVariants(final Path inputPath, final Path outputPath) throws MojoExecutionException {
+
         final List<Path> sourcesTypes = getSourceFiles(inputPath, PROTOTYPE_CLASS_SUFFIX);
 
         for (final Path source : sourcesTypes) {
@@ -104,13 +107,13 @@ public class CodeGenerator extends AbstractMojo {
             final String outputClassNameBase = removeTail(sourceClassName, PROTOTYPE_CLASS_SUFFIX);
             final List<String> sourceContent = getFileContents(source);
             final String[] conversion = sourceContent.stream()
-                                                .filter(s -> s.trim().startsWith(PROTO_START))
-                                                .map(s -> s.substring(PROTO_START.length()).trim())
-                                                .findFirst()
-                                                .orElseThrow(() -> new IllegalArgumentException("File does not contain start marker"))
-                                                .split(TYPE_CONVERSION_SEP);
+                    .filter(s -> s.trim().startsWith(PROTO_START))
+                    .map(s -> s.substring(PROTO_START.length()).trim())
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalArgumentException("File does not contain start marker"))
+                    .split(TYPE_CONVERSION_SEP);
             final String inputType = conversion[0].trim();
-            final String[] outputTypes = Arrays.stream(conversion[1].split(",")).map(String::trim).toArray(String[] ::new);
+            final String[] outputTypes = Arrays.stream(conversion[1].split(",")).map(String::trim).toArray(String[]::new);
 
             // Generate output files
             for (final String outputType : outputTypes) {
@@ -129,6 +132,7 @@ public class CodeGenerator extends AbstractMojo {
     }
 
     private void extendUtilityClass(final Path inputPath, final Path outputPath) throws MojoExecutionException {
+
         for (final Path source : getSourceFiles(inputPath, PROTO_UTILCLASS_SUFFIX)) { // loop over all prototoype classes
             // Create output package
             final Path relativePath = inputPath.relativize(source);
@@ -158,6 +162,7 @@ public class CodeGenerator extends AbstractMojo {
     }
 
     private List<String> getFileContents(final Path source) throws MojoExecutionException {
+
         final List<String> sourceContent;
         try {
             sourceContent = Files.readAllLines(source);
@@ -168,6 +173,7 @@ public class CodeGenerator extends AbstractMojo {
     }
 
     private Path getOutputDirectory(final Path outputPath, final Path relativePath) throws MojoExecutionException {
+
         Path outputDirectory = outputPath.resolve(relativePath.getParent());
         try {
             Files.createDirectories(outputDirectory);
@@ -178,6 +184,7 @@ public class CodeGenerator extends AbstractMojo {
     }
 
     private List<Path> getSourceFiles(final Path inputPath, final String protoUtilclassSuffix) throws MojoExecutionException {
+
         try {
             FileSystem fs = FileSystems.getDefault(); //
             final PathMatcher matcher = fs.getPathMatcher("glob:**" + protoUtilclassSuffix + JAVA_FILE_SUFFIX);
@@ -191,6 +198,7 @@ public class CodeGenerator extends AbstractMojo {
      * Generate some sort of code, e.g., search/replace within some template boundary
      */
     private static void generateContent(final List<String> source, final Writer writer, final String className) throws IOException {
+
         final List<String> section = new ArrayList<>();
         String[] outputTypes = null;
         String inputType = null;
@@ -201,7 +209,7 @@ public class CodeGenerator extends AbstractMojo {
             if (line.trim().startsWith(START_TEMPLATE)) {
                 final String[] tokens = line.trim().substring(START_TEMPLATE.length()).split(TYPE_CONVERSION_SEP);
                 inputType = tokens[0].trim();
-                outputTypes = Arrays.stream(tokens[1].split(",")).map(String::trim).toArray(String[] ::new);
+                outputTypes = Arrays.stream(tokens[1].split(",")).map(String::trim).toArray(String[]::new);
             } else if (line.trim().startsWith(END_TEMPLATE)) {
                 if (outputTypes == null) {
                     section.clear();
@@ -243,6 +251,7 @@ public class CodeGenerator extends AbstractMojo {
     }
 
     private static String processLine(final String currentLine, final String inputType, final String outputType) {
+
         final Map<String, String> substitutions = new HashMap<>();
         boolean skip = false;
         boolean returncast = false;
@@ -250,8 +259,8 @@ public class CodeGenerator extends AbstractMojo {
         final int cmdIndex = currentLine.indexOf(LINE_COMMAND);
         if (cmdIndex >= 0) {
             String[] commands = Arrays.stream(currentLine.substring(cmdIndex + LINE_COMMAND.length() + 1).split(LINE_COMMAND_SEP))
-                                        .map(String::trim)
-                                        .toArray(String[] ::new);
+                    .map(String::trim)
+                    .toArray(String[]::new);
             for (final String command : commands) {
                 if (command.startsWith(COMMAND_SKIP)) {
                     skip = skip || command.substring(COMMAND_SKIP.length()).contains(outputType);
@@ -273,7 +282,7 @@ public class CodeGenerator extends AbstractMojo {
             result = currentLine.replace(inputType, outputType).replace(capitalise(inputType), capitalise(outputType));
             if (returncast) {
                 result = result.replace(" = ", " = (" + outputType + ") ")
-                                 .replace("return ", "return (" + outputType + ") ");
+                        .replace("return ", "return (" + outputType + ") ");
             }
             for (final Map.Entry<String, String> substitution : substitutions.entrySet()) {
                 result = result.replace(substitution.getKey(), substitution.getValue());
@@ -283,6 +292,7 @@ public class CodeGenerator extends AbstractMojo {
     }
 
     private static String capitalise(final String input) {
+
         if (input == null) {
             return null;
         }
@@ -293,6 +303,7 @@ public class CodeGenerator extends AbstractMojo {
     }
 
     private static void writeLines(List<String> lines, Writer writer, UnaryOperator<String> converter) throws IOException {
+
         for (String line : lines) {
             writer.write(converter.apply(line));
             writer.write("\n");
@@ -300,6 +311,7 @@ public class CodeGenerator extends AbstractMojo {
     }
 
     private static String removeTail(String string, String tail) {
+
         if (!string.endsWith(tail))
             throw new IllegalStateException(string + " does not end with " + tail);
         return string.substring(0, string.length() - tail.length());

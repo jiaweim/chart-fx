@@ -1,20 +1,25 @@
 package io.fair_acc.chartfx.plugins.measurements;
 
-import static io.fair_acc.chartfx.axes.AxisMode.X;
-
-import java.text.DecimalFormat;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.stream.Collectors;
-
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import impl.org.controlsfx.skin.DecorationPane;
+import io.fair_acc.chartfx.Chart;
+import io.fair_acc.chartfx.axes.Axis;
+import io.fair_acc.chartfx.axes.AxisMode;
+import io.fair_acc.chartfx.plugins.AbstractSingleValueIndicator;
+import io.fair_acc.chartfx.plugins.ParameterMeasurements;
+import io.fair_acc.chartfx.plugins.XValueIndicator;
+import io.fair_acc.chartfx.plugins.YValueIndicator;
+import io.fair_acc.chartfx.plugins.measurements.utils.CheckedValueField;
+import io.fair_acc.chartfx.plugins.measurements.utils.DataSetSelector;
+import io.fair_acc.chartfx.plugins.measurements.utils.ValueIndicatorSelector;
+import io.fair_acc.chartfx.renderer.Renderer;
+import io.fair_acc.chartfx.utils.MouseUtils;
+import io.fair_acc.chartfx.viewer.DataViewWindow;
+import io.fair_acc.chartfx.viewer.DataViewWindow.WindowDecoration;
+import io.fair_acc.dataset.DataSet;
+import io.fair_acc.dataset.event.EventListener;
+import io.fair_acc.dataset.event.EventRateLimiter;
+import io.fair_acc.dataset.event.EventSource;
+import javafx.beans.property.*;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ListChangeListener.Change;
@@ -36,30 +41,18 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.fair_acc.chartfx.Chart;
-import io.fair_acc.chartfx.axes.Axis;
-import io.fair_acc.chartfx.axes.AxisMode;
-import io.fair_acc.chartfx.plugins.AbstractSingleValueIndicator;
-import io.fair_acc.chartfx.plugins.ParameterMeasurements;
-import io.fair_acc.chartfx.plugins.XValueIndicator;
-import io.fair_acc.chartfx.plugins.YValueIndicator;
-import io.fair_acc.chartfx.plugins.measurements.utils.CheckedValueField;
-import io.fair_acc.chartfx.plugins.measurements.utils.DataSetSelector;
-import io.fair_acc.chartfx.plugins.measurements.utils.ValueIndicatorSelector;
-import io.fair_acc.chartfx.renderer.Renderer;
-import io.fair_acc.chartfx.utils.MouseUtils;
-import io.fair_acc.chartfx.viewer.DataViewWindow;
-import io.fair_acc.chartfx.viewer.DataViewWindow.WindowDecoration;
-import io.fair_acc.dataset.DataSet;
-import io.fair_acc.dataset.event.EventListener;
-import io.fair_acc.dataset.event.EventRateLimiter;
-import io.fair_acc.dataset.event.EventSource;
+import java.text.DecimalFormat;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 
-import impl.org.controlsfx.skin.DecorationPane;
+import static io.fair_acc.chartfx.axes.AxisMode.X;
 
 /**
  * Measurements that can be added to a chart and show a scalar result value in the measurement pane.
@@ -67,6 +60,7 @@ import impl.org.controlsfx.skin.DecorationPane;
  * @author rstein
  */
 public abstract class AbstractChartMeasurement implements EventListener, EventSource {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractChartMeasurement.class);
     private static final int MIN_DRAG_BORDER_WIDTH = 30;
     protected static final double DEFAULT_MIN = Double.NEGATIVE_INFINITY;
@@ -138,6 +132,7 @@ public abstract class AbstractChartMeasurement implements EventListener, EventSo
 
     public AbstractChartMeasurement(final ParameterMeasurements plugin, final String measurementName, final AxisMode axisMode, final int requiredNumberOfIndicators,
             final int requiredNumberOfDataSets) {
+
         if (plugin == null) {
             throw new IllegalArgumentException("plugin is null");
         }
@@ -186,52 +181,64 @@ public abstract class AbstractChartMeasurement implements EventListener, EventSo
 
     @Override
     public AtomicBoolean autoNotification() {
+
         return autoNotify;
     }
 
     public ObjectProperty<DataSet> dataSetProperty() {
+
         return dataSet;
     }
 
     public DataSet getDataSet() {
+
         return dataSetProperty().get();
     }
 
     public DataViewWindow getDataViewWindow() {
+
         return dataViewWindow;
     }
 
     public ParameterMeasurements getMeasurementPlugin() {
+
         return plugin;
     }
 
     public String getTitle() {
+
         return titleProperty().get();
     }
 
     public CheckedValueField getValueField() {
+
         return valueField;
     }
 
     public ObservableList<AbstractSingleValueIndicator> getValueIndicators() {
+
         return valueIndicatorSelector.getValueIndicators();
     }
 
     public ObservableList<AbstractSingleValueIndicator> getValueIndicatorsUser() {
+
         return valueIndicatorSelector.getValueIndicatorsUser();
     }
 
     public abstract void initialize();
 
     public void setDataSet(final DataSet value) {
+
         dataSetProperty().set(value);
     }
 
     public void setTitle(final String title) {
+
         titleProperty().set(title);
     }
 
     public Optional<ButtonType> showConfigDialogue() {
+
         if (alert.isShowing()) {
             return Optional.empty();
         }
@@ -264,19 +271,23 @@ public abstract class AbstractChartMeasurement implements EventListener, EventSo
     }
 
     public StringProperty titleProperty() {
+
         return title;
     }
 
     @Override
     public List<EventListener> updateEventListener() {
+
         return updateListeners;
     }
 
     public DoubleProperty valueProperty() {
+
         return valueField.valueProperty();
     }
 
     protected void addMinMaxRangeFields() {
+
         final Label minRangeTitleLabel = new Label("Min. Range: ");
         GridPane.setConstraints(minRangeTitleLabel, 0, lastLayoutRow);
         GridPane.setConstraints(getValueField().getMinRangeTextField(), 1, lastLayoutRow);
@@ -296,16 +307,19 @@ public abstract class AbstractChartMeasurement implements EventListener, EventSo
     }
 
     protected void defaultAction(final Optional<ButtonType> result) {
+
         setDataSet(null);
         getValueField().resetRanges();
         updateSlider();
     }
 
     protected GridPane getDialogContentBox() {
+
         return gridPane;
     }
 
     protected void nominalAction() {
+
         valueField.evaluateMinRangeText(true);
         valueField.evaluateMaxRangeText(true);
         setDataSet(dataSetSelector.getSelectedDataSet());
@@ -313,6 +327,7 @@ public abstract class AbstractChartMeasurement implements EventListener, EventSo
     }
 
     protected void removeAction() {
+
         getMeasurementPlugin().getChartMeasurements().remove(this);
         getMeasurementPlugin().getDataView().getChildren().remove(dataViewWindow);
         getMeasurementPlugin().getDataView().getVisibleChildren().remove(dataViewWindow);
@@ -324,6 +339,7 @@ public abstract class AbstractChartMeasurement implements EventListener, EventSo
     }
 
     protected void removeSliderChangeListener() {
+
         final Chart chart = getMeasurementPlugin().getChart();
         if (chart == null) {
             return;
@@ -336,6 +352,7 @@ public abstract class AbstractChartMeasurement implements EventListener, EventSo
     }
 
     protected void cleanUpSuperfluousIndicators() {
+
         final Chart chart = getMeasurementPlugin().getChart();
         if (chart == null) {
             return;
@@ -345,6 +362,7 @@ public abstract class AbstractChartMeasurement implements EventListener, EventSo
     }
 
     protected void updateSlider() {
+
         if (!valueIndicatorSelector.isReuseIndicators()) {
             getValueIndicatorsUser().clear();
         }
@@ -356,6 +374,7 @@ public abstract class AbstractChartMeasurement implements EventListener, EventSo
     }
 
     protected AbstractSingleValueIndicator updateSlider(final int requestedIndex) {
+
         final ObservableList<AbstractSingleValueIndicator> selectedIndicators = getValueIndicatorsUser();
         final boolean reuse = valueIndicatorSelector.isReuseIndicators();
         final int nSelected = selectedIndicators.size();
@@ -386,6 +405,7 @@ public abstract class AbstractChartMeasurement implements EventListener, EventSo
     }
 
     protected static Axis getFirstAxisForDataSet(final Chart chart, final DataSet dataSet, final boolean isHorizontal) {
+
         if (dataSet == null) {
             return chart.getFirstAxis(isHorizontal ? Orientation.HORIZONTAL : Orientation.VERTICAL);
         }
@@ -405,6 +425,7 @@ public abstract class AbstractChartMeasurement implements EventListener, EventSo
     }
 
     protected static int shiftGridPaneRowOffset(final List<Node> nodes, final int minRowOffset) {
+
         int maxRowIndex = 0;
         for (final Node node : nodes) {
             final Integer rowIndex = GridPane.getRowIndex(node);

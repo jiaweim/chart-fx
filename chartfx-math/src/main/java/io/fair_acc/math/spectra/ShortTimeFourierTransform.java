@@ -22,17 +22,19 @@ import io.fair_acc.dataset.utils.DoubleArrayCache;
  * but also low level array based functions.
  * For complex input values, the data can be provided as two separate arrays as well as in the "interleaved"
  * layout used by JTransforms.
- * 
+ *
  * @author Alexander Krimm
  */
 public class ShortTimeFourierTransform {
+
     /**
      * Applies the apodization function to data in "interleaved" complex array.
-     * 
-     * @param data an array containing [re1, im1, re2, im2 ... ]
+     *
+     * @param data        an array containing [re1, im1, re2, im2 ... ]
      * @param apodization the apodization window function to use
      */
     protected static void apodizeComplex(double[] data, Apodization apodization) {
+
         final double[] window = apodization.getWindow(data.length / 2);
         for (int i = 0; i < data.length / 2; i++) {
             data[2 * i] = data[2 * i] * window[i];
@@ -42,13 +44,14 @@ public class ShortTimeFourierTransform {
 
     /**
      * Does a rounded up division.
-     * 
+     *
      * @param a an integer
      * @param b another integer
-     * @return ceil(a/b)
+     * @return ceil(a / b)
      * @see <a href="https://stackoverflow.com/a/21830188/12405013">https://stackoverflow.com/a/21830188/12405013</a>
      */
     private static int ceilDiv(int a, int b) {
+
         return (a + b - 1) / b;
     }
 
@@ -58,13 +61,13 @@ public class ShortTimeFourierTransform {
      * time axis data in DIM_X, real part in DIM_Y and imaginary part in DIM_Z.
      * All dimensions should have the same number of samples.
      *
-     * @param input a dataset with equidistantly spaced y(t) = Re(c(t)) and z(t) = data
-     * @param output optional output dataset, if not Null and compatible, data will be modified in place
-     * @param nFFT the number of frequency bins
-     * @param step The timestep size in samples
-     * @param apodization function, by default Hann window is used
-     * @param padding how to pad the slices at the start and end of the time axis: ZERO(default), ZOH or MIRROR
-     * @param dbScale {@code true} to convert the spectrum to dB scale
+     * @param input        a dataset with equidistantly spaced y(t) = Re(c(t)) and z(t) = data
+     * @param output       optional output dataset, if not Null and compatible, data will be modified in place
+     * @param nFFT         the number of frequency bins
+     * @param step         The timestep size in samples
+     * @param apodization  function, by default Hann window is used
+     * @param padding      how to pad the slices at the start and end of the time axis: ZERO(default), ZOH or MIRROR
+     * @param dbScale      {@code true} to convert the spectrum to dB scale
      * @param truncateDCNy {@code true} to interpolate the DC- and Nyquist-bins to their respective nearest neighbours
      * @return the spectrogram, a DataSet3D with dimensions [nf = nQuantx x nY = nQuantt]
      */
@@ -108,7 +111,7 @@ public class ShortTimeFourierTransform {
         result.lock().writeLockGuard(() -> {
             // only update data arrays if at least one array was newly allocated
             if (oldTimeAxis != timeAxis || oldFrequencyAxis != frequencyAxis || oldAmplitudeData != amplitudeData) {
-                result.set(false, new double[][] { frequencyAxis, timeAxis }, amplitudeData);
+                result.set(false, new double[][]{frequencyAxis, timeAxis}, amplitudeData);
             }
 
             result.getMetaInfo().put("ComplexSTFT-nFFT", Integer.toString(nFFT));
@@ -127,11 +130,13 @@ public class ShortTimeFourierTransform {
     }
 
     private static String getStftName(final DataSet input) {
+
         return "STFT(" + input.getName() + ")";
     }
 
     public static double[] complex(final double[] real, final double[] imag, final double[] output, final int nFFT, final int step,
             final Apodization apodization, final Padding padding, final boolean dbScale, final boolean truncateDCNy) {
+
         AssertUtils.equalDoubleArrays(real, imag); // check for same length
         final int nT = ceilDiv(real.length, step); // number of time steps
         final double[] amplitudeData = output == null || output.length != nFFT * nT ? new double[nFFT * nT] : output; // output array
@@ -143,25 +148,25 @@ public class ShortTimeFourierTransform {
             // obtain input data for FFT
             final int offset = i * step;
             final int validLength = real.length - offset;
-        fillraw:
+            fillraw:
             for (int j = 0; j < nFFT; j++) {
                 if (offset + j < real.length) {
                     raw[2 * j] = real[offset + j];
                     raw[2 * j + 1] = imag[offset + j];
                 } else { // padding
                     switch (padding) {
-                    case MIRROR:
-                        raw[2 * j] = real[real.length - j + validLength - 1];
-                        raw[2 * j + 1] = imag[imag.length - j + validLength - 1];
-                        break;
-                    case ZERO:
-                        Arrays.fill(raw, 2 * j, 2 * nFFT, 0.0);
-                        break fillraw; // break out of loop
-                    default:
-                    case ZOH:
-                        raw[2 * j] = real[real.length - 1];
-                        raw[2 * j + 1] = imag[imag.length - 1];
-                        break;
+                        case MIRROR:
+                            raw[2 * j] = real[real.length - j + validLength - 1];
+                            raw[2 * j + 1] = imag[imag.length - j + validLength - 1];
+                            break;
+                        case ZERO:
+                            Arrays.fill(raw, 2 * j, 2 * nFFT, 0.0);
+                            break fillraw; // break out of loop
+                        default:
+                        case ZOH:
+                            raw[2 * j] = real[real.length - 1];
+                            raw[2 * j + 1] = imag[imag.length - 1];
+                            break;
                     }
                 }
             }
@@ -187,6 +192,7 @@ public class ShortTimeFourierTransform {
 
     public static double[] complex(final double[] complexInput, final double[] output, final int nFFT, final int step, final Apodization apodization,
             final Padding padding, final boolean dbScale, final boolean truncateDCNy) {
+
         final int nT = ceilDiv(complexInput.length, 2 * step); // number of time steps
         final double[] amplitudeData = output == null || output.length != nFFT * nT ? new double[nFFT * nT] : output; // output array
         final double[] currentMagnitudeData = DoubleArrayCache.getInstance().getArray(nFFT);
@@ -202,22 +208,22 @@ public class ShortTimeFourierTransform {
             } else { // data has to be padded
                 System.arraycopy(complexInput, offset, raw, 0, validLength);
                 switch (padding) {
-                case MIRROR:
-                    for (int j = validLength; j + 1 < raw.length; j += 2) {
-                        raw[j] = complexInput[complexInput.length - j + validLength - 2];
-                        raw[j + 1] = complexInput[complexInput.length - j + validLength - 1];
-                    }
-                    break;
-                case ZERO:
-                    Arrays.fill(raw, validLength, raw.length, 0.0);
-                    break;
-                default:
-                case ZOH:
-                    for (int j = validLength; j + 1 < raw.length; j += 2) {
-                        raw[j] = complexInput[complexInput.length - 2];
-                        raw[j + 1] = complexInput[complexInput.length - 1];
-                    }
-                    break;
+                    case MIRROR:
+                        for (int j = validLength; j + 1 < raw.length; j += 2) {
+                            raw[j] = complexInput[complexInput.length - j + validLength - 2];
+                            raw[j + 1] = complexInput[complexInput.length - j + validLength - 1];
+                        }
+                        break;
+                    case ZERO:
+                        Arrays.fill(raw, validLength, raw.length, 0.0);
+                        break;
+                    default:
+                    case ZOH:
+                        for (int j = validLength; j + 1 < raw.length; j += 2) {
+                            raw[j] = complexInput[complexInput.length - 2];
+                            raw[j + 1] = complexInput[complexInput.length - 1];
+                        }
+                        break;
                 }
             }
             // apply apodization function
@@ -241,6 +247,7 @@ public class ShortTimeFourierTransform {
     }
 
     public static double[] getFrequencyAxisComplex(final double dt, final int nFFT, final double[] output) {
+
         final double fStep = 1.0 / dt / nFFT;
         final double[] frequencyAxis = output == null || output.length != nFFT ? new double[nFFT] : output;
         for (int i = -nFFT / 2; i < nFFT / 2; i++) {
@@ -251,6 +258,7 @@ public class ShortTimeFourierTransform {
     }
 
     public static double[] getFrequencyAxisReal(final double dt, final int nFFT, final double[] output) {
+
         final double fStep = 1.0 / dt / nFFT;
         final double[] frequencyAxis = output == null || output.length != nFFT / 2 ? new double[nFFT / 2] : output;
         for (int i = 0; i < nFFT / 2; i++) {
@@ -261,6 +269,7 @@ public class ShortTimeFourierTransform {
     }
 
     public static double[] getTimeAxis(final double dt, final int nSamples, final int step, final double[] output) {
+
         final int nT = ceilDiv(nSamples, step);
         final double[] timeAxis = output == null || output.length != nT ? new double[nT] : output;
         for (int i = 0; i < timeAxis.length; i++) {
@@ -308,7 +317,7 @@ public class ShortTimeFourierTransform {
         result.lock().writeLockGuard(() -> {
             // only update data arrays if at least one array was newly allocated
             if (oldTimeAxis != timeAxis || oldFrequencyAxis != frequencyAxis || oldAmplitudeData != amplitudeData) {
-                result.set(false, new double[][] { frequencyAxis, timeAxis }, amplitudeData);
+                result.set(false, new double[][]{frequencyAxis, timeAxis}, amplitudeData);
             }
 
             result.getMetaInfo().put("RealSTFT-nFFT", Integer.toString(nFFT));
@@ -328,6 +337,7 @@ public class ShortTimeFourierTransform {
 
     public static double[] real(final double[] input, final double[] output, final int nFFT, final int step, final Apodization apodization,
             final Padding padding, final boolean dbScale, final boolean truncateDCNy) {
+
         final int nT = ceilDiv(input.length, step); // number of time steps
         final double[] amplitudeData = output == null || output.length != nFFT / 2 * nT ? new double[nFFT / 2 * nT] : output; // output array
         final double[] currentMagnitudeData = DoubleArrayCache.getInstance().getArray(nFFT / 2);
@@ -343,18 +353,18 @@ public class ShortTimeFourierTransform {
             } else { // data has to be padded
                 System.arraycopy(input, offset, raw, 0, validLength);
                 switch (padding) {
-                case MIRROR:
-                    for (int j = validLength; j < raw.length; j++) {
-                        raw[j] = input[input.length - j + validLength - 1];
-                    }
-                    break;
-                case ZERO:
-                    Arrays.fill(raw, validLength, raw.length, 0.0);
-                    break;
-                default:
-                case ZOH:
-                    Arrays.fill(raw, validLength, raw.length, input[input.length - 1]);
-                    break;
+                    case MIRROR:
+                        for (int j = validLength; j < raw.length; j++) {
+                            raw[j] = input[input.length - j + validLength - 1];
+                        }
+                        break;
+                    case ZERO:
+                        Arrays.fill(raw, validLength, raw.length, 0.0);
+                        break;
+                    default:
+                    case ZOH:
+                        Arrays.fill(raw, validLength, raw.length, input[input.length - 1]);
+                        break;
                 }
             }
             // apply apodization function

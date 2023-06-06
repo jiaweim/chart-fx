@@ -3,9 +3,7 @@ package io.fair_acc.sample.misc;
 import io.fair_acc.acc.ui.AcquisitionButtonBar;
 import io.fair_acc.sample.chart.ChartSample;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -18,6 +16,7 @@ import javafx.stage.Stage;
 public class AcqButtonTests extends ChartSample {
 
     public Pane getAcquisitionBarTest(final boolean isPauseEnabled) {
+
         final VBox root = new VBox();
 
         CheckBox cbDisabled = new CheckBox("disable acquisition buttons");
@@ -40,7 +39,7 @@ public class AcqButtonTests extends ChartSample {
 
         root.getChildren()
                 .addAll(new Label("AcquisitionButtonBar " + (isPauseEnabled ? "with" : "without")
-                        + " pause button functionality "), new HBox(cbDisabled), acqBar,
+                                + " pause button functionality "), new HBox(cbDisabled), acqBar,
                         new VBox(new Label("AcquisitionButtonBar state property values:"), cb1, cb2, cb3, cb4));
 
         return root;
@@ -48,6 +47,7 @@ public class AcqButtonTests extends ChartSample {
 
     @Override
     public Node getChartPanel(Stage primaryStage) {
+
         HBox root = new HBox();
         root.setPrefSize(640, 480);
 
@@ -57,10 +57,12 @@ public class AcqButtonTests extends ChartSample {
     }
 
     protected static ImageView getIcon(final String iconName) {
+
         return new ImageView(new Image(AcqButtonTests.class.getResourceAsStream("./icons/" + iconName)));
     }
 
     public static void main(String[] args) {
+
         Application.launch(args);
     }
 

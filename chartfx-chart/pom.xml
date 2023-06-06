@@ -6,8 +6,8 @@
     <parent>
         <groupId>io.fair-acc</groupId>
         <artifactId>chartfx-parent</artifactId>
-        <version>${revision}${sha1}${changelist}</version>
-        <relativePath>..</relativePath>
+        <version>${revision}.${sha1}.${changelist}</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>chartfx</artifactId>
     <name>chartfx-chart</name>
@@ -26,27 +26,27 @@
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-base</artifactId>
-            <version>${chartfx.javafx.version}</version>
+            <version>${javafx.version}</version>
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
-            <version>${chartfx.javafx.version}</version>
+            <version>${javafx.version}</version>
         </dependency>
         <dependency>
             <groupId>org.kordamp.ikonli</groupId>
             <artifactId>ikonli-javafx</artifactId>
-            <version>${chartfx.ikonli.version}</version>
+            <version>${ikonli.version}</version>
         </dependency>
         <dependency>
             <groupId>org.kordamp.ikonli</groupId>
             <artifactId>ikonli-fontawesome-pack</artifactId>
-            <version>${chartfx.ikonli.version}</version>
+            <version>${ikonli.version}</version>
         </dependency>
         <dependency>
             <groupId>org.kordamp.ikonli</groupId>
             <artifactId>ikonli-fontawesome5-pack</artifactId>
-            <version>${chartfx.ikonli.version}</version>
+            <version>${ikonli.version}</version>
         </dependency>
         <dependency>
             <groupId>org.testfx</groupId>
@@ -73,7 +73,7 @@
         <dependency>
             <groupId>org.controlsfx</groupId>
             <artifactId>controlsfx</artifactId>
-            <version>${chartfx.controlsfx.version}</version>
+            <version>${controlsfx.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.openjfx</groupId>
@@ -84,7 +84,7 @@
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-swing</artifactId> <!-- needed to for benchmark saving images to file -->
-            <version>${chartfx.javafx.version}</version>
+            <version>${javafx.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -93,5 +93,27 @@
             <version>2.1.0</version>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <compilerArgs>
+                        <arg>--add-exports</arg>
+                        <arg>org.controlsfx.controls/impl.org.controlsfx.skin=chartfx</arg>
+                        <arg>--add-exports</arg>
+                        <arg>javafx.graphics/com.sun.javafx.tk=chartfx</arg>
+                        <arg>--add-exports</arg>
+                        <arg>javafx.controls/com.sun.javafx.scene.control.skin=chartfx</arg>
+                        <arg>--add-exports</arg>
+                        <arg>javafx.graphics/com.sun.prism.paint=chartfx</arg>
+                    </compilerArgs>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
 

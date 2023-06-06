@@ -1,9 +1,8 @@
 package io.fair_acc.sample.chart;
 
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
-
+import io.fair_acc.chartfx.Chart;
+import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
+import io.fair_acc.chartfx.axes.spi.MetricPrefix;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -16,9 +15,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-import io.fair_acc.chartfx.Chart;
-import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
-import io.fair_acc.chartfx.axes.spi.MetricPrefix;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Small example of how to use the dynamic/static axis scaling functionality N.B. applies only for axes derived from
@@ -27,12 +26,14 @@ import io.fair_acc.chartfx.axes.spi.MetricPrefix;
  * @author rstein
  */
 public class AxisRangeScalingSample extends ChartSample {
+
     private static final String CHART_CSS = Chart.class.getResource("chart.css").toExternalForm();
     private static final int DEFAULT_WIDTH = 800;
     private static final int DEFAULT_HEIGHT = 800;
 
     @Override
     public Node getChartPanel(final Stage primaryStage) {
+
         final VBox root = new VBox();
         root.setAlignment(Pos.CENTER);
 
@@ -112,6 +113,7 @@ public class AxisRangeScalingSample extends ChartSample {
 
             @Override
             public void run() {
+
                 if (directionUpwards) {
                     counter++;
                 } else {
@@ -121,7 +123,7 @@ public class AxisRangeScalingSample extends ChartSample {
                     final double power = Math.pow(10, counter);
                     xAxis9.maxProperty().set(power);
                     final String text = "actual SI range for dynamic axis: [" + xAxis9.getMin() + " V, "
-                                        + xAxis9.getMax() + " V]";
+                            + xAxis9.getMax() + " V]";
                     xAxis9Text.setText(text);
                 });
                 if ((counter >= 9) || (counter <= -9)) {
@@ -136,6 +138,7 @@ public class AxisRangeScalingSample extends ChartSample {
 
     @Override
     public String getControlStylesheetURL() {
+
         return CHART_CSS;
     }
 
@@ -143,6 +146,7 @@ public class AxisRangeScalingSample extends ChartSample {
      * @param args the command line arguments
      */
     public static void main(final String[] args) {
+
         Application.launch(args);
     }
 }

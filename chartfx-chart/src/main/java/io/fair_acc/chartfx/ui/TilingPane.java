@@ -1,8 +1,5 @@
 package io.fair_acc.chartfx.ui;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ListChangeListener;
@@ -11,8 +8,10 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-
 import org.kordamp.ikonli.javafx.FontIcon;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * TilingPane that to mimics HBox-, VBox-, or TilePane layout while consistently maximising it's children and
@@ -21,11 +20,13 @@ import org.kordamp.ikonli.javafx.FontIcon;
  * @author rstein
  */
 public class TilingPane extends GridPane {
+
     protected static final String FONT_AWESOME = "FontAwesome";
     protected static final int FONT_SIZE = 20;
     private final ObjectProperty<Layout> layout = new SimpleObjectProperty<>(this, "layout", Layout.GRID) {
         @Override
         public void set(final Layout newLayout) {
+
             if (newLayout == null) {
                 throw new IllegalArgumentException("layout must not be null");
             }
@@ -34,14 +35,17 @@ public class TilingPane extends GridPane {
     };
 
     public TilingPane() {
+
         this(Layout.GRID);
     }
 
     public TilingPane(final Layout layout) {
+
         this(layout, (Node[]) null);
     }
 
     public TilingPane(final Layout layout, Node... nodes) {
+
         super();
         this.layout.set(layout);
         VBox.setVgrow(this, Priority.ALWAYS);
@@ -59,44 +63,50 @@ public class TilingPane extends GridPane {
     }
 
     public Layout getLayout() {
+
         return layoutProperty().get();
     }
 
     public ObjectProperty<Layout> layoutProperty() {
+
         return layout;
     }
 
     public void setLayout(final Layout value) {
+
         layoutProperty().set(value);
     }
 
     @Override
     public String toString() {
+
         return TilingPane.class.getSimpleName() + "('" + getLayout() + "0')";
     }
 
     protected int getColumnsCount() {
+
         final int childCount = getChildren().size();
         if (childCount == 0) {
             return 1;
         }
         switch (getLayout()) {
-        case HBOX:
-            return childCount;
-        case MAXIMISE:
-        case VBOX:
-            return 1;
-        case GRID:
-        default:
-            if (childCount < 4) {
-                return 2;
-            }
+            case HBOX:
+                return childCount;
+            case MAXIMISE:
+            case VBOX:
+                return 1;
+            case GRID:
+            default:
+                if (childCount < 4) {
+                    return 2;
+                }
 
-            return (int) Math.ceil(Math.sqrt(childCount)); // n-columns
+                return (int) Math.ceil(Math.sqrt(childCount)); // n-columns
         }
     }
 
     protected void layoutNormal() {
+
         if (getChildren().isEmpty()) {
             return;
         }
@@ -153,15 +163,18 @@ public class TilingPane extends GridPane {
         private final String iconCode;
 
         Layout(final String name, final String iconCode) {
+
             this.name = name;
             this.iconCode = iconCode;
         }
 
         public Node getIcon() {
+
             return new FontIcon(iconCode);
         }
 
         public String getName() {
+
             return name;
         }
     }

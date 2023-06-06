@@ -6,8 +6,8 @@
     <parent>
         <groupId>io.fair-acc</groupId>
         <artifactId>chartfx-parent</artifactId>
-        <version>${revision}${sha1}${changelist}</version>
-        <relativePath>..</relativePath>
+        <version>${revision}.${sha1}.${changelist}</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>math</artifactId>
     <name>chartfx_math</name>
@@ -24,7 +24,7 @@
         <dependency>
             <groupId>io.fair-acc</groupId>
             <artifactId>dataset</artifactId>
-            <version>${project.version}</version>
+            <version>11.3.0</version>
         </dependency>
         <dependency>
             <groupId>com.github.wendykierp</groupId>
@@ -39,17 +39,8 @@
         <dependency>
             <groupId>net.jafama</groupId>
             <artifactId>jafama</artifactId>
-            <version>2.3.1</version>
+            <version>2.3.2</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>io.fair-acc</groupId>
-                <artifactId>generate</artifactId>
-            </plugin>
-        </plugins>
-    </build>
 </project>

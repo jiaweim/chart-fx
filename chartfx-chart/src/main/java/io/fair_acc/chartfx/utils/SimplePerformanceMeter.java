@@ -1,34 +1,25 @@
 package io.fair_acc.chartfx.utils;
 
+import com.sun.management.OperatingSystemMXBean;
+import javafx.animation.AnimationTimer;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ReadOnlyDoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.layout.Region;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.management.*;
 import java.lang.management.ManagementFactory;
 import java.lang.reflect.Field;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import javax.management.Attribute;
-import javax.management.AttributeList;
-import javax.management.InstanceNotFoundException;
-import javax.management.MBeanServer;
-import javax.management.MalformedObjectNameException;
-import javax.management.ObjectName;
-import javax.management.ReflectionException;
-
-import javafx.animation.AnimationTimer;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.ReadOnlyDoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.scene.Node;
-import javafx.scene.layout.Region;
-import javafx.scene.Scene;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-// import com.sun.javafx.perf.PerformanceTracker; // keep for the future in case this becomes public API
-import com.sun.management.OperatingSystemMXBean;
-
 public class SimplePerformanceMeter extends Region {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(SimplePerformanceMeter.class);
     private static final int MIN_UPDATE_PERIOD = 40; // [ms]
     private static final int MAX_UPDATE_PERIOD = 10_000; // [ms]
@@ -69,12 +60,14 @@ public class SimplePerformanceMeter extends Region {
     };
 
     public SimplePerformanceMeter(long updateDuration) {
+
         this.updateDuration = Math.max(MIN_UPDATE_PERIOD, Math.min(updateDuration, MAX_UPDATE_PERIOD));
         // fxPerformanceTracker = PerformanceTracker.getSceneTracker(scene); // keep for the future in case this becomes public
 
         animationTimer = new AnimationTimer() {
             @Override
             public void handle(long now) {
+
                 pulseCounter.getAndIncrement();
             }
         };
@@ -106,6 +99,7 @@ public class SimplePerformanceMeter extends Region {
     }
 
     public ReadOnlyDoubleProperty actualFrameRateProperty() {
+
         return trackerFrameRate;
     }
 
@@ -115,81 +109,99 @@ public class SimplePerformanceMeter extends Region {
      * typically: alpha ~ Ts /(Ts+T) with
      * <p>
      * 'Ts' being the sampling period, and 'T' the desired IIR time constant
-     * 
+     *
      * @return average factor alpha
      */
     public DoubleProperty averageFactorProperty() {
+
         return averageFactor;
     }
 
     public ReadOnlyDoubleProperty averageFrameRateProperty() {
+
         return avgTrackerFrameRate;
     }
 
     public ReadOnlyDoubleProperty averageFxFrameRateProperty() {
+
         return pulseRateAvg;
     }
 
     public ReadOnlyDoubleProperty averageProcessCpuLoadProperty() {
+
         return avgProcessCpuLoad;
     }
 
     public ReadOnlyDoubleProperty averageSystemCpuLoadProperty() {
+
         return avgSystemCpuLoad;
     }
 
     public void deregisterListener(final Scene scene) {
+
         animationTimer.stop();
         scene.removePostLayoutPulseListener(pulseListener);
         timer.cancel();
     }
 
     public ReadOnlyDoubleProperty fxFrameRateProperty() {
+
         return pulseRate;
     }
 
     public double getActualFrameRate() {
+
         return actualFrameRateProperty().get();
     }
 
     public double getAverageFrameRate() {
+
         return averageFrameRateProperty().get();
     }
 
     public double getAverageFxFrameRate() {
+
         return averageFxFrameRateProperty().get();
     }
 
     public double getAverageProcessCpuLoad() {
+
         return averageProcessCpuLoadProperty().get();
     }
 
     public double getAverageSystemCpuLoad() {
+
         return averageSystemCpuLoadProperty().get();
     }
 
     public double getFxFrameRate() {
+
         return fxFrameRateProperty().get();
     }
 
     public double getProcessCpuLoad() {
+
         return processCpuLoadProperty().get();
     }
 
     public double getSystemCpuLoad() {
+
         return systemCpuLoadProperty().get();
     }
 
     public ReadOnlyDoubleProperty processCpuLoadProperty() {
+
         return processCpuLoad;
     }
 
     public void registerListener(final Scene scene) {
+
         animationTimer.start();
         timer = new Timer("SimplePerformanceMeter-timer", true);
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
+
                 final long timerIterationThis = System.currentTimeMillis();
                 final int pulseCount = pulseCounter.getAndSet(0);
                 final int frameCount = frameCounter.getAndSet(0);
@@ -220,6 +232,7 @@ public class SimplePerformanceMeter extends Region {
     }
 
     public void resetAverages() {
+
         pulseRateInternal = -1;
         pulseRateAvgInternal = -1;
         frameRateInternal = -1;
@@ -231,6 +244,7 @@ public class SimplePerformanceMeter extends Region {
     }
 
     public ReadOnlyDoubleProperty systemCpuLoadProperty() {
+
         return systemCpuLoad;
     }
 
@@ -249,7 +263,8 @@ public class SimplePerformanceMeter extends Region {
     }
 
     public boolean isSceneDirty() {
-        if ( this.getScene().getRoot() == null) {
+
+        if (this.getScene().getRoot() == null) {
             return false;
         }
         try {
@@ -263,6 +278,7 @@ public class SimplePerformanceMeter extends Region {
     }
 
     protected static double computeAverage(final double newValue, final double oldValue, final double alpha) {
+
         if (oldValue < 0) {
             return newValue;
         }
@@ -270,11 +286,12 @@ public class SimplePerformanceMeter extends Region {
     }
 
     public static double getProcessCpuLoadInternal() {
+
         final MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
 
         try {
             final ObjectName name = ObjectName.getInstance("java.lang:type=OperatingSystem");
-            final AttributeList list = mbs.getAttributes(name, new String[] { "ProcessCpuLoad" });
+            final AttributeList list = mbs.getAttributes(name, new String[]{"ProcessCpuLoad"});
 
             if (list.isEmpty()) {
                 return Double.NaN;
@@ -289,7 +306,8 @@ public class SimplePerformanceMeter extends Region {
             }
             // returns a percentage value with 1 decimal point precision
             return ((int) (value * 1000) / 10.0);
-        } catch (MalformedObjectNameException | NullPointerException | InstanceNotFoundException | ReflectionException e) {
+        } catch (MalformedObjectNameException | NullPointerException | InstanceNotFoundException |
+                 ReflectionException e) {
             return Double.NaN;
         }
     }

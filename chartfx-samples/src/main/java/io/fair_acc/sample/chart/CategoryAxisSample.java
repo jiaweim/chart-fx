@@ -1,16 +1,5 @@
 package io.fair_acc.sample.chart;
 
-import java.text.DateFormatSymbols;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
-
-import javafx.application.Application;
-import javafx.scene.Node;
-import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
-
 import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.AxisLabelOverlapPolicy;
 import io.fair_acc.chartfx.axes.spi.CategoryAxis;
@@ -22,15 +11,27 @@ import io.fair_acc.chartfx.renderer.LineStyle;
 import io.fair_acc.chartfx.renderer.spi.ErrorDataSetRenderer;
 import io.fair_acc.dataset.spi.DefaultErrorDataSet;
 import io.fair_acc.dataset.testdata.spi.RandomDataGenerator;
+import javafx.application.Application;
+import javafx.scene.Node;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
+
+import java.text.DateFormatSymbols;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * @author rstein
  */
 public class CategoryAxisSample extends ChartSample {
+
     private static final int N_SAMPLES = 30;
 
     @Override
     public Node getChartPanel(final Stage primaryStage) {
+
         final StackPane root = new StackPane();
         final CategoryAxis xAxis = new CategoryAxis("months");
         // xAxis.setTickLabelRotation(90);
@@ -93,6 +94,7 @@ public class CategoryAxisSample extends ChartSample {
      * @param args the command line arguments
      */
     public static void main(final String[] args) {
+
         Application.launch(args);
     }
 }

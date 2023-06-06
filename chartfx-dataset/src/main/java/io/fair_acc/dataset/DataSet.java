@@ -14,6 +14,7 @@ import io.fair_acc.dataset.locks.DataSetLock;
  * @author rstein
  */
 public interface DataSet extends EventSource, Serializable {
+
     int DIM_X = 0;
     int DIM_Y = 1;
     int DIM_Z = 2;
@@ -22,7 +23,7 @@ public interface DataSet extends EventSource, Serializable {
      * Gets the x value of the data point with the index i
      *
      * @param dimIndex the dimension index (ie. '0' equals 'X', '1' equals 'Y')
-     * @param index data point index
+     * @param index    data point index
      * @return the x value
      */
     double get(final int dimIndex, final int index);
@@ -34,6 +35,7 @@ public interface DataSet extends EventSource, Serializable {
      * @return Axis Label
      */
     default AxisDescription getAxisDescription(int dim) {
+
         return getAxisDescriptions().get(dim);
     }
 
@@ -55,7 +57,7 @@ public interface DataSet extends EventSource, Serializable {
      *
      * @param index the data index
      * @return label of a data point specified by the index or <code>null</code> if none label has been specified for
-     *         this data point.
+     * this data point.
      */
     String getDataLabel(int index);
 
@@ -70,7 +72,7 @@ public interface DataSet extends EventSource, Serializable {
      * data set.
      *
      * @param dimIndex the dimension index (ie. '0' equals 'X', '1' equals 'Y')
-     * @param x the data point coordinates to search for
+     * @param x        the data point coordinates to search for
      * @return the index of the data point
      */
     int getIndex(final int dimIndex, final double... x);
@@ -107,9 +109,9 @@ public interface DataSet extends EventSource, Serializable {
     double[] getValues(final int dimIndex);
 
     /**
+     * @param <D> generics (fluent design)
      * @return Read-Write Lock to guard the DataSet
      * @see DataSetLock
-     * @param <D> generics (fluent design)
      */
     <D extends DataSet> DataSetLock<D> lock();
 
@@ -133,14 +135,14 @@ public interface DataSet extends EventSource, Serializable {
      * Returns the value along the 'dimIndex' axis of a point specified by the <code>x</code> coordinate.
      *
      * @param dimIndex the dimension index (ie. '0' equals 'X', '1' equals 'Y')
-     * @param x horizontal 'dimIndex' coordinate
+     * @param x        horizontal 'dimIndex' coordinate
      * @return 'dimIndex' value
      */
     double getValue(final int dimIndex, final double... x);
 
     /**
      * @param other Other DataSet to copy into this DataSet
-     * @param copy true: perform a deep copy (default), false: reuse the other dataset's internal data structures (if applicable)
+     * @param copy  true: perform a deep copy (default), false: reuse the other dataset's internal data structures (if applicable)
      * @return itself (fluent design) -- N.B. existing update listener are preserved
      */
     DataSet set(final DataSet other, final boolean copy);
@@ -150,6 +152,7 @@ public interface DataSet extends EventSource, Serializable {
      * @return itself (fluent design) -- N.B. existing update listener are preserved
      */
     default DataSet set(final DataSet other) {
+
         return set(other, true);
     }
 

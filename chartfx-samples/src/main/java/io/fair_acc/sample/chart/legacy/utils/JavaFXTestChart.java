@@ -1,9 +1,6 @@
 package io.fair_acc.sample.chart.legacy.utils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
+import io.fair_acc.dataset.testdata.spi.SineFunction;
 import io.fair_acc.sample.chart.legacy.RollingBufferLegacySample;
 import javafx.application.Platform;
 import javafx.scene.Node;
@@ -11,9 +8,12 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 
-import io.fair_acc.dataset.testdata.spi.SineFunction;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class JavaFXTestChart extends AbstractTestApplication implements ChartTestCase {
+
     protected int nSamples = MAX_DATA_POINTS_100K;
     protected SineFunction testFunction = new SineFunction("test", nSamples, true);
     NumberAxis xAxis = new NumberAxis();
@@ -22,6 +22,7 @@ public class JavaFXTestChart extends AbstractTestApplication implements ChartTes
     protected XYChart.Series<Number, Number> series1 = new XYChart.Series<>();
 
     public JavaFXTestChart() {
+
         xAxis.setLabel("x-axis (JavaFX Chart)");
         xAxis.setAutoRanging(false);
         yAxis.setAutoRanging(false);
@@ -34,6 +35,7 @@ public class JavaFXTestChart extends AbstractTestApplication implements ChartTes
             @Override
             protected void dataItemAdded(final Series<Number, Number> series, final int itemIndex,
                     final Data<Number, Number> item) {
+
             }
         };
         lineChart.setAnimated(false);
@@ -55,16 +57,19 @@ public class JavaFXTestChart extends AbstractTestApplication implements ChartTes
 
     @Override
     public Node getChart(final int nSamples) {
+
         return lineChart;
     }
 
     @Override
     public void initChart() {
+
         test = new JavaFXTestChart();
     }
 
     @Override
     public void setNumberOfSamples(final int nSamples) {
+
         this.nSamples = nSamples;
         testFunction = new SineFunction("test", nSamples, true);
         xAxis.setUpperBound(nSamples - 1.0);
@@ -75,6 +80,7 @@ public class JavaFXTestChart extends AbstractTestApplication implements ChartTes
 
     @Override
     public void updateDataSet() {
+
         final double[] x = testFunction.generateX(nSamples);
         final double[] y = testFunction.generateY(nSamples);
 
@@ -86,6 +92,7 @@ public class JavaFXTestChart extends AbstractTestApplication implements ChartTes
     }
 
     public static void main(final String[] args) {
+
         launch(args);
     }
 }

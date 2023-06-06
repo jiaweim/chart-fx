@@ -1,9 +1,14 @@
 package io.fair_acc.sample.chart;
 
-import java.util.Collections;
-
+import io.fair_acc.chartfx.XYChart;
+import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
+import io.fair_acc.chartfx.plugins.EditAxis;
+import io.fair_acc.chartfx.plugins.Zoomer;
+import io.fair_acc.chartfx.renderer.ErrorStyle;
+import io.fair_acc.chartfx.renderer.spi.ErrorDataSetRenderer;
+import io.fair_acc.chartfx.renderer.spi.utils.DefaultRenderColorScheme;
+import io.fair_acc.dataset.spi.DoubleErrorDataSet;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
@@ -13,24 +18,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.CycleMethod;
-import javafx.scene.paint.LinearGradient;
-import javafx.scene.paint.Paint;
-import javafx.scene.paint.Stop;
+import javafx.scene.paint.*;
 import javafx.stage.Stage;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.fair_acc.chartfx.XYChart;
-import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
-import io.fair_acc.chartfx.plugins.EditAxis;
-import io.fair_acc.chartfx.plugins.Zoomer;
-import io.fair_acc.chartfx.renderer.ErrorStyle;
-import io.fair_acc.chartfx.renderer.spi.ErrorDataSetRenderer;
-import io.fair_acc.chartfx.renderer.spi.utils.DefaultRenderColorScheme;
-import io.fair_acc.dataset.spi.DoubleErrorDataSet;
+import java.util.Collections;
 
 /**
  * Example illustrating the various colour scheme options
@@ -38,12 +31,14 @@ import io.fair_acc.dataset.spi.DoubleErrorDataSet;
  * @author rstein
  */
 public class CustomColourSchemeSample extends ChartSample {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(CustomColourSchemeSample.class);
     private static final int N_SAMPLES = 2000; // default number of data points
     private static final int N_DATA_SETS_MAX = 10;
 
     @Override
     public Node getChartPanel(final Stage primaryStage) {
+
         final XYChart chart = new XYChart(new DefaultNumericAxis("x-Axis"), new DefaultNumericAxis("y-Axis"));
         chart.getPlugins().add(new Zoomer()); // standard plugins, useful for most cases
         chart.getPlugins().add(new EditAxis()); // for editing axes
@@ -95,8 +90,8 @@ public class CustomColourSchemeSample extends ChartSample {
         customFill.setOnAction(evt -> {
             final ObservableList<Paint> values = FXCollections.observableArrayList();
             for (Color colour : DefaultRenderColorScheme.fillColorProperty()) {
-                Stop[] stops = new Stop[] { new Stop(0, colour.brighter().interpolate(Color.TRANSPARENT, 0.4)), // NOPMD
-                    new Stop(1, colour.brighter().interpolate(Color.TRANSPARENT, 0.95)) }; // NOPMD
+                Stop[] stops = new Stop[]{new Stop(0, colour.brighter().interpolate(Color.TRANSPARENT, 0.4)), // NOPMD
+                        new Stop(1, colour.brighter().interpolate(Color.TRANSPARENT, 0.95))}; // NOPMD
                 LinearGradient gradient = new LinearGradient(0.0, 0.0, 1.0, 0.0, true, CycleMethod.REPEAT, stops); // NOPMD
                 values.add(gradient);
             }
@@ -116,6 +111,7 @@ public class CustomColourSchemeSample extends ChartSample {
      * @param args the command line arguments
      */
     public static void main(final String[] args) {
+
         Application.launch(args);
     }
 }

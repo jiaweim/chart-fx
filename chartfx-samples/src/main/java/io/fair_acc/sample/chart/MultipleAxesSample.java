@@ -1,22 +1,5 @@
 package io.fair_acc.sample.chart;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
-
-import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.stage.Stage;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.Axis;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
@@ -32,8 +15,24 @@ import io.fair_acc.dataset.testdata.spi.GaussFunction;
 import io.fair_acc.dataset.testdata.spi.RandomWalkFunction;
 import io.fair_acc.dataset.testdata.spi.SineFunction;
 import io.fair_acc.dataset.utils.ProcessingProfiler;
+import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 public class MultipleAxesSample extends ChartSample {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(MultipleAxesSample.class);
 
     private static final int N_SAMPLES = 10_000; // default: 10000
@@ -44,6 +43,7 @@ public class MultipleAxesSample extends ChartSample {
 
     @Override
     public Node getChartPanel(final Stage primaryStage) {
+
         ProcessingProfiler.setVerboseOutputState(true);
         ProcessingProfiler.setLoggerOutputState(true);
         ProcessingProfiler.setDebugState(false);
@@ -119,11 +119,13 @@ public class MultipleAxesSample extends ChartSample {
     }
 
     public static Runnable getTask(final Renderer renderer1, final Renderer renderer2, final Renderer renderer3) {
+
         return new Runnable() {
             private int updateCount;
 
             @Override
             public void run() {
+
                 Platform.runLater(() -> {
                     // setAll in order to implicitly clear previous list of
                     // 'old' data sets
@@ -145,15 +147,18 @@ public class MultipleAxesSample extends ChartSample {
      * @param args the command line arguments
      */
     public static void main(final String[] args) {
+
         Application.launch(args);
     }
 
     private static class MyZoomCheckBox extends CheckBox {
+
         /**
          * @param zoom the zoom interactor
          * @param axis to be synchronised
          */
         public MyZoomCheckBox(Zoomer zoom, Axis axis) {
+
             super("enable zoom for axis '" + axis.getName() + "'");
             this.setSelected(!zoom.omitAxisZoomList().contains(axis) || Zoomer.isOmitZoom(axis));
             this.selectedProperty().addListener((obj, o, n) -> {

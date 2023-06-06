@@ -1,30 +1,31 @@
 package io.fair_acc.sample.dataset.legacy;
 
-import java.util.Arrays;
-
 import io.fair_acc.dataset.AxisDescription;
-import io.fair_acc.dataset.event.AddedDataEvent;
-import io.fair_acc.dataset.event.RemovedDataEvent;
-import io.fair_acc.dataset.event.UpdatedDataEvent;
-import io.fair_acc.dataset.utils.AssertUtils;
 import io.fair_acc.dataset.DataSet;
 import io.fair_acc.dataset.DataSet2D;
 import io.fair_acc.dataset.EditableDataSet;
+import io.fair_acc.dataset.event.AddedDataEvent;
+import io.fair_acc.dataset.event.RemovedDataEvent;
+import io.fair_acc.dataset.event.UpdatedDataEvent;
 import io.fair_acc.dataset.spi.AbstractDataSet;
 import io.fair_acc.dataset.spi.DoubleErrorDataSet;
+import io.fair_acc.dataset.utils.AssertUtils;
+
+import java.util.Arrays;
 
 /**
  * Implementation of the <code>DataSet</code> interface which stores x,y values in two separate arrays. It provides
  * methods allowing easily manipulate of data points. <br>
  * User provides X and Y coordinates or only Y coordinates. In the former case X coordinates have value of data point
  * index. This version being optimised for native double arrays.
- * 
- * @see DoubleErrorDataSet for an equivalent implementation with asymmetric errors in Y
+ *
  * @author rstein
+ * @see DoubleErrorDataSet for an equivalent implementation with asymmetric errors in Y
  * @deprecated this is kept for reference/performance comparisons only
  */
 @SuppressWarnings("PMD")
 public class DoubleDataSet extends AbstractDataSet<DoubleDataSet> implements EditableDataSet, DataSet2D {
+
     private static final long serialVersionUID = 467969092912080826L;
     protected double[] xValues;
     protected double[] yValues;
@@ -37,6 +38,7 @@ public class DoubleDataSet extends AbstractDataSet<DoubleDataSet> implements Edi
      * @param another name of this DataSet.
      */
     public DoubleDataSet(final DataSet2D another) {
+
         this("");
         lock().writeLockGuard(() -> another.lock().writeLockGuard(() -> {
             this.setName(another.getName());
@@ -51,6 +53,7 @@ public class DoubleDataSet extends AbstractDataSet<DoubleDataSet> implements Edi
      * @throws IllegalArgumentException if <code>name</code> is <code>null</code>
      */
     public DoubleDataSet(final String name) {
+
         this(name, 0);
     }
 
@@ -62,16 +65,17 @@ public class DoubleDataSet extends AbstractDataSet<DoubleDataSet> implements Edi
      * themselves or on a copies of the input arrays. If the dataset operates directly on the input arrays, these arrays
      * must not be modified outside of this data set.
      *
-     * @param name name of this data set.
-     * @param xValues X coordinates
-     * @param yValues Y coordinates
+     * @param name       name of this data set.
+     * @param xValues    X coordinates
+     * @param yValues    Y coordinates
      * @param initalSize initial buffer size
-     * @param deepCopy if true, the input array is copied
+     * @param deepCopy   if true, the input array is copied
      * @throws IllegalArgumentException if any of parameters is <code>null</code> or if arrays with coordinates have
-     *         different lengths
+     *                                  different lengths
      */
     public DoubleDataSet(final String name, final double[] xValues, final double[] yValues, final int initalSize,
             final boolean deepCopy) {
+
         this(name);
         AssertUtils.notNull("X data", xValues);
         AssertUtils.notNull("Y data", yValues);
@@ -91,11 +95,12 @@ public class DoubleDataSet extends AbstractDataSet<DoubleDataSet> implements Edi
     /**
      * Creates a new instance of <code>DoubleDataSet</code>.
      *
-     * @param name name of this DataSet.
+     * @param name       name of this DataSet.
      * @param initalSize initial buffer size
      * @throws IllegalArgumentException if <code>name</code> is <code>null</code>
      */
     public DoubleDataSet(final String name, final int initalSize) {
+
         super(name, 2);
         AssertUtils.gtEqThanZero("initalSize", initalSize);
         xValues = new double[initalSize];
@@ -111,18 +116,20 @@ public class DoubleDataSet extends AbstractDataSet<DoubleDataSet> implements Edi
      * @return itself
      */
     public DoubleDataSet add(final double x, final double y) {
+
         return add(this.getDataCount(), x, y, null);
     }
 
     /**
      * Add point to the DoublePoints object
      *
-     * @param x index
-     * @param y index
+     * @param x     index
+     * @param y     index
      * @param label the data label
      * @return itself
      */
     public DoubleDataSet add(final double x, final double y, final String label) {
+
         return add(this.getDataCount(), x, y, label);
     }
 
@@ -137,6 +144,7 @@ public class DoubleDataSet extends AbstractDataSet<DoubleDataSet> implements Edi
      * @return itself
      */
     public DoubleDataSet add(final double[] xValuesNew, final double[] yValuesNew) {
+
         lock();
         AssertUtils.notNull("X coordinates", xValuesNew);
         AssertUtils.notNull("Y coordinates", yValuesNew);
@@ -171,12 +179,13 @@ public class DoubleDataSet extends AbstractDataSet<DoubleDataSet> implements Edi
     /**
      * add point to the data set
      *
-     * @param index data point index at which the new data point should be added
+     * @param index     data point index at which the new data point should be added
      * @param newValues coordinate of the new data point
      * @return itself (fluent design)
      */
     @Override
     public DoubleDataSet add(final int index, final double... newValues) {
+
         return add(index, newValues[0], newValues[1], null);
     }
 
@@ -184,12 +193,13 @@ public class DoubleDataSet extends AbstractDataSet<DoubleDataSet> implements Edi
      * add point to the data set
      *
      * @param index data point index at which the new data point should be added
-     * @param x horizontal coordinate of the new data point
-     * @param y vertical coordinate of the new data point
+     * @param x     horizontal coordinate of the new data point
+     * @param y     vertical coordinate of the new data point
      * @param label data point label (see CategoryAxis)
      * @return itself (fluent design)
      */
     public DoubleDataSet add(final int index, final double x, final double y, final String label) {
+
         lock().writeLockGuard(() -> {
             final int indexAt = Math.max(0, Math.min(index, getDataCount() + 1));
 
@@ -241,10 +251,11 @@ public class DoubleDataSet extends AbstractDataSet<DoubleDataSet> implements Edi
 
     /**
      * clear all data points
-     * 
+     *
      * @return itself (fluent design)
      */
     public DoubleDataSet clearData() {
+
         lock().writeLockGuard(() -> {
             dataMaxIndex = 0;
             Arrays.fill(xValues, 0.0);
@@ -260,21 +271,25 @@ public class DoubleDataSet extends AbstractDataSet<DoubleDataSet> implements Edi
 
     @Override
     public double get(final int dimImdex, final int index) {
+
         return dimImdex == DIM_X ? xValues[index] : yValues[index];
     }
 
     @Override
     public int getDataCount() {
+
         return Math.min(dataMaxIndex, xValues.length);
     }
 
     @Override
     public double[] getXValues() {
+
         return xValues;
     }
 
     @Override
     public double[] getYValues() {
+
         return yValues;
     }
 
@@ -286,17 +301,19 @@ public class DoubleDataSet extends AbstractDataSet<DoubleDataSet> implements Edi
      */
     @Override
     public EditableDataSet remove(final int index) {
+
         return remove(index, index + 1);
     }
 
     /**
      * removes sub-range of data points
-     * 
+     *
      * @param fromIndex start index
-     * @param toIndex stop index
+     * @param toIndex   stop index
      * @return itself (fluent design)
      */
     public DoubleDataSet remove(final int fromIndex, final int toIndex) {
+
         lock().writeLockGuard(() -> {
             AssertUtils.indexInBounds(fromIndex, getDataCount(), "fromIndex");
             AssertUtils.indexInBounds(toIndex, getDataCount(), "toIndex");
@@ -337,11 +354,12 @@ public class DoubleDataSet extends AbstractDataSet<DoubleDataSet> implements Edi
 
     /**
      * clear old data and overwrite with data from 'other' data set (deep copy)
-     * 
+     *
      * @param other the source data set
      * @return itself (fluent design)
      */
     public DoubleDataSet set(final DataSet2D other) {
+
         lock().writeLockGuard(() -> other.lock().writeLockGuard(() -> {
             // deep copy data point labels and styles
             getDataLabelMap().clear();
@@ -376,6 +394,7 @@ public class DoubleDataSet extends AbstractDataSet<DoubleDataSet> implements Edi
      * @return itself
      */
     public DoubleDataSet set(final double[] xValues, final double[] yValues) {
+
         return set(xValues, yValues, true);
     }
 
@@ -387,10 +406,11 @@ public class DoubleDataSet extends AbstractDataSet<DoubleDataSet> implements Edi
      *
      * @param xValues X coordinates
      * @param yValues Y coordinates
-     * @param copy true: makes an internal copy, false: use the pointer as is (saves memory allocation
+     * @param copy    true: makes an internal copy, false: use the pointer as is (saves memory allocation
      * @return itself
      */
     public DoubleDataSet set(final double[] xValues, final double[] yValues, final boolean copy) {
+
         AssertUtils.notNull("X coordinates", xValues);
         AssertUtils.notNull("Y coordinates", yValues);
         AssertUtils.equalDoubleArrays(xValues, yValues);
@@ -425,6 +445,7 @@ public class DoubleDataSet extends AbstractDataSet<DoubleDataSet> implements Edi
 
     @Override
     public DoubleDataSet set(final int index, final double... newValue) {
+
         lock().writeLockGuard(() -> {
             xValues[index] = newValue[0];
             yValues[index] = newValue[1];
@@ -437,6 +458,7 @@ public class DoubleDataSet extends AbstractDataSet<DoubleDataSet> implements Edi
 
     @Override
     public EditableDataSet set(final DataSet other, final boolean copy) {
+
         throw new UnsupportedOperationException("Copy setter not implemented");
     }
 }

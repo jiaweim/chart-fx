@@ -11,10 +11,12 @@ import org.slf4j.LoggerFactory;
  * @author rstein
  */
 public class ArrayConversionTests {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(ArrayConversionTests.class);
 
     @Test
     public void convertToByteArrayTests() {
+
         final int length = 10;
         byte[] refArray = ArrayConversion.getByteArray(ArrayUtils.createArray(1.0, 0.0, length));
 
@@ -55,6 +57,7 @@ public class ArrayConversionTests {
 
     @Test
     public void convertToDoubleArrayTests() {
+
         final int length = 10;
         double[] refArray = ArrayUtils.createArray(1.0, 0.0, length);
 
@@ -95,6 +98,7 @@ public class ArrayConversionTests {
 
     @Test
     public void convertToFloatArrayTests() {
+
         final int length = 10;
         float[] refArray = ArrayConversion.getFloatArray(ArrayUtils.createArray(1.0, 0.0, length));
 
@@ -135,6 +139,7 @@ public class ArrayConversionTests {
 
     @Test
     public void convertToIntegerArrayTests() {
+
         final int length = 10;
         int[] refArray = ArrayConversion.getIntegerArray(ArrayUtils.createArray(1.0, 0.0, length));
 
@@ -175,6 +180,7 @@ public class ArrayConversionTests {
 
     @Test
     public void convertToLongArrayTests() {
+
         final int length = 10;
         long[] refArray = ArrayConversion.getLongArray(ArrayUtils.createArray(1.0, 0.0, length));
 
@@ -215,6 +221,7 @@ public class ArrayConversionTests {
 
     @Test
     public void convertToShortArrayTests() {
+
         final int length = 10;
         short[] refArray = ArrayConversion.getShortArray(ArrayUtils.createArray(1.0, 0.0, length)); // NOPMD
 
@@ -255,8 +262,9 @@ public class ArrayConversionTests {
 
     @Test
     public void miscTest() {
-        double[][] refDouble2DArray = new double[][] { { 1, 2, 3 }, { 2, 3, 1 }, { 3, 1, 2 } };
-        float[][] refFloat2DArray = new float[][] { { 1, 2, 3 }, { 2, 3, 1 }, { 3, 1, 2 } };
+
+        double[][] refDouble2DArray = new double[][]{{1, 2, 3}, {2, 3, 1}, {3, 1, 2}};
+        float[][] refFloat2DArray = new float[][]{{1, 2, 3}, {2, 3, 1}, {3, 1, 2}};
 
         float[][] convertedFloatArray = ArrayConversion.getFloat2DArray(refDouble2DArray);
         assertArrayEquals(refFloat2DArray, convertedFloatArray, "double[][] -> float[][] array conversion");
@@ -268,9 +276,7 @@ public class ArrayConversionTests {
 
         assertThrows(IllegalArgumentException.class, () -> ArrayConversion.getDouble2DArray(new float[0][2]));
 
-        if (LOGGER.isDebugEnabled())
-
-        {
+        if (LOGGER.isDebugEnabled()) {
             LOGGER.atDebug().log("miscTest() - passed");
         }
     }
