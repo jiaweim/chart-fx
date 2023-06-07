@@ -1,32 +1,38 @@
 package io.fair_acc.sample;
 
 import fxsampler.FXSamplerProject;
+import fxsampler.model.WelcomePage;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import fxsampler.model.WelcomePage;
 
 public class ChartFxSamplerProject implements FXSamplerProject {
 
-    /** {@inheritDoc} */
-    @Override public String getProjectName() {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getProjectName() {
+
         return "ChartFx";
     }
 
-    /** {@inheritDoc} */
-    @Override public String getSampleBasePackage() {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getSampleBasePackage() {
+
         return "io.fair_acc.sample.chart";
     }
 
-    ///** {@inheritDoc} */
-    //@Override
-    //public String getModuleName() {
-    //    return "io.fair-acc";
-    //}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WelcomePage getWelcomePage() {
 
-    /** {@inheritDoc} */
-    @Override public WelcomePage getWelcomePage() {
         VBox vBox = new VBox();
         ImageView imgView = new ImageView();
         // imgView.setStyle("-fx-image: url('org/controlsfx/samples/ControlsFX.png');");

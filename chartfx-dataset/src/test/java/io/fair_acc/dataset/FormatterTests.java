@@ -1,21 +1,20 @@
 package io.fair_acc.dataset;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-import static io.fair_acc.dataset.DefaultNumberFormatter.FormatMode;
-import static io.fair_acc.dataset.DefaultNumberFormatter.SignConvention;
-
-import java.text.ParsePosition;
-
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.text.ParsePosition;
+
+import static io.fair_acc.dataset.DefaultNumberFormatter.FormatMode;
+import static io.fair_acc.dataset.DefaultNumberFormatter.SignConvention;
+import static org.junit.jupiter.api.Assertions.*;
+
 class FormatterTests {
+
     @Test
     void basicTests() {
+
         Formatter<Number> testFormatter = new Formatter<>() {
             /**
              * Use this overwrite if the default Number format isn't enough and something more specific is needed.
@@ -26,6 +25,7 @@ class FormatterTests {
              */
             @Override
             public @NotNull String format(@NotNull String pattern, Object... args) {
+
                 if (args.length <= 3) {
                     return Formatter.super.format(pattern, args);
                 } else {
@@ -37,17 +37,20 @@ class FormatterTests {
 
             @Override
             public @NotNull Number fromString(final @NotNull String string) {
+
                 return Double.valueOf(string);
                 //alt: throw new NumberFormatException("not implemented");
             }
 
             @Override
             public Class<Number> getClassInstance() {
+
                 return Number.class;
             }
 
             @Override
             public @NotNull String toString(@NotNull final Number number) {
+
                 return number.toString();
             }
         };
@@ -65,6 +68,7 @@ class FormatterTests {
 
     @Test
     void toStringFixedWidth() {
+
         final var formatter = new DefaultNumberFormatter();
         assertDoesNotThrow(() -> formatter.setFormatMode(FormatMode.FIXED_WIDTH_ONLY));
         assertEquals(FormatMode.FIXED_WIDTH_ONLY, formatter.getFormatMode());
@@ -91,6 +95,7 @@ class FormatterTests {
 
     @Test
     void toStringFixedWidthExponentialOnly() {
+
         final var formatter = new DefaultNumberFormatter();
         assertDoesNotThrow(() -> formatter.setFormatMode(FormatMode.FIXED_WIDTH_EXP));
         assertEquals(FormatMode.FIXED_WIDTH_EXP, formatter.getFormatMode());
@@ -116,6 +121,7 @@ class FormatterTests {
 
     @Test
     void toStringByteFormat() {
+
         final var formatter = new DefaultNumberFormatter();
         assertDoesNotThrow(() -> formatter.setFormatMode(FormatMode.BYTE_PREFIX));
         assertEquals(FormatMode.BYTE_PREFIX, formatter.getFormatMode());
@@ -133,6 +139,7 @@ class FormatterTests {
 
     @Test
     void toStringJdkDefault() {
+
         final var formatter = new DefaultNumberFormatter();
         assertDoesNotThrow(() -> formatter.setFormatMode(FormatMode.JDK));
         assertEquals(FormatMode.JDK, formatter.getFormatMode());
@@ -155,6 +162,7 @@ class FormatterTests {
 
     @Test
     void toStringOptimalWidth() {
+
         final var formatter = new DefaultNumberFormatter();
         assertDoesNotThrow(() -> formatter.setFormatMode(FormatMode.OPTIMAL_WIDTH));
         assertEquals(FormatMode.OPTIMAL_WIDTH, formatter.getFormatMode());
@@ -180,6 +188,7 @@ class FormatterTests {
 
     @Test
     void toStringFixedWidthAndExponential() {
+
         final var formatter = new DefaultNumberFormatter();
         assertDoesNotThrow(() -> formatter.setFormatMode(FormatMode.FIXED_WIDTH_AND_EXP));
         assertEquals(FormatMode.FIXED_WIDTH_AND_EXP, formatter.getFormatMode());
@@ -221,6 +230,7 @@ class FormatterTests {
 
     @Test
     void toStringMetricPrefix() {
+
         final var formatter = new DefaultNumberFormatter();
         assertDoesNotThrow(() -> formatter.setFormatMode(FormatMode.METRIC_PREFIX));
         assertEquals(FormatMode.METRIC_PREFIX, formatter.getFormatMode());
@@ -266,6 +276,7 @@ class FormatterTests {
 
     @Test
     void toAndFromStringMetricPrefix() {
+
         final var formatter = new DefaultNumberFormatter();
         assertDoesNotThrow(() -> formatter.setFormatMode(FormatMode.METRIC_PREFIX));
         assertEquals(FormatMode.METRIC_PREFIX, formatter.getFormatMode());
@@ -282,6 +293,7 @@ class FormatterTests {
 
     @Test
     void toAndFromStringDefault() {
+
         final var formatter = new DefaultNumberFormatter();
         assertDoesNotThrow(() -> formatter.setFormatMode(FormatMode.FIXED_WIDTH_AND_EXP));
         assertEquals(FormatMode.FIXED_WIDTH_AND_EXP, formatter.getFormatMode());
@@ -297,6 +309,7 @@ class FormatterTests {
 
     @Test
     void toStringFixedWidthExponentialWidthScan() {
+
         final var formatter = new DefaultNumberFormatter();
         assertDoesNotThrow(() -> formatter.setFormatMode(FormatMode.FIXED_WIDTH_AND_EXP));
         assertEquals(FormatMode.FIXED_WIDTH_AND_EXP, formatter.getFormatMode());

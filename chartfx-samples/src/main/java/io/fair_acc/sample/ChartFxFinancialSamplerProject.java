@@ -9,13 +9,21 @@ import javafx.scene.layout.VBox;
 
 public class ChartFxFinancialSamplerProject implements FXSamplerProject {
 
-    /** {@inheritDoc} */
-    @Override public String getProjectName() {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getProjectName() {
+
         return "ChartFx - Financial Plots";
     }
 
-    /** {@inheritDoc} */
-    @Override public String getSampleBasePackage() {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getSampleBasePackage() {
+
         return "io.fair_acc.sample.financial";
     }
 
@@ -25,8 +33,12 @@ public class ChartFxFinancialSamplerProject implements FXSamplerProject {
     //    return "io.fair-acc";
     //}
 
-    /** {@inheritDoc} */
-    @Override public WelcomePage getWelcomePage() {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WelcomePage getWelcomePage() {
+
         VBox vBox = new VBox();
         ImageView imgView = new ImageView();
         // imgView.setStyle("-fx-image: url('org/controlsfx/samples/ControlsFX.png');");

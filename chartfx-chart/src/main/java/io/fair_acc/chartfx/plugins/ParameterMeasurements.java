@@ -1,5 +1,11 @@
 package io.fair_acc.chartfx.plugins;
 
+import io.fair_acc.chartfx.plugins.measurements.AbstractChartMeasurement;
+import io.fair_acc.chartfx.plugins.measurements.DataSetMeasurements;
+import io.fair_acc.chartfx.plugins.measurements.SimpleMeasurements;
+import io.fair_acc.chartfx.ui.TilingPane.Layout;
+import io.fair_acc.chartfx.ui.geometry.Side;
+import io.fair_acc.chartfx.viewer.DataView;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -7,15 +13,7 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tooltip;
-
 import org.kordamp.ikonli.javafx.FontIcon;
-
-import io.fair_acc.chartfx.plugins.measurements.AbstractChartMeasurement;
-import io.fair_acc.chartfx.plugins.measurements.DataSetMeasurements;
-import io.fair_acc.chartfx.plugins.measurements.SimpleMeasurements;
-import io.fair_acc.chartfx.ui.TilingPane.Layout;
-import io.fair_acc.chartfx.ui.geometry.Side;
-import io.fair_acc.chartfx.viewer.DataView;
 
 /**
  * Plugin to implement simple measurements and valueTextField indicators such as
@@ -33,6 +31,7 @@ import io.fair_acc.chartfx.viewer.DataView;
  * @author rstein
  */
 public class ParameterMeasurements extends ChartPlugin {
+
     private static final String TOOL_BUTTON = "fas-drafting-compass:18";
     protected final ObservableList<AbstractChartMeasurement> chartMeasurements = FXCollections.observableArrayList();
     private final DataView dataView = new DataView("ChartViews", new FontIcon(TOOL_BUTTON));
@@ -48,16 +47,18 @@ public class ParameterMeasurements extends ChartPlugin {
      * Creates a new instance of ParameterMeasurements.
      */
     public ParameterMeasurements() {
+
         this(Side.RIGHT, true);
     }
 
     /**
      * Creates a new instance of ParameterMeasurements.
      *
-     * @param side where to place the measurement results
+     * @param side         where to place the measurement results
      * @param addToToolBar true: add to internal ToolBar; false: optionally add ToolBar to another other Pane
      */
     public ParameterMeasurements(final Side side, final boolean addToToolBar) {
+
         super();
         parameterMenu = getMenuBar(); // NOPMD
         parameterMenu.setId("ParameterMeasurements::parameterMenu"); // N.B. not a unique name but for testing this suffices
@@ -94,14 +95,17 @@ public class ParameterMeasurements extends ChartPlugin {
     }
 
     public ObservableList<AbstractChartMeasurement> getChartMeasurements() {
+
         return chartMeasurements;
     }
 
     public DataView getDataView() {
+
         return dataView;
     }
 
     public MenuBar getMenuBar() {
+
         if (parameterMenu != null) {
             return parameterMenu;
         }

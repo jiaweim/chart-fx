@@ -1,10 +1,10 @@
 package io.fair_acc.dataset;
 
-import java.io.Serializable;
-import java.util.List;
-
 import io.fair_acc.dataset.event.EventSource;
 import io.fair_acc.dataset.locks.DataSetLock;
+
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * Basic interface for observable data sets.

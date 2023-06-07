@@ -1,19 +1,5 @@
 package io.fair_acc.chartfx.plugins.measurements;
 
-import static io.fair_acc.chartfx.axes.AxisMode.X;
-import static io.fair_acc.chartfx.axes.AxisMode.Y;
-import static io.fair_acc.chartfx.plugins.measurements.SimpleMeasurements.MeasurementCategory.ACC;
-import static io.fair_acc.chartfx.plugins.measurements.SimpleMeasurements.MeasurementCategory.HORIZONTAL;
-import static io.fair_acc.chartfx.plugins.measurements.SimpleMeasurements.MeasurementCategory.INDICATOR;
-import static io.fair_acc.chartfx.plugins.measurements.SimpleMeasurements.MeasurementCategory.VERTICAL;
-
-import java.util.Optional;
-
-import javafx.scene.control.ButtonType;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import io.fair_acc.chartfx.Chart;
 import io.fair_acc.chartfx.axes.Axis;
 import io.fair_acc.chartfx.axes.AxisLabelFormatter;
@@ -25,6 +11,15 @@ import io.fair_acc.chartfx.utils.FXUtils;
 import io.fair_acc.dataset.DataSet;
 import io.fair_acc.dataset.event.UpdateEvent;
 import io.fair_acc.math.SimpleDataSetEstimators;
+import javafx.scene.control.ButtonType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Optional;
+
+import static io.fair_acc.chartfx.axes.AxisMode.X;
+import static io.fair_acc.chartfx.axes.AxisMode.Y;
+import static io.fair_acc.chartfx.plugins.measurements.SimpleMeasurements.MeasurementCategory.*;
 
 /**
  * Simple DataSet parameter measurements N.B. this contains only algorithms w/o
@@ -33,10 +28,12 @@ import io.fair_acc.math.SimpleDataSetEstimators;
  * @author rstein
  */
 public class SimpleMeasurements extends AbstractChartMeasurement {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(SimpleMeasurements.class);
     private final MeasurementType measType;
 
     public SimpleMeasurements(final ParameterMeasurements plugin, final MeasurementType measType) {
+
         super(plugin, measType.toString(), measType.isVertical ? X : Y, measType.getRequiredSelectors(), 1);
         this.measType = measType;
 
@@ -48,11 +45,13 @@ public class SimpleMeasurements extends AbstractChartMeasurement {
     }
 
     public MeasurementType getMeasType() {
+
         return measType;
     }
 
     @Override
     public void handle(final UpdateEvent event) {
+
         final DataSet ds = getDataSet();
         if (getValueIndicatorsUser().size() < measType.getRequiredSelectors() || ds == null) {
             // not yet initialised
@@ -75,104 +74,104 @@ public class SimpleMeasurements extends AbstractChartMeasurement {
 
             double val = Double.NaN;
             switch (measType) {
-            // simple marker w/o computations
-            case MARKER_HOR:
-                val = newValueMarker1;
-                axis = getFirstAxisForDataSet(chart, ds, true);
-                break;
-            case MARKER_DISTANCE_HOR:
-                val = newValueMarker2 - newValueMarker1;
-                axis = getFirstAxisForDataSet(chart, ds, true);
-                break;
-            case MARKER_VER:
-                val = newValueMarker1;
-                axis = getFirstAxisForDataSet(chart, ds, false);
-                break;
-            case MARKER_DISTANCE_VER:
-                val = newValueMarker2 - newValueMarker1;
-                axis = getFirstAxisForDataSet(chart, ds, false);
-                break;
-            // indicators
-            case VALUE_HOR:
-                val = SimpleDataSetEstimators.getZeroCrossing(ds, newValueMarker1);
-                break;
-            case VALUE_VER:
-                val = ds.get(DataSet.DIM_Y, indexMin);
-                break;
-            case DISTANCE_HOR:
-                val = SimpleDataSetEstimators.getZeroCrossing(ds, newValueMarker2) - SimpleDataSetEstimators.getZeroCrossing(ds, newValueMarker1);
-                break;
-            case DISTANCE_VER:
-                val = SimpleDataSetEstimators.getDistance(ds, indexMin, indexMax, false);
-                break;
-            // vertical measurements
-            case MINIMUM:
-                val = SimpleDataSetEstimators.getMinimum(ds, indexMin, indexMax);
-                break;
-            case MAXIMUM:
-                val = SimpleDataSetEstimators.getMaximum(ds, indexMin, indexMax);
-                break;
-            case RANGE:
-                val = SimpleDataSetEstimators.getRange(ds, indexMin, indexMax);
-                break;
-            case MEAN:
-                val = SimpleDataSetEstimators.getMean(ds, indexMin, indexMax);
-                break;
-            case RMS:
-                val = SimpleDataSetEstimators.getRms(ds, indexMin, indexMax);
-                break;
-            case MEDIAN:
-                val = SimpleDataSetEstimators.getMedian(ds, indexMin, indexMax);
-                break;
-            case INTEGRAL:
-                // N.B. use of non-sanitised indices index[0,1]
-                val = SimpleDataSetEstimators.getIntegral(ds, index0, index1);
-                break;
-            case INTEGRAL_FULL:
-                val = SimpleDataSetEstimators.getIntegral(ds, 0, ds.getDataCount());
-                break;
-            case TRANSMISSION_ABS:
-                // N.B. use of non-sanitised indices index[0,1]
-                val = SimpleDataSetEstimators.getTransmission(ds, index0, index1, true);
-                break;
-            case TRANSMISSION_REL:
-                // N.B. use of non-sanitised indices index[0,1]
-                val = SimpleDataSetEstimators.getTransmission(ds, index0, index1, false);
-                break;
+                // simple marker w/o computations
+                case MARKER_HOR:
+                    val = newValueMarker1;
+                    axis = getFirstAxisForDataSet(chart, ds, true);
+                    break;
+                case MARKER_DISTANCE_HOR:
+                    val = newValueMarker2 - newValueMarker1;
+                    axis = getFirstAxisForDataSet(chart, ds, true);
+                    break;
+                case MARKER_VER:
+                    val = newValueMarker1;
+                    axis = getFirstAxisForDataSet(chart, ds, false);
+                    break;
+                case MARKER_DISTANCE_VER:
+                    val = newValueMarker2 - newValueMarker1;
+                    axis = getFirstAxisForDataSet(chart, ds, false);
+                    break;
+                // indicators
+                case VALUE_HOR:
+                    val = SimpleDataSetEstimators.getZeroCrossing(ds, newValueMarker1);
+                    break;
+                case VALUE_VER:
+                    val = ds.get(DataSet.DIM_Y, indexMin);
+                    break;
+                case DISTANCE_HOR:
+                    val = SimpleDataSetEstimators.getZeroCrossing(ds, newValueMarker2) - SimpleDataSetEstimators.getZeroCrossing(ds, newValueMarker1);
+                    break;
+                case DISTANCE_VER:
+                    val = SimpleDataSetEstimators.getDistance(ds, indexMin, indexMax, false);
+                    break;
+                // vertical measurements
+                case MINIMUM:
+                    val = SimpleDataSetEstimators.getMinimum(ds, indexMin, indexMax);
+                    break;
+                case MAXIMUM:
+                    val = SimpleDataSetEstimators.getMaximum(ds, indexMin, indexMax);
+                    break;
+                case RANGE:
+                    val = SimpleDataSetEstimators.getRange(ds, indexMin, indexMax);
+                    break;
+                case MEAN:
+                    val = SimpleDataSetEstimators.getMean(ds, indexMin, indexMax);
+                    break;
+                case RMS:
+                    val = SimpleDataSetEstimators.getRms(ds, indexMin, indexMax);
+                    break;
+                case MEDIAN:
+                    val = SimpleDataSetEstimators.getMedian(ds, indexMin, indexMax);
+                    break;
+                case INTEGRAL:
+                    // N.B. use of non-sanitised indices index[0,1]
+                    val = SimpleDataSetEstimators.getIntegral(ds, index0, index1);
+                    break;
+                case INTEGRAL_FULL:
+                    val = SimpleDataSetEstimators.getIntegral(ds, 0, ds.getDataCount());
+                    break;
+                case TRANSMISSION_ABS:
+                    // N.B. use of non-sanitised indices index[0,1]
+                    val = SimpleDataSetEstimators.getTransmission(ds, index0, index1, true);
+                    break;
+                case TRANSMISSION_REL:
+                    // N.B. use of non-sanitised indices index[0,1]
+                    val = SimpleDataSetEstimators.getTransmission(ds, index0, index1, false);
+                    break;
 
-            // horizontal measurements
-            case EDGE_DETECT:
-                val = SimpleDataSetEstimators.getEdgeDetect(ds, indexMin, indexMax);
-                break;
-            case RISETIME_10_90:
-                val = SimpleDataSetEstimators.getSimpleRiseTime1090(ds, indexMin, indexMax);
-                break;
-            case RISETIME_20_80:
-                val = SimpleDataSetEstimators.getSimpleRiseTime2080(ds, indexMin, indexMax);
-                break;
-            case FWHM:
-                val = SimpleDataSetEstimators.getFullWidthHalfMaximum(ds, indexMin, indexMax, false);
-                break;
-            case FWHM_INTERPOLATED:
-                val = SimpleDataSetEstimators.getFullWidthHalfMaximum(ds, indexMin, indexMax, true);
-                break;
-            case LOCATION_MAXIMUM:
-                val = ds.get(DataSet.DIM_X, SimpleDataSetEstimators.getLocationMaximum(ds, indexMin, indexMax));
-                break;
-            case LOCATION_MAXIMUM_GAUSS:
-                val = SimpleDataSetEstimators.getLocationMaximumGaussInterpolated(ds, indexMin, indexMax);
-                break;
-            case DUTY_CYCLE:
-                val = SimpleDataSetEstimators.getDutyCycle(ds, indexMin, indexMax);
-                break;
-            case PERIOD:
-                val = 1.0 / SimpleDataSetEstimators.getFrequencyEstimate(ds, indexMin, indexMax);
-                break;
-            case FREQUENCY:
-                val = SimpleDataSetEstimators.getFrequencyEstimate(ds, indexMin, indexMax);
-                break;
-            default:
-                break;
+                // horizontal measurements
+                case EDGE_DETECT:
+                    val = SimpleDataSetEstimators.getEdgeDetect(ds, indexMin, indexMax);
+                    break;
+                case RISETIME_10_90:
+                    val = SimpleDataSetEstimators.getSimpleRiseTime1090(ds, indexMin, indexMax);
+                    break;
+                case RISETIME_20_80:
+                    val = SimpleDataSetEstimators.getSimpleRiseTime2080(ds, indexMin, indexMax);
+                    break;
+                case FWHM:
+                    val = SimpleDataSetEstimators.getFullWidthHalfMaximum(ds, indexMin, indexMax, false);
+                    break;
+                case FWHM_INTERPOLATED:
+                    val = SimpleDataSetEstimators.getFullWidthHalfMaximum(ds, indexMin, indexMax, true);
+                    break;
+                case LOCATION_MAXIMUM:
+                    val = ds.get(DataSet.DIM_X, SimpleDataSetEstimators.getLocationMaximum(ds, indexMin, indexMax));
+                    break;
+                case LOCATION_MAXIMUM_GAUSS:
+                    val = SimpleDataSetEstimators.getLocationMaximumGaussInterpolated(ds, indexMin, indexMax);
+                    break;
+                case DUTY_CYCLE:
+                    val = SimpleDataSetEstimators.getDutyCycle(ds, indexMin, indexMax);
+                    break;
+                case PERIOD:
+                    val = 1.0 / SimpleDataSetEstimators.getFrequencyEstimate(ds, indexMin, indexMax);
+                    break;
+                case FREQUENCY:
+                    val = SimpleDataSetEstimators.getFrequencyEstimate(ds, indexMin, indexMax);
+                    break;
+                default:
+                    break;
             }
 
             final String axisUnit = axis.getUnit();
@@ -203,13 +202,13 @@ public class SimpleMeasurements extends AbstractChartMeasurement {
             FXUtils.runFX(() -> getValueField().setValue(tempVal, valueLabel));
 
             switch (measType) {
-            case TRANSMISSION_ABS:
-            case TRANSMISSION_REL:
-                FXUtils.runFX(() -> getValueField().setUnit("%"));
-                break;
-            case INTEGRAL:
-            default:
-                break;
+                case TRANSMISSION_ABS:
+                case TRANSMISSION_REL:
+                    FXUtils.runFX(() -> getValueField().setUnit("%"));
+                    break;
+                case INTEGRAL:
+                default:
+                    break;
             }
         });
 
@@ -221,6 +220,7 @@ public class SimpleMeasurements extends AbstractChartMeasurement {
 
     @Override
     public void initialize() {
+
         getDataViewWindow().setContent(getValueField());
         DragResizerUtil.makeResizable(getValueField());
 
@@ -240,6 +240,7 @@ public class SimpleMeasurements extends AbstractChartMeasurement {
 
     @Override
     protected void removeAction() {
+
         super.removeAction();
         getMeasurementPlugin().getChart().requestLayout();
     }
@@ -253,15 +254,18 @@ public class SimpleMeasurements extends AbstractChartMeasurement {
         private final String name;
 
         MeasurementCategory(final String description) {
+
             name = description;
         }
 
         public String getName() {
+
             return name;
         }
 
         @Override
         public String toString() {
+
             return name;
         }
     }
@@ -274,13 +278,13 @@ public class SimpleMeasurements extends AbstractChartMeasurement {
         MARKER_VER(false, INDICATOR, "Marker Y", 1),
         MARKER_DISTANCE_VER(false, INDICATOR, "Marker ∆Y"),
 
-        /** 
-         * horizontal value at indicator 
+        /**
+         * horizontal value at indicator
          */
         VALUE_HOR(false, INDICATOR, "hor. value", 1),
         DISTANCE_HOR(false, INDICATOR, "hor. distance"),
-        /** 
-         * vertical value at indicator 
+        /**
+         * vertical value at indicator
          */
         VALUE_VER(true, INDICATOR, "ver. value", 1),
         DISTANCE_VER(true, INDICATOR, "ver. distance"),
@@ -316,10 +320,12 @@ public class SimpleMeasurements extends AbstractChartMeasurement {
         private final int requiredDataSets;
 
         MeasurementType(final boolean isVerticalMeasurement, final MeasurementCategory measurementCategory, final String description) {
+
             this(isVerticalMeasurement, measurementCategory, description, 2);
         }
 
         MeasurementType(final boolean isVerticalMeasurement, final MeasurementCategory measurementCategory, final String description, final int requiredSelectors) {
+
             isVertical = isVerticalMeasurement;
             category = measurementCategory;
             name = description;
@@ -328,27 +334,33 @@ public class SimpleMeasurements extends AbstractChartMeasurement {
         }
 
         public MeasurementCategory getCategory() {
+
             return category;
         }
 
         public boolean isVerticalMeasurement() {
+
             return isVertical;
         }
 
         public String getName() {
+
             return name;
         }
 
         public int getRequiredDataSets() {
+
             return requiredDataSets;
         }
 
         public int getRequiredSelectors() {
+
             return requiredSelectors;
         }
 
         @Override
         public String toString() {
+
             return name;
         }
     }

@@ -23,10 +23,11 @@ import io.fair_acc.dataset.testdata.spi.RandomWalkFunction;
 
 /**
  * Example on how to use chart-fx from fxml.
- * 
+ *
  * @author Alexander Krimm
  */
 public class FxmlSample extends ChartSample implements Initializable {
+
     private static final int N_SAMPLES = 500;
 
     @FXML
@@ -48,6 +49,7 @@ public class FxmlSample extends ChartSample implements Initializable {
 
     @Override
     public Node getChartPanel(Stage stage) {
+
         Parent root;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("FxmlSample.fxml"));
         loader.setController(this);
@@ -61,6 +63,7 @@ public class FxmlSample extends ChartSample implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         errorDataSetRenderer.getDatasets().add(new CosineFunction("cos", N_SAMPLES));
         addGauss.setOnAction(evt -> errorDataSetRenderer.getDatasets().add(new GaussFunction("gauss", N_SAMPLES)));
         addCos.setOnAction(evt -> errorDataSetRenderer.getDatasets().add(new CosineFunction("cos", N_SAMPLES)));
@@ -74,6 +77,7 @@ public class FxmlSample extends ChartSample implements Initializable {
      * @param args the command line arguments
      */
     public static void main(final String[] args) {
+
         Application.launch(args);
     }
 }

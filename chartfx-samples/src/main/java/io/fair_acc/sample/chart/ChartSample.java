@@ -14,6 +14,12 @@ public abstract class ChartSample extends SampleBase {
     }
 
     @Override
+    public String getProjectName() {
+
+        return "ChartFx";
+    }
+
+    @Override
     public String getProjectVersion() {
 
         return "11.3.0";
@@ -30,6 +36,12 @@ public abstract class ChartSample extends SampleBase {
 
         System.out.println("loading sample");
         return new Label("Sample hast to override getPanel() or getChartPanel()");
+    }
+
+    @Override
+    public boolean isVisible() {
+
+        return true;
     }
 
     @Override

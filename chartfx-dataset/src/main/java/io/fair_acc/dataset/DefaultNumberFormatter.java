@@ -1,22 +1,23 @@
 package io.fair_acc.dataset;
 
+import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
+
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
-import org.apache.commons.lang3.StringUtils;
-import org.jetbrains.annotations.NotNull;
-
 /**
  * DefaultNumberFormatter implementing the Formatter&lt;T&gt; interface.
- *
+ * <p>
  * The number representation can be set via #setFormatMode
  * <ul>
  * <li> FIXED_WIDTH_ONLY: using decimal representations only. The string width is set via #setNumberOfCharacters(int)</li>
  * <li> FIXED_WIDTH_EXP: using exponential representation only. The string width is set via #setNumberOfCharacters(int)</li>
  * <li> FIXED_WIDTH_AND_EXP: using decimal or exponential representations, with preference order: shorter representation, more significant digits.
- *         The string width is set via #setNumberOfCharacters(int)
- *         N.B. This mode is only useful for #getNumberOfCharacters width &gt;= 6 (due to 'E[+,-]0' and potential decimal point overhead of '4')
+ *
+ * The string width is set via #setNumberOfCharacters(int)
+ * N.B. This mode is only useful for #getNumberOfCharacters width &gt;= 6 (due to 'E[+,-]0' and potential decimal point overhead of '4')
  * </li>
  * <li> OPTIMAL_WIDTH (default): using the shorter of decimal vs. exponential representation
  *         Number of significant digits is set via #setFixedPrecision(int)
@@ -33,19 +34,20 @@ import org.jetbrains.annotations.NotNull;
  * @see Formatter
  */
 public class DefaultNumberFormatter implements Formatter<Number> {
+
     protected static final int NO_PREFIX_OFFSET = 8;
     protected static final String SI_PREFIX = "yzafpnµm kMGTPEZY";
     protected static final String SI_PREFIX_TEST = "yzafpnuµmkKMGTPEZY"; // N.B. doubling of micro and kilo representation for parsing
-    protected static final int[] SI_PREFIX_EXP = { -24, -21, -18, -15, -12, -9, -6, -6, -3, 3, 3, 6, 9, 12, 15, 18, 21, 24 };
+    protected static final int[] SI_PREFIX_EXP = {-24, -21, -18, -15, -12, -9, -6, -6, -3, 3, 3, 6, 9, 12, 15, 18, 21, 24};
     protected final DecimalFormat[] decimalFormat = {
-        new DecimalFormat("#.#", DecimalFormatSymbols.getInstance(Locale.UK)), // no sign see #signConvention
-        new DecimalFormat("+#.#", DecimalFormatSymbols.getInstance(Locale.UK)), // forced sign see #signConvention
-        new DecimalFormat(" #.#;-#.#", DecimalFormatSymbols.getInstance(Locale.UK)) // empty sign see #signConvention
+            new DecimalFormat("#.#", DecimalFormatSymbols.getInstance(Locale.UK)), // no sign see #signConvention
+            new DecimalFormat("+#.#", DecimalFormatSymbols.getInstance(Locale.UK)), // forced sign see #signConvention
+            new DecimalFormat(" #.#;-#.#", DecimalFormatSymbols.getInstance(Locale.UK)) // empty sign see #signConvention
     };
     protected final DecimalFormat[] decimalFormatMaxPrecision = {
-        new DecimalFormat("#.#", DecimalFormatSymbols.getInstance(Locale.UK)), // no sign see #signConvention
-        new DecimalFormat("#.#", DecimalFormatSymbols.getInstance(Locale.UK)), // forced sign see #signConvention
-        new DecimalFormat("#.#", DecimalFormatSymbols.getInstance(Locale.UK)) // empty sign see #signConvention
+            new DecimalFormat("#.#", DecimalFormatSymbols.getInstance(Locale.UK)), // no sign see #signConvention
+            new DecimalFormat("#.#", DecimalFormatSymbols.getInstance(Locale.UK)), // forced sign see #signConvention
+            new DecimalFormat("#.#", DecimalFormatSymbols.getInstance(Locale.UK)) // empty sign see #signConvention
     };
     protected String fixedLengthFormat;
     protected String fixPrecisionFormat;
@@ -57,6 +59,7 @@ public class DefaultNumberFormatter implements Formatter<Number> {
     private FormatMode formatMode = FormatMode.OPTIMAL_WIDTH;
 
     public DefaultNumberFormatter() {
+
         for (DecimalFormat format : decimalFormat) {
             format.setMaximumFractionDigits(20);
         }
@@ -66,6 +69,7 @@ public class DefaultNumberFormatter implements Formatter<Number> {
 
     @Override
     public @NotNull Number fromString(final @NotNull String string) {
+
         if (FormatMode.METRIC_PREFIX.equals(formatMode)) {
             return metricParse(string, false);
         }
@@ -82,14 +86,17 @@ public class DefaultNumberFormatter implements Formatter<Number> {
 
     @Override
     public final Class<Number> getClassInstance() {
+
         return Number.class;
     }
 
     public int getFixedPrecision() {
+
         return fixedPrecision;
     }
 
     public void setFixedPrecision(final int fixedPrecision) {
+
         assert fixedPrecision >= 0 : "precision must be larger 0, is: " + fixedPrecision;
         fixPrecisionFormat = "%." + fixedPrecision + "f%c";
         fixPrecisionFormatZero = "%." + fixedPrecision + "f";
@@ -100,41 +107,50 @@ public class DefaultNumberFormatter implements Formatter<Number> {
     }
 
     public FormatMode getFormatMode() {
+
         return formatMode;
     }
 
     public void setFormatMode(final FormatMode formatMode) {
+
         this.formatMode = formatMode;
     }
 
     public int getNumberOfCharacters() {
+
         return numberOfCharacters;
     }
 
     public void setNumberOfCharacters(final int numberOfCharacters) {
+
         assert numberOfCharacters >= 0 : "numberOfCharacters must be larger 0, is: " + numberOfCharacters;
         fixedLengthFormat = "%1$" + numberOfCharacters + 's';
         this.numberOfCharacters = numberOfCharacters;
     }
 
     public SignConvention getSignConvention() {
+
         return signConvention;
     }
 
     public void setSignConvention(final SignConvention signConvention) {
+
         this.signConvention = signConvention;
     }
 
     public SignConvention getSignConventionExp() {
+
         return signConventionExp;
     }
 
     public void setSignConventionExp(final SignConvention signConventionExp) {
+
         this.signConventionExp = signConventionExp;
     }
 
     @Override
     public @NotNull String toString(@NotNull final Number number) {
+
         if (number.doubleValue() == Double.NEGATIVE_INFINITY) {
             // short-cut for negative infinity
             return formatMode.fixedWidth() ? String.format(fixedLengthFormat, "-∞") : "-∞";
@@ -149,23 +165,24 @@ public class DefaultNumberFormatter implements Formatter<Number> {
         }
 
         switch (formatMode) {
-        case METRIC_PREFIX:
-            return metricFormat(number.doubleValue(), false);
-        case BYTE_PREFIX:
-            return metricFormat(number.doubleValue(), true);
-        case FIXED_WIDTH_EXP:
-            return expFormatFixedWidth(number, numberOfCharacters, signConvention, signConventionExp);
-        case OPTIMAL_WIDTH:
-            return optimalWidthFormat(number);
-        case FIXED_WIDTH_AND_EXP:
-        case FIXED_WIDTH_ONLY:
-            return fixedWidthFormat(number);
-        default:
-            return number.toString(); // JDK default
+            case METRIC_PREFIX:
+                return metricFormat(number.doubleValue(), false);
+            case BYTE_PREFIX:
+                return metricFormat(number.doubleValue(), true);
+            case FIXED_WIDTH_EXP:
+                return expFormatFixedWidth(number, numberOfCharacters, signConvention, signConventionExp);
+            case OPTIMAL_WIDTH:
+                return optimalWidthFormat(number);
+            case FIXED_WIDTH_AND_EXP:
+            case FIXED_WIDTH_ONLY:
+                return fixedWidthFormat(number);
+            default:
+                return number.toString(); // JDK default
         }
     }
 
     protected String fixedWidthFormat(final @NotNull Number number) {
+
         if (number.doubleValue() == 0.0) {
             // short-cut for exact and negative '0'
             if (Math.copySign(1.0, number.doubleValue()) > 0) {
@@ -204,6 +221,7 @@ public class DefaultNumberFormatter implements Formatter<Number> {
     }
 
     protected String metricFormat(final double value, final boolean byteFormat) {
+
         if (value == 0) {
             // format '0' with correct number of digits
             return String.format(fixPrecisionFormatZero, 0.0);
@@ -222,6 +240,7 @@ public class DefaultNumberFormatter implements Formatter<Number> {
     }
 
     protected String optimalWidthFormat(final @NotNull Number number) {
+
         if (number.doubleValue() == 0.0) {
             // short-cut for exact '0'
             return "0";
@@ -237,6 +256,7 @@ public class DefaultNumberFormatter implements Formatter<Number> {
     }
 
     protected static String expFormatFixedPrecision(final double value, final int precision, final SignConvention sign, final SignConvention signExp) {
+
         final int order = (int) Math.floor(Math.log10(Math.abs(value)));
         final double mantissa = value / Math.pow(10, order);
 
@@ -244,6 +264,7 @@ public class DefaultNumberFormatter implements Formatter<Number> {
     }
 
     protected static String expFormatFixedWidth(final Number value, final int width, final SignConvention sign, final SignConvention signExp) {
+
         final int order = (int) Math.floor(Math.log10(Math.abs(value.doubleValue())));
         final int orderExp = (order == 0 ? 0 : (int) Math.floor(Math.log10(Math.abs(order)))) + 1;
         final double mantissa = value.doubleValue() / Math.pow(10, order);
@@ -254,18 +275,20 @@ public class DefaultNumberFormatter implements Formatter<Number> {
     }
 
     protected static String getSignPrefix(SignConvention sign, boolean posValue) {
+
         switch (sign) {
-        case FORCE_SIGN:
-            return "%+";
-        case EMPTY_SIGN:
-            return posValue ? " %" : "%";
-        case NONE:
-        default:
-            return "%";
+            case FORCE_SIGN:
+                return "%+";
+            case EMPTY_SIGN:
+                return posValue ? " %" : "%";
+            case NONE:
+            default:
+                return "%";
         }
     }
 
     protected static double metricParse(@NotNull String str, final boolean byteFormat) {
+
         if (StringUtils.containsAny(str, SI_PREFIX_TEST)) {
             final String[] split = StringUtils.splitByCharacterType(str);
             assert split.length > 1 : "malformed string: '" + str + "'";
@@ -290,7 +313,9 @@ public class DefaultNumberFormatter implements Formatter<Number> {
         EMPTY_SIGN(2);
 
         private final int index;
+
         SignConvention(final int index) {
+
             this.index = index;
         }
     }
@@ -305,6 +330,7 @@ public class DefaultNumberFormatter implements Formatter<Number> {
         JDK; // JDK default 'toString()' method
 
         boolean fixedWidth() {
+
             return this == FIXED_WIDTH_ONLY || this == FIXED_WIDTH_AND_EXP || this == FIXED_WIDTH_EXP;
         }
     }

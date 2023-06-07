@@ -1,7 +1,6 @@
 package io.fair_acc.sample;
 
 import javafx.application.Application;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,20 +11,23 @@ import org.slf4j.LoggerFactory;
  *     <li>for Eclipse IDE: "${java_type_name}"</li>
  *     <li>for Intellij IDE: "$FileClass$"</li>
  * </ul>
- *
+ * <p>
  * Then, any JavaFX Application Class can be run by selecting it in the Package Explorer and running this run
  * configuration. <br>
  * To be able to run JavaFX Applications outside of the chartfx project also add a classpath entry of type "Advanced",
  * "Variable", "${project_classpath}", but there is no way to add the current projects dependencies to the classpath,
  * yet.
  *
- * @see <a href="https://stackoverflow.com/a/55300492" target="_top"> Stackoverflow: How to add JavaFX runtime to
- *      Eclipse in Java11 (2b) </a>
  * @author akrimm
+ * @see <a href="https://stackoverflow.com/a/55300492" target="_top"> Stackoverflow: How to add JavaFX runtime to
+ * Eclipse in Java11 (2b) </a>
  */
 public class LaunchJFX { // NOMEN EST OMEN
+
     private static final Logger LOGGER = LoggerFactory.getLogger(LaunchJFX.class);
+
     public static void main(final String[] args) throws ClassNotFoundException {
+
         if (args.length < 1 || args[0].contains(LaunchJFX.class.getName())) {
             LOGGER.atInfo().log("no argument provided");
         } else {

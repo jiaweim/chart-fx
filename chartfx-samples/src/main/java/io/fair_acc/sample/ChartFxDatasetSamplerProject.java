@@ -9,24 +9,30 @@ import javafx.scene.layout.VBox;
 
 public class ChartFxDatasetSamplerProject implements FXSamplerProject {
 
-    /** {@inheritDoc} */
-    @Override public String getProjectName() {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getProjectName() {
+
         return "ChartFx - Datasets";
     }
 
-    /** {@inheritDoc} */
-    @Override public String getSampleBasePackage() {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getSampleBasePackage() {
+
         return "io.fair_acc.sample.dataset";
     }
 
-    ///** {@inheritDoc} */
-    //@Override
-    //public String getModuleName() {
-    //    return "io.fair-acc";
-    //}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WelcomePage getWelcomePage() {
 
-    /** {@inheritDoc} */
-    @Override public WelcomePage getWelcomePage() {
         VBox vBox = new VBox();
         ImageView imgView = new ImageView();
         // imgView.setStyle("-fx-image: url('org/controlsfx/samples/ControlsFX.png');");
