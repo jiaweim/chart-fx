@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class AxisRangeScalingSample extends ChartSample {
 
-    private static final String CHART_CSS = Chart.class.getResource("chart.css").toExternalForm();
+    private static final String CHART_CSS = AxisRangeScalingSample.class.getResource("chart.css").toExternalForm();
     private static final int DEFAULT_WIDTH = 800;
     private static final int DEFAULT_HEIGHT = 800;
 
@@ -146,7 +146,6 @@ public class AxisRangeScalingSample extends ChartSample {
      * @param args the command line arguments
      */
     public static void main(final String[] args) {
-
         Application.launch(args);
     }
 }

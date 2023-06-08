@@ -1,30 +1,8 @@
 package io.fair_acc.chartfx.renderer.spi.financial;
 
-import static com.sun.javafx.scene.control.skin.Utils.computeTextWidth;
-
-import static io.fair_acc.chartfx.renderer.spi.financial.css.FinancialCss.*;
-import static io.fair_acc.chartfx.renderer.spi.financial.service.footprint.FootprintRendererAttributes.BID_ASK_VOLUME_FONTS;
-import static io.fair_acc.dataset.DataSet.DIM_X;
-
-import java.security.InvalidParameterException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import javafx.collections.ObservableList;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.StrokeLineCap;
-import javafx.scene.shape.StrokeLineJoin;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-
 import com.sun.javafx.tk.FontLoader;
 import com.sun.javafx.tk.FontMetrics;
 import com.sun.javafx.tk.Toolkit;
-
 import io.fair_acc.chartfx.Chart;
 import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.Axis;
@@ -43,25 +21,44 @@ import io.fair_acc.dataset.spi.financial.api.attrs.AttributeModelAware;
 import io.fair_acc.dataset.spi.financial.api.ohlcv.IOhlcvItem;
 import io.fair_acc.dataset.spi.financial.api.ohlcv.IOhlcvItemAware;
 import io.fair_acc.dataset.utils.ProcessingProfiler;
+import javafx.collections.ObservableList;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.StrokeLineCap;
+import javafx.scene.shape.StrokeLineJoin;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+
+import java.security.InvalidParameterException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import static com.sun.javafx.scene.control.skin.Utils.computeTextWidth;
+import static io.fair_acc.chartfx.renderer.spi.financial.css.FinancialCss.*;
+import static io.fair_acc.chartfx.renderer.spi.financial.service.footprint.FootprintRendererAttributes.BID_ASK_VOLUME_FONTS;
+import static io.fair_acc.dataset.DataSet.DIM_X;
 
 /**
  * Footprint Chart Renderer
- *<p>
+ * <p>
  * Footprint chart is a type of candlestick chart that provides additional information, such as trade volume and order flow,
  * in addition to price. It is multi-dimensional in nature, and can provide an investor with more information for analysis,
  * beyond just the security's price. This tool is a unique offering that is gaining popularity amongst leading charting software providers.
- *<p>
+ * <p>
  * Footprint charts provide the benefit of analyzing multiple variables in a focused diagram.
  * Common footprint charts include footprint profile, bid/ask footprint, delta footprint, and volume footprint.
  * <p>
  * Bid/Ask Footprint: Adds color to the real-time volume, for easier visualization of buyers and sellers probing the bid or ask.
  * With this footprint, traders can see whether the buyers or the sellers are the responsible parties, for influencing a price move.
  * <p>
- * @see <a href="https://www.investopedia.com/terms/f/footprint-charts.asp">Footprint Charts Investopedia</a>
  *
  * @author afischer
+ * @see <a href="https://www.investopedia.com/terms/f/footprint-charts.asp">Footprint Charts Investopedia</a>
  */
-@SuppressWarnings({ "PMD.ExcessiveMethodLength", "PMD.NPathComplexity", "PMD.ExcessiveParameterList" })
+@SuppressWarnings({"PMD.ExcessiveMethodLength", "PMD.NPathComplexity", "PMD.ExcessiveParameterList"})
 // designated purpose of this class
 public class FootprintRenderer extends AbstractFinancialRenderer<FootprintRenderer> implements Renderer, RendererPaintAfterEPAware {
     private final static double FONT_RATIO = 13.0;
@@ -157,7 +154,7 @@ public class FootprintRenderer extends AbstractFinancialRenderer<FootprintRender
 
     @Override
     public List<DataSet> render(final GraphicsContext gc, final Chart chart, final int dataSetOffset,
-            final ObservableList<DataSet> datasets) {
+                                final ObservableList<DataSet> datasets) {
         if (!(chart instanceof XYChart)) {
             throw new InvalidParameterException(
                     "must be derivative of XYChart for renderer - " + this.getClass().getSimpleName());
@@ -283,7 +280,7 @@ public class FootprintRenderer extends AbstractFinancialRenderer<FootprintRender
     }
 
     private void drawFootprintItem(GraphicsContext gc, Axis yAxis, DataSet ds, int i,
-            double x0, IOhlcvItem ohlcvItem, boolean isEpAvailable, boolean isLastBar, boolean paintVolume) {
+                                   double x0, IOhlcvItem ohlcvItem, boolean isEpAvailable, boolean isLastBar, boolean paintVolume) {
         double yOpen = yAxis.getDisplayPosition(ohlcvItem.getOpen());
         double yHigh = yAxis.getDisplayPosition(ohlcvItem.getHigh());
         double yLow = yAxis.getDisplayPosition(ohlcvItem.getLow());
@@ -476,16 +473,22 @@ public class FootprintRenderer extends AbstractFinancialRenderer<FootprintRender
     public interface IFootprintRenderedAPI {
         // Check if the footprint is available for this OHLCV item data
         boolean isFootprintAvailable(IOhlcvItem ohlcvItem);
+
         // Footprint configuration attributes
         FootprintRendererAttributes getFootprintAttributes();
+
         // list of price, ask, bid values per row
         Collection<Double[]> getPriceVolumeList(IOhlcvItem ohlcvItem);
+
         // get POC price (Point of control)
         double getPocPrice(IOhlcvItem ohlcvItem);
+
         // column font and colors for each NP value
         NbColumnColorGroup getColumnColorGroup(IOhlcvItem ohlcvItem);
+
         // try get pullback column (if the feature is active)
         IOhlcvItem getPullbackColumn(IOhlcvItem ohlcvItem);
+
         // get lock for synch between data consolidation and painting process
         Object getLock(IOhlcvItem ohlcvItem);
     }

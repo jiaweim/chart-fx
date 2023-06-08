@@ -1,9 +1,8 @@
 package io.fair_acc.math.matrix;
 
+import io.fair_acc.math.TRandom;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import io.fair_acc.math.TRandom;
 
 /**
  * computes IN = U*S*V^T. With diag(S)={fEigenValues(0), fEigenValues(1),..,fEigenValues(n)} and V the fEigenVector
@@ -27,9 +26,9 @@ public class SingularValueDecomposition {
     private MatrixD feigenVectorsU; // the eigenvector matrix U (m x n)
     private MatrixD feigenVectorsV; // the eigenvector matrix V (n x n)
     private MatrixD fEigenValues; // the diagonal eigenvalue matrix of input
-            // matrix (n x n)
+    // matrix (n x n)
     private MatrixD fInverseEigenValues; // pseuodo-inverse diagonal eigenvalue
-            // matrix of input matrix (n x n)
+    // matrix of input matrix (n x n)
 
     private double fCut;
 
@@ -306,7 +305,7 @@ public class SingularValueDecomposition {
         }
 
         final MatrixD lambdaMinus1 = new MatrixD(n, n); // inverse eigenvector
-                // matrix w.r.t. R
+        // matrix w.r.t. R
 
         final double eigenValueMax = fEigenValues.get(0, 0);
         for (int i = 0; i < n; i++) {
@@ -350,7 +349,6 @@ public class SingularValueDecomposition {
     }
 
     /**
-     * 
      * @return arrays with computed singular values
      */
     public double[] getSingularValues() {
@@ -474,7 +472,7 @@ public class SingularValueDecomposition {
     }
 
     /**
-     * @param eigenValues vector containing eigen values
+     * @param eigenValues        vector containing eigen values
      * @param eigenVectorMatrixV vector containing the diagonal matrix elements of eigen vector matrix
      */
     private static void sortEigenValues(final double[] eigenValues, final double[] eigenVectorMatrixV) {
@@ -506,7 +504,7 @@ public class SingularValueDecomposition {
     }
 
     private static void sortEigenValues(final double[] eigenVectorU, final double[] eigenValues,
-            final double[] eigenVectorMatrixV, final int m) {
+                                        final double[] eigenVectorMatrixV, final int m) {
         // Given the eigenvalues d[1..n] and eigenvectors v[1..n][1..n]
         // this routine sorts (straight insertion) the eigenvalues into
         // descending order, and rearranges
@@ -545,7 +543,7 @@ public class SingularValueDecomposition {
     }
 
     private static void svdcmp(final double[] inputMatrix, final int m, final int n, final double[] eigenValues,
-            final double[] eigenVectorMatrixV) {
+                               final double[] eigenVectorMatrixV) {
         // Given a matrix a[1..m][1..n], this routine computes its singular
         // value decomposition,
         // inputMatrix =U * S *Vt
@@ -825,8 +823,8 @@ public class SingularValueDecomposition {
     /**
      * Test of 'inputMatrix'*'pseudo-inverse SVD matrix' == 1. only works for non-singular matrices
      *
-     * @see #testInvert(double threshold) for more info
      * @return true if test successful, false otherwise
+     * @see #testInvert(double threshold) for more info
      */
     // @Test
     public boolean testInvert() {
@@ -879,8 +877,8 @@ public class SingularValueDecomposition {
     /**
      * Tests whether 'inputMatrix' == 'SVD decomposed matrix'. assumes default numerical precision threshold,
      *
-     * @see #testSVD(double threshold) for more info
      * @return true if test successful, false otherwise
+     * @see #testSVD(double threshold) for more info
      */
     // @Test
     public boolean testSVD() {
