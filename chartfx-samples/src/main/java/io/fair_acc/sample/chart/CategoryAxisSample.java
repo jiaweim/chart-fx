@@ -38,6 +38,7 @@ public class CategoryAxisSample extends ChartSample {
         // alt:
         xAxis.setOverlapPolicy(AxisLabelOverlapPolicy.SHIFT_ALT);
         xAxis.setMaxMajorTickLabelCount(N_SAMPLES + 1);
+
         final DefaultNumericAxis yAxis = new DefaultNumericAxis("yAxis");
 
         final XYChart lineChartPlot = new XYChart(xAxis, yAxis);
@@ -46,8 +47,8 @@ public class CategoryAxisSample extends ChartSample {
         lineChartPlot.getRenderers().clear();
         // lineChartPlot.getRenderers().add(new ReducingLineRenderer());
         final ErrorDataSetRenderer renderer = new ErrorDataSetRenderer();
-        renderer.setPolyLineStyle(LineStyle.NORMAL);
-        renderer.setPolyLineStyle(LineStyle.HISTOGRAM);
+        renderer.setPolyLineStyle(LineStyle.NONE);
+//        renderer.setPolyLineStyle(LineStyle.HISTOGRAM);
         lineChartPlot.getRenderers().add(renderer);
         lineChartPlot.legendVisibleProperty().set(true);
 

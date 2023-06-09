@@ -1,29 +1,24 @@
 package io.fair_acc.sample.chart;
 
-import static io.fair_acc.dataset.DataSet.DIM_X;
-import static io.fair_acc.dataset.DataSet.DIM_Y;
-
-import javafx.application.Application;
-import javafx.scene.Node;
-import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
-
 import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
-import io.fair_acc.chartfx.plugins.DataPointTooltip;
-import io.fair_acc.chartfx.plugins.EditAxis;
-import io.fair_acc.chartfx.plugins.EditDataSet;
-import io.fair_acc.chartfx.plugins.UpdateAxisLabels;
-import io.fair_acc.chartfx.plugins.Zoomer;
+import io.fair_acc.chartfx.plugins.*;
 import io.fair_acc.chartfx.renderer.Renderer;
 import io.fair_acc.chartfx.renderer.spi.ErrorDataSetRenderer;
 import io.fair_acc.chartfx.ui.geometry.Side;
 import io.fair_acc.dataset.EditConstraints;
 import io.fair_acc.dataset.spi.DoubleDataSet;
+import javafx.application.Application;
+import javafx.scene.Node;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
+
+import static io.fair_acc.dataset.DataSet.DIM_X;
+import static io.fair_acc.dataset.DataSet.DIM_Y;
 
 /**
  * Simple example of how to edit data sets
- * 
+ *
  * @author rstein
  */
 public class EditDataSetSample extends ChartSample {

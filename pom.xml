@@ -31,8 +31,8 @@
     <properties>
         <skipTests>true</skipTests>
         <revision>11</revision>
-        <changelist>0</changelist>
         <sha1>3</sha1>
+        <changelist>1</changelist>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.moduleName>io.fair-acc.chartfx-parent</project.moduleName>
         <maven.compiler.source>11</maven.compiler.source>

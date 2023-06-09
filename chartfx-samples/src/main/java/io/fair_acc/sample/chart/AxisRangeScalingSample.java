@@ -1,6 +1,5 @@
 package io.fair_acc.sample.chart;
 
-import io.fair_acc.chartfx.Chart;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
 import io.fair_acc.chartfx.axes.spi.MetricPrefix;
 import javafx.application.Application;
@@ -27,10 +26,6 @@ import java.util.concurrent.TimeUnit;
  */
 public class AxisRangeScalingSample extends ChartSample {
 
-    private static final String CHART_CSS = AxisRangeScalingSample.class.getResource("chart.css").toExternalForm();
-    private static final int DEFAULT_WIDTH = 800;
-    private static final int DEFAULT_HEIGHT = 800;
-
     @Override
     public Node getChartPanel(final Stage primaryStage) {
 
@@ -48,7 +43,6 @@ public class AxisRangeScalingSample extends ChartSample {
 
         final DefaultNumericAxis xAxis3 = new DefaultNumericAxis("current", 0, 100, 1);
         VBox.setMargin(xAxis3, new Insets(20, 10, 20, 10));
-        xAxis3.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
         xAxis3.setUnit("A");
         xAxis3.getAxisLabel().setFill(Color.RED.darker());
         root.getChildren().add(xAxis3);
@@ -57,8 +51,7 @@ public class AxisRangeScalingSample extends ChartSample {
         // N.B. tick unit is being overwritten by scaling
         final DefaultNumericAxis xAxis4 = new DefaultNumericAxis("very large current", 1e3, 100e3, 1e2);
         VBox.setMargin(xAxis4, new Insets(20, 10, 20, 10));
-        xAxis4.setUnitScaling(1000);
-        // alt:
+//        xAxis4.setUnitScaling(1000);
         xAxis4.setUnitScaling(MetricPrefix.KILO);
         xAxis4.setUnit("A");
         xAxis4.getAxisLabel().setFont(Font.font("Times", 25));
@@ -134,12 +127,6 @@ public class AxisRangeScalingSample extends ChartSample {
         timer.scheduleAtFixedRate(task, 0, TimeUnit.SECONDS.toMillis(2));
 
         return root;
-    }
-
-    @Override
-    public String getControlStylesheetURL() {
-
-        return CHART_CSS;
     }
 
     /**

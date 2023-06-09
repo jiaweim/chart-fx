@@ -1,27 +1,8 @@
 package io.fair_acc.sample.chart;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
-import javafx.application.Application;
-import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
-import javafx.stage.Stage;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
-import io.fair_acc.chartfx.plugins.EditAxis;
-import io.fair_acc.chartfx.plugins.ParameterMeasurements;
-import io.fair_acc.chartfx.plugins.Screenshot;
-import io.fair_acc.chartfx.plugins.TableViewer;
-import io.fair_acc.chartfx.plugins.Zoomer;
+import io.fair_acc.chartfx.plugins.*;
 import io.fair_acc.chartfx.renderer.ErrorStyle;
 import io.fair_acc.chartfx.renderer.spi.ErrorDataSetRenderer;
 import io.fair_acc.chartfx.ui.ProfilerInfoBox;
@@ -31,6 +12,19 @@ import io.fair_acc.dataset.spi.DoubleDataSet;
 import io.fair_acc.dataset.spi.DoubleErrorDataSet;
 import io.fair_acc.dataset.testdata.spi.RandomDataGenerator;
 import io.fair_acc.dataset.utils.ProcessingProfiler;
+import javafx.application.Application;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
+import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * @author rstein
