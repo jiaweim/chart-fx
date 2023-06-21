@@ -1,20 +1,9 @@
 package io.fair_acc.chartfx.renderer.spi.utils;
 
-import java.util.AbstractMap.SimpleImmutableEntry;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.ListProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleListProperty;
-import javafx.beans.property.SimpleObjectProperty;
+import io.fair_acc.chartfx.XYChartCss;
+import io.fair_acc.chartfx.utils.StyleParser;
+import io.fair_acc.dataset.utils.AssertUtils;
+import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.canvas.GraphicsContext;
@@ -23,12 +12,13 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 
-import io.fair_acc.chartfx.XYChartCss;
-import io.fair_acc.chartfx.utils.StyleParser;
-import io.fair_acc.dataset.utils.AssertUtils;
+import java.util.AbstractMap.SimpleImmutableEntry;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("PMD.FieldNamingConventions")
 public final class DefaultRenderColorScheme {
+
     private static final String DEFAULT_FONT = "Helvetica";
     private static final int DEFAULT_FONT_SIZE = 18;
     private static final DefaultRenderColorScheme SELF = new DefaultRenderColorScheme();
@@ -43,7 +33,7 @@ public final class DefaultRenderColorScheme {
             Color.valueOf("#B276B2"), // (purple)
             Color.valueOf("#DECF3F"), // (yellow)
             Color.valueOf("#4D4D4D") // (gray)
-            ));
+    ));
 
     public static final ObservableList<Color> ADOBE = FXCollections.observableList(Arrays.asList( //
             Color.valueOf("#00a4e4"), // blue
@@ -53,7 +43,7 @@ public final class DefaultRenderColorScheme {
             Color.valueOf("#c1d82f"), // green
             Color.valueOf("#8a7967"), // brown
             Color.valueOf("#6a737b") // darkbrown/black
-            ));
+    ));
 
     public static final ObservableList<Color> DELL = FXCollections.observableList(Arrays.asList( //
             Color.valueOf("#0085c3"), //
@@ -64,7 +54,7 @@ public final class DefaultRenderColorScheme {
             Color.valueOf("#71c6c1"), //
             Color.valueOf("#009bbb"), //
             Color.valueOf("#444444") //
-            ));
+    ));
 
     public static final ObservableList<Color> EQUIDISTANT = FXCollections.observableList(Arrays.asList( //
             Color.valueOf("#003f5c"), //
@@ -75,7 +65,7 @@ public final class DefaultRenderColorScheme {
             Color.valueOf("#f95d6a"), //
             Color.valueOf("#ff7c43"), //
             Color.valueOf("#ffa600") //
-            ));
+    ));
 
     public static final ObservableList<Color> TUNEVIEWER = FXCollections.observableList(Arrays.asList( //
             // old legacy colour scheme from an earlier project
@@ -88,7 +78,7 @@ public final class DefaultRenderColorScheme {
             Color.DARKGRAY, // dark grey
             Color.PINK, // pink
             Color.BLACK // black
-            ));
+    ));
 
     private static final ListProperty<Color> strokeColours = new SimpleListProperty<>(SELF, "defaulStrokeColours", FXCollections.observableList(TUNEVIEWER));
 
@@ -98,6 +88,7 @@ public final class DefaultRenderColorScheme {
     private static final DoubleProperty markerLineWidth = new SimpleDoubleProperty(SELF, "defaultLineWidth", 0.5);
     private static final DoubleProperty lineWidth = new SimpleDoubleProperty(SELF, "lineWidth", 1.5);
     private static final DoubleProperty hatchShiftByIndex = new SimpleDoubleProperty(SELF, "hatchShiftByIndex", 1.5);
+
     static {
         fillStylesProperty().clear();
         fillStylesProperty().set(getStandardFillStyle());
@@ -165,7 +156,12 @@ public final class DefaultRenderColorScheme {
         return values;
     }
 
+    /**
+     * @param index dataset index
+     * @return {@link Color} for the dataset
+     */
     public static Color getStrokeColor(final int index) {
+
         AssertUtils.gtEqThanZero("color index", index);
         final int size = strokeColorProperty().size();
         return strokeColorProperty().get(index % size);
@@ -246,7 +242,14 @@ public final class DefaultRenderColorScheme {
         gc.setStroke(getColorModifier(map, rawColor));
     }
 
+    /**
+     * set schema
+     * @param gc
+     * @param defaultStyle
+     * @param dsIndex
+     */
     public static void setMarkerScheme(final GraphicsContext gc, final String defaultStyle, final int dsIndex) {
+
         AssertUtils.gtEqThanZero("setMarkerScheme dsIndex", dsIndex);
         final Map<String, List<String>> map = splitQuery(defaultStyle);
 
@@ -265,6 +268,9 @@ public final class DefaultRenderColorScheme {
         return Arrays.stream(styleString.split(";")).map(SELF::splitQueryParameter).collect(Collectors.groupingBy(SimpleImmutableEntry::getKey, LinkedHashMap::new, Collectors.mapping(Map.Entry::getValue, Collectors.toList())));
     }
 
+    /**
+     * @return stroke color list
+     */
     public static ListProperty<Color> strokeColorProperty() {
         return strokeColours;
     }

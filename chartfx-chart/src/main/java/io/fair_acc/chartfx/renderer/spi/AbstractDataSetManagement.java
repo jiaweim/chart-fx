@@ -1,11 +1,5 @@
 package io.fair_acc.chartfx.renderer.spi;
 
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.geometry.Orientation;
-
 import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.Axis;
 import io.fair_acc.chartfx.renderer.Renderer;
@@ -15,12 +9,18 @@ import io.fair_acc.dataset.spi.DoubleDataSet;
 import io.fair_acc.dataset.spi.DoubleErrorDataSet;
 import io.fair_acc.dataset.utils.NoDuplicatesList;
 import io.fair_acc.dataset.utils.ProcessingProfiler;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.geometry.Orientation;
 
 /**
- * @author rstein
  * @param <R> renderer generics
+ * @author rstein
  */
 public abstract class AbstractDataSetManagement<R extends Renderer> implements Renderer {
+
     private final ObservableList<DataSet> datasets = FXCollections.observableArrayList();
     protected final BooleanProperty showInLegend = new SimpleBooleanProperty(this, "showInLegend", true);
 
@@ -55,23 +55,28 @@ public abstract class AbstractDataSetManagement<R extends Renderer> implements R
         return dataSets;
     }
 
+    /**
+     * Return the first axis in given {@link Orientation}
+     *
+     * @param orientation {@link javafx.geometry.Orientation} instance
+     */
     public Axis getFirstAxis(final Orientation orientation) {
         for (final Axis axis : getAxes()) {
             if (axis.getSide() == null) {
                 continue;
             }
             switch (orientation) {
-            case VERTICAL:
-                if (axis.getSide().isVertical()) {
-                    return axis;
-                }
-                break;
-            case HORIZONTAL:
-            default:
-                if (axis.getSide().isHorizontal()) {
-                    return axis;
-                }
-                break;
+                case VERTICAL:
+                    if (axis.getSide().isVertical()) {
+                        return axis;
+                    }
+                    break;
+                case HORIZONTAL:
+                default:
+                    if (axis.getSide().isHorizontal()) {
+                        return axis;
+                    }
+                    break;
             }
         }
         return null;
@@ -86,7 +91,7 @@ public abstract class AbstractDataSetManagement<R extends Renderer> implements R
      * things are called in the wrong order.
      *
      * @param orientation specifies if a horizontal or vertical axis is requested
-     * @param fallback The chart from which to get the axis if no axis is present
+     * @param fallback    The chart from which to get the axis if no axis is present
      * @return The requested axis
      */
     protected Axis getFirstAxis(final Orientation orientation, final XYChart fallback) {

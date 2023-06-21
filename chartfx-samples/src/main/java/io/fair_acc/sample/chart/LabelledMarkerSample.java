@@ -1,14 +1,13 @@
 package io.fair_acc.sample.chart;
 
-import javafx.application.Application;
-import javafx.scene.Node;
-import javafx.stage.Stage;
-
 import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.XYChartCss;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
 import io.fair_acc.chartfx.renderer.spi.LabelledMarkerRenderer;
 import io.fair_acc.dataset.spi.DoubleDataSet;
+import javafx.application.Application;
+import javafx.scene.Node;
+import javafx.stage.Stage;
 
 /**
  * Example to illustrate the use and customisation of the LabelledMarkerRenderer
@@ -16,10 +15,12 @@ import io.fair_acc.dataset.spi.DoubleDataSet;
  * @author rstein
  */
 public class LabelledMarkerSample extends ChartSample {
+
     private static final int N_SAMPLES = 10;
 
     @Override
     public Node getChartPanel(final Stage primaryStage) {
+
         final XYChart chart = new XYChart(new DefaultNumericAxis(), new DefaultNumericAxis());
         chart.getRenderers().set(0, new LabelledMarkerRenderer());
         chart.legendVisibleProperty().set(true);
@@ -58,7 +59,7 @@ public class LabelledMarkerSample extends ChartSample {
 
             if (n == 7) {
                 dataSet.addDataStyle(n, "strokeWidth=3;" + XYChartCss.FONT + "=\"Serif\";" + XYChartCss.FONT_SIZE
-                                                + "=20;" + XYChartCss.FONT_POSTURE + "=italic;" + XYChartCss.FONT_WEIGHT + "=black;");
+                        + "=20;" + XYChartCss.FONT_POSTURE + "=italic;" + XYChartCss.FONT_WEIGHT + "=black;");
             }
 
             if (n == 8) {

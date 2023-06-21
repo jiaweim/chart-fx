@@ -4,17 +4,6 @@
 
 package io.fair_acc.chartfx.renderer.spi;
 
-import static io.fair_acc.dataset.DataSet.DIM_X;
-import static io.fair_acc.dataset.DataSet.DIM_Y;
-
-import java.security.InvalidParameterException;
-import java.util.ArrayList;
-import java.util.List;
-
-import javafx.collections.ObservableList;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-
 import io.fair_acc.chartfx.Chart;
 import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.Axis;
@@ -23,13 +12,24 @@ import io.fair_acc.chartfx.renderer.Renderer;
 import io.fair_acc.chartfx.renderer.spi.utils.DefaultRenderColorScheme;
 import io.fair_acc.dataset.DataSet;
 import io.fair_acc.dataset.utils.ProcessingProfiler;
+import javafx.collections.ObservableList;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+
+import java.security.InvalidParameterException;
+import java.util.ArrayList;
+import java.util.List;
+
+import static io.fair_acc.dataset.DataSet.DIM_X;
+import static io.fair_acc.dataset.DataSet.DIM_Y;
 
 /**
  * Simple, uncomplicated reducing line renderer
- * 
+ *
  * @author braeun
  */
 public class ReducingLineRenderer extends AbstractDataSetManagement<ReducingLineRenderer> implements Renderer {
+
     private int maxPoints;
 
     public ReducingLineRenderer() {
@@ -59,7 +59,7 @@ public class ReducingLineRenderer extends AbstractDataSetManagement<ReducingLine
 
     @Override
     public List<DataSet> render(final GraphicsContext gc, final Chart chart, final int dataSetOffset,
-            final ObservableList<DataSet> datasets) {
+                                final ObservableList<DataSet> datasets) {
         if (!(chart instanceof XYChart)) {
             throw new InvalidParameterException("must be derivative of XYChart for renderer - " + this.getClass().getSimpleName());
         }

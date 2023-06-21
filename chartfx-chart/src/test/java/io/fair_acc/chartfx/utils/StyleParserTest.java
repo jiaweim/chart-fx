@@ -14,16 +14,17 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test StyleParser
- * 
+ *
  * @author Alexander Krimm
  * @author rstein
  */
 class StyleParserTest {
+
     @Test
     @DisplayName("Test parsing styles")
     public void testStyleParser() {
         final String testStyle = " color1 = blue; stroke= 0; bool1=true; color2 = rgb(255,0,0); unclean=\"a'; index1=2;index2=0xFE; "
-                               + "float1=10e7; float2=10.333; malformedInt= 0.aG; emptyProperty=;invalidColor=darthRed#22;";
+                + "float1=10e7; float2=10.333; malformedInt= 0.aG; emptyProperty=;invalidColor=darthRed#22;";
 
         assertEquals(true, StyleParser.getBooleanPropertyValue("booleanProperty=true", "booleanProperty"));
         assertEquals(false, StyleParser.getBooleanPropertyValue("booleanProperty=false", "booleanProperty"));
@@ -55,12 +56,12 @@ class StyleParserTest {
 
         assertNull(StyleParser.getFloatingDecimalPropertyValue(testStyle, "emptyProperty"));
 
-        assertArrayEquals(new double[] { 0 }, StyleParser.getFloatingDecimalArrayPropertyValue(testStyle, "stroke"));
+        assertArrayEquals(new double[]{0}, StyleParser.getFloatingDecimalArrayPropertyValue(testStyle, "stroke"));
         assertNull(StyleParser.getFloatingDecimalArrayPropertyValue(testStyle, null));
-        assertArrayEquals(new double[] { 0.1 }, StyleParser.getFloatingDecimalArrayPropertyValue("floatingPointArray=0.1", "floatingPointArray"));
+        assertArrayEquals(new double[]{0.1}, StyleParser.getFloatingDecimalArrayPropertyValue("floatingPointArray=0.1", "floatingPointArray"));
         assertNull(StyleParser.getFloatingDecimalArrayPropertyValue("floatingPointArray=0.1", "floatingPointArray2"));
         assertNull(StyleParser.getFloatingDecimalArrayPropertyValue("floatingPointArray=", "floatingPointArray"));
-        assertArrayEquals(new double[] { 0.1, 0.2 }, StyleParser.getFloatingDecimalArrayPropertyValue("floatingPointArray=0.1,0.2", "floatingPointArray"));
+        assertArrayEquals(new double[]{0.1, 0.2}, StyleParser.getFloatingDecimalArrayPropertyValue("floatingPointArray=0.1,0.2", "floatingPointArray"));
         assertNull(StyleParser.getFloatingDecimalArrayPropertyValue(null, "stroke"));
         assertNull(StyleParser.getFloatingDecimalArrayPropertyValue(testStyle, "malformedInt"));
 
@@ -97,7 +98,7 @@ class StyleParserTest {
         assertNull(StyleParser.getBooleanPropertyValue(null, "bool1"));
         assertFalse(StyleParser.getBooleanPropertyValue(testStyle, "malformedInt"));
 
-        assertArrayEquals(new double[] { 0 }, StyleParser.getStrokeDashPropertyValue(testStyle, "stroke"));
+        assertArrayEquals(new double[]{0}, StyleParser.getStrokeDashPropertyValue(testStyle, "stroke"));
         assertNull(StyleParser.getStrokeDashPropertyValue(testStyle, null));
         assertNull(StyleParser.getStrokeDashPropertyValue(null, "stroke"));
         assertNull(StyleParser.getStrokeDashPropertyValue(testStyle, "malformedInt"));

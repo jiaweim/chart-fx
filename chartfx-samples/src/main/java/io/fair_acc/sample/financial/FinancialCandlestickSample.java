@@ -1,13 +1,12 @@
 package io.fair_acc.sample.financial;
 
-import javafx.application.Application;
-
 import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.renderer.ErrorStyle;
 import io.fair_acc.chartfx.renderer.spi.ErrorDataSetRenderer;
 import io.fair_acc.chartfx.renderer.spi.financial.CandleStickRenderer;
 import io.fair_acc.dataset.spi.DefaultDataSet;
 import io.fair_acc.dataset.spi.financial.OhlcvDataSet;
+import javafx.application.Application;
 
 /**
  * Candlestick Renderer Sample
@@ -15,6 +14,7 @@ import io.fair_acc.dataset.spi.financial.OhlcvDataSet;
  * @author afischer
  */
 public class FinancialCandlestickSample extends AbstractBasicFinancialApplication {
+
     protected void prepareRenderers(XYChart chart, OhlcvDataSet ohlcvDataSet, DefaultDataSet indiSet) {
         // create and apply renderers
         CandleStickRenderer candleStickRenderer = new CandleStickRenderer();

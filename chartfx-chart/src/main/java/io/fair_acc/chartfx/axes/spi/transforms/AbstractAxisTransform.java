@@ -7,6 +7,7 @@ import io.fair_acc.chartfx.axes.AxisTransform;
  * @author rstein
  */
 public abstract class AbstractAxisTransform implements AxisTransform {
+
     protected final Axis axis;
     protected double rangeMin = -Double.MAX_VALUE;
     protected double rangeMax = +Double.MAX_VALUE;

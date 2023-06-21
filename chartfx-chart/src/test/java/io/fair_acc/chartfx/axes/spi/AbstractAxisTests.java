@@ -1,23 +1,18 @@
 package io.fair_acc.chartfx.axes.spi;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
-
+import io.fair_acc.chartfx.axes.AxisLabelFormatter;
+import io.fair_acc.chartfx.axes.AxisTransform;
+import io.fair_acc.chartfx.axes.LogAxisType;
+import io.fair_acc.chartfx.axes.spi.transforms.DefaultAxisTransform;
+import io.fair_acc.chartfx.legend.spi.DefaultLegend;
+import io.fair_acc.chartfx.ui.geometry.Side;
 import io.fair_acc.chartfx.ui.utils.JavaFXInterceptorUtils;
+import io.fair_acc.chartfx.utils.FXUtils;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,17 +22,17 @@ import org.junit.jupiter.params.provider.EnumSource;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
-import io.fair_acc.chartfx.axes.AxisLabelFormatter;
-import io.fair_acc.chartfx.axes.AxisTransform;
-import io.fair_acc.chartfx.axes.LogAxisType;
-import io.fair_acc.chartfx.axes.spi.transforms.DefaultAxisTransform;
-import io.fair_acc.chartfx.legend.spi.DefaultLegend;
-import io.fair_acc.chartfx.ui.geometry.Side;
-import io.fair_acc.chartfx.utils.FXUtils;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(ApplicationExtension.class)
 @ExtendWith(JavaFXInterceptorUtils.SelectiveJavaFxInterceptor.class)
 class AbstractAxisTests {
+
     private static final int DEFAULT_AXIS_LENGTH = 1000;
     private static final int WIDTH = 300;
     private static final int HEIGHT = 200;
@@ -224,6 +219,7 @@ class AbstractAxisTests {
     }
 
     private static class EmptyAbstractAxis extends AbstractAxis {
+
         private final DefaultAxisTransform transform = new DefaultAxisTransform(this);
         private boolean logAxis = false;
 

@@ -101,7 +101,6 @@ public class DefaultNumericAxis extends AbstractAxis implements Axis {
      * Creates an {@link #autoRangingProperty() auto-ranging} Axis.
      */
     public DefaultNumericAxis() {
-
         this("axis label", 0.0, 0.0, 5.0);
     }
 
@@ -114,7 +113,6 @@ public class DefaultNumericAxis extends AbstractAxis implements Axis {
      * @param tickUnit   the tick unit, i.e. space between tick marks
      */
     public DefaultNumericAxis(final double lowerBound, final double upperBound, final double tickUnit) {
-
         this(null, lowerBound, upperBound, tickUnit);
     }
 
@@ -124,7 +122,6 @@ public class DefaultNumericAxis extends AbstractAxis implements Axis {
      * @param axisLabel the axis {@link #nameProperty() label}
      */
     public DefaultNumericAxis(final String axisLabel) {
-
         this(axisLabel, 0.0, 0.0, 5.0);
     }
 
@@ -138,7 +135,7 @@ public class DefaultNumericAxis extends AbstractAxis implements Axis {
      * @param tickUnit   the tick unit, i.e. space between tick marks
      */
     public DefaultNumericAxis(final String axisLabel, final double lowerBound, final double upperBound,
-            final double tickUnit) {
+                              final double tickUnit) {
 
         super(lowerBound, upperBound);
         this.setName(axisLabel);
@@ -172,7 +169,6 @@ public class DefaultNumericAxis extends AbstractAxis implements Axis {
      */
     @Override
     public double computePreferredTickUnit(final double axisLength) {
-
         final double labelSize = getTickLabelFont().getSize() * 2;
         final int numOfFittingLabels = (int) Math.floor(axisLength / labelSize);
         final int numOfTickMarks = Math.max(Math.min(numOfFittingLabels, getMaxMajorTickLabelCount()), 2);
@@ -190,7 +186,6 @@ public class DefaultNumericAxis extends AbstractAxis implements Axis {
      * @return forceZeroInRange property
      */
     public BooleanProperty forceZeroInRangeProperty() {
-
         return forceZeroInRange;
     }
 
@@ -201,7 +196,6 @@ public class DefaultNumericAxis extends AbstractAxis implements Axis {
      */
     @Override
     public AxisTransform getAxisTransform() {
-
         return axisTransform;
     }
 
@@ -215,7 +209,6 @@ public class DefaultNumericAxis extends AbstractAxis implements Axis {
      */
     @Override
     public double getDisplayPosition(final double value) {
-
         if (isInvertedAxis) {
             return offset - getDisplayPositionImpl(value);
         }
@@ -228,7 +221,6 @@ public class DefaultNumericAxis extends AbstractAxis implements Axis {
      * @return base of the logarithm
      */
     public double getLogarithmBase() {
-
         return logarithmBaseProperty().get();
     }
 
@@ -237,7 +229,6 @@ public class DefaultNumericAxis extends AbstractAxis implements Axis {
      */
     @Override
     public LogAxisType getLogAxisType() {
-
         if (isLogAxis) {
             return LogAxisType.LOG10_SCALE;
         }
@@ -380,7 +371,7 @@ public class DefaultNumericAxis extends AbstractAxis implements Axis {
     }
 
     private AxisRange computeRangeImpl(final double min, final double max, final double axisLength,
-            final double labelSize) {
+                                       final double labelSize) {
 
         final int numOfFittingLabels = (int) Math.floor(axisLength / labelSize);
         final int numOfTickMarks = Math.max(Math.min(numOfFittingLabels, getMaxMajorTickLabelCount()), 2);
@@ -400,7 +391,6 @@ public class DefaultNumericAxis extends AbstractAxis implements Axis {
     }
 
     private double getDisplayPositionImpl(final double value) {
-
         if (isLogAxis) {
             final double valueLogOffset = axisTransform.forward(value) - cache.lowerBoundLog;
 
@@ -415,6 +405,10 @@ public class DefaultNumericAxis extends AbstractAxis implements Axis {
         return cache.localOffset2 + value * cache.localScale;
     }
 
+    /**
+     * @param displayPosition a position in the canvas
+     * @return return the data value at given display position
+     */
     private double getValueForDisplayImpl(final double displayPosition) {
 
         if (isLogAxis) {
@@ -430,7 +424,7 @@ public class DefaultNumericAxis extends AbstractAxis implements Axis {
 
     @Override
     protected AxisRange autoRange(final double minValue, final double maxValue, final double length,
-            final double labelSize) {
+                                  final double labelSize) {
 
         double min = minValue > 0 && isForceZeroInRange() ? 0 : minValue;
         if (isLogAxis && minValue <= 0) {
@@ -549,7 +543,7 @@ public class DefaultNumericAxis extends AbstractAxis implements Axis {
 
     @Override
     protected AxisRange computeRange(final double min, final double max, final double axisLength,
-            final double labelSize) {
+                                     final double labelSize) {
 
         double minValue = min;
         double maxValue = max;

@@ -1,33 +1,5 @@
 package io.fair_acc.sample.financial;
 
-import static io.fair_acc.chartfx.renderer.spi.financial.css.FinancialColorSchemeConstants.getDefaultColorSchemes;
-import static io.fair_acc.chartfx.ui.ProfilerInfoBox.DebugLevel.VERSION;
-
-import java.io.IOException;
-import java.text.ParseException;
-import java.time.ZoneOffset;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Map;
-
-import io.fair_acc.chartfx.Chart;
-import io.fair_acc.sample.financial.service.consolidate.OhlcvConsolidationAddon;
-import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
-import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
-
-import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import io.fair_acc.chartfx.Chart;
 import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.AxisLabelOverlapPolicy;
@@ -54,7 +26,32 @@ import io.fair_acc.sample.financial.service.CalendarUtils;
 import io.fair_acc.sample.financial.service.SimpleOhlcvDailyParser;
 import io.fair_acc.sample.financial.service.SimpleOhlcvReplayDataSet;
 import io.fair_acc.sample.financial.service.SimpleOhlcvReplayDataSet.DataInput;
+import io.fair_acc.sample.financial.service.consolidate.OhlcvConsolidationAddon;
 import io.fair_acc.sample.financial.service.period.IntradayPeriod;
+import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.text.ParseException;
+import java.time.ZoneOffset;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Map;
+
+import static io.fair_acc.chartfx.renderer.spi.financial.css.FinancialColorSchemeConstants.getDefaultColorSchemes;
+import static io.fair_acc.chartfx.ui.ProfilerInfoBox.DebugLevel.VERSION;
 
 /**
  * Base class for demonstration of financial charts.
@@ -64,6 +61,7 @@ import io.fair_acc.sample.financial.service.period.IntradayPeriod;
  * @author afischer
  */
 public abstract class AbstractBasicFinancialApplication extends Application {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractBasicFinancialApplication.class);
 
     protected int prefChartWidth = 640; // 1024
@@ -181,7 +179,7 @@ public abstract class AbstractBasicFinancialApplication extends Application {
         // show all default financial color schemes
         final FlowPane root = new FlowPane();
         root.setAlignment(Pos.CENTER);
-        Chart[] charts = Arrays.stream(getDefaultColorSchemes()).map(this::getDefaultFinancialTestChart).toArray(Chart[] ::new);
+        Chart[] charts = Arrays.stream(getDefaultColorSchemes()).map(this::getDefaultFinancialTestChart).toArray(Chart[]::new);
         root.getChildren().addAll(charts);
 
         return new Scene(root, prefSceneWidth, prefSceneHeight);
@@ -283,12 +281,12 @@ public abstract class AbstractBasicFinancialApplication extends Application {
      * Show required part of the OHLC resource
      *
      * @param dateIntervalPattern from to pattern for time range
-     * @param ohlcvDataSet domain object with filled ohlcv data
-     * @param xaxis X-axis for settings
-     * @param yaxis Y-axis for settings
+     * @param ohlcvDataSet        domain object with filled ohlcv data
+     * @param xaxis               X-axis for settings
+     * @param yaxis               Y-axis for settings
      */
     protected void showPredefinedTimeRange(String dateIntervalPattern, OhlcvDataSet ohlcvDataSet,
-            DefaultNumericAxis xaxis, DefaultNumericAxis yaxis) {
+                                           DefaultNumericAxis xaxis, DefaultNumericAxis yaxis) {
         try {
             Interval<Calendar> fromTo = CalendarUtils.createByDateTimeInterval(dateIntervalPattern);
             double fromTime = fromTo.from.getTime().getTime() / 1000.0;
@@ -321,7 +319,7 @@ public abstract class AbstractBasicFinancialApplication extends Application {
     /**
      * Load OHLC structures and indi calc
      *
-     * @param data required data
+     * @param data    required data
      * @param dataSet dataset which will be filled by this data
      * @param indiSet example of indicator calculation
      * @throws IOException if loading fails

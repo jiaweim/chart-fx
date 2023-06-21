@@ -71,14 +71,6 @@
                     </compilerArgs>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <configuration>
-                    <skip>false</skip>
-                    <mainClass>io.fair_acc.sample.ChartFxSampler</mainClass>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
 </project>

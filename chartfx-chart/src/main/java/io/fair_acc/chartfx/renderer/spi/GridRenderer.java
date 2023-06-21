@@ -1,10 +1,13 @@
 package io.fair_acc.chartfx.renderer.spi;
 
-import java.security.InvalidParameterException;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-
+import io.fair_acc.chartfx.Chart;
+import io.fair_acc.chartfx.XYChart;
+import io.fair_acc.chartfx.axes.Axis;
+import io.fair_acc.chartfx.axes.spi.TickMark;
+import io.fair_acc.chartfx.renderer.Renderer;
+import io.fair_acc.chartfx.renderer.spi.utils.DashPatternStyle;
+import io.fair_acc.dataset.DataSet;
+import io.fair_acc.dataset.utils.NoDuplicatesList;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
@@ -23,17 +26,14 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
 import javafx.scene.text.TextAlignment;
 
-import io.fair_acc.chartfx.Chart;
-import io.fair_acc.chartfx.XYChart;
-import io.fair_acc.chartfx.axes.Axis;
-import io.fair_acc.chartfx.axes.spi.TickMark;
-import io.fair_acc.chartfx.renderer.Renderer;
-import io.fair_acc.chartfx.renderer.spi.utils.DashPatternStyle;
-import io.fair_acc.dataset.DataSet;
-import io.fair_acc.dataset.utils.NoDuplicatesList;
+import java.security.InvalidParameterException;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 
 @SuppressWarnings("PMD.GodClass")
 public class GridRenderer extends Pane implements Renderer {
+
     private static final double DEG_TO_RAD = Math.PI / 180.0;
     private static final String CHART_CSS = Objects.requireNonNull(Chart.class.getResource("chart.css")).toExternalForm();
     private static final String STYLE_CLASS_GRID_RENDERER = "grid-renderer";
@@ -46,7 +46,7 @@ public class GridRenderer extends Pane implements Renderer {
     private static final String STYLE_CLASS_GRID_ON_TOP = "chart-grid-line-on-top";
     private static final PseudoClass SELECTED_PSEUDO_CLASS = PseudoClass.getPseudoClass("withMinor");
 
-    private static final double[] DEFAULT_GRID_DASH_PATTERM = { 4.5, 2.5 };
+    private static final double[] DEFAULT_GRID_DASH_PATTERM = {4.5, 2.5};
     // protected final BooleanProperty drawGridOnTop = new
     // SimpleStyleableBooleanProperty(StyleableProperties.GRID_ON_TOP,
     // this, "drawGridOnTop", true);
@@ -138,7 +138,7 @@ public class GridRenderer extends Pane implements Renderer {
     }
 
     protected void drawHorizontalMajorGridLines(final GraphicsContext gc, final Axis yAxis,
-            final double xAxisWidthSnapped, final double yAxisHeight) {
+                                                final double xAxisWidthSnapped, final double yAxisHeight) {
         if (!horMajorGridStyleNode.isVisible() && !horMinorGridStyleNode.isVisible()) {
             return;
         }
@@ -155,7 +155,7 @@ public class GridRenderer extends Pane implements Renderer {
     }
 
     protected void drawHorizontalMinorGridLines(final GraphicsContext gc, final Axis yAxis,
-            final double xAxisWidthSnapped, final double yAxisHeight) {
+                                                final double xAxisWidthSnapped, final double yAxisHeight) {
         if (!yAxis.isLogAxis() && !horMinorGridStyleNode.isVisible()) {
             return;
         }
@@ -187,7 +187,7 @@ public class GridRenderer extends Pane implements Renderer {
     }
 
     protected void drawPolarCircle(final GraphicsContext gc, final Axis yAxis, final double yRange,
-            final double xCentre, final double yCentre, final double maxRadius) {
+                                   final double xCentre, final double yCentre, final double maxRadius) {
         if (!horMajorGridStyleNode.isVisible() && !horMinorGridStyleNode.isVisible()) {
             return;
         }
@@ -291,7 +291,7 @@ public class GridRenderer extends Pane implements Renderer {
     }
 
     protected void drawVerticalMajorGridLines(final GraphicsContext gc, final Axis xAxis, final double xAxisWidth,
-            final double yAxisHeightSnapped) {
+                                              final double yAxisHeightSnapped) {
         if (!verMajorGridStyleNode.isVisible() && !verMinorGridStyleNode.isVisible()) {
             return;
         }
@@ -308,7 +308,7 @@ public class GridRenderer extends Pane implements Renderer {
     }
 
     protected void drawVerticalMinorGridLines(final GraphicsContext gc, final Axis xAxis, final double xAxisWidth,
-            final double yAxisHeightSnapped) {
+                                              final double yAxisHeightSnapped) {
         if (!xAxis.isLogAxis() && !verMinorGridStyleNode.isVisible()) {
             return;
         }
@@ -412,7 +412,7 @@ public class GridRenderer extends Pane implements Renderer {
 
     @Override
     public List<DataSet> render(final GraphicsContext gc, final Chart chart, final int dataSetOffset,
-            final ObservableList<DataSet> datasets) {
+                                final ObservableList<DataSet> datasets) {
         if (!(chart instanceof XYChart)) {
             throw new InvalidParameterException(
                     "must be derivative of XYChart for renderer - " + this.getClass().getSimpleName());

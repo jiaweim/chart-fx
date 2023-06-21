@@ -3,6 +3,7 @@ package io.fair_acc.dataset.spi.utils;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class StringHashMapList extends ConcurrentHashMap<Integer, String> {
+
     private static final long serialVersionUID = 4588196035279167053L;
     private static final long PARALLELISM_THRESHOLD = 1000;
 
@@ -10,8 +11,8 @@ public class StringHashMapList extends ConcurrentHashMap<Integer, String> {
      * shift elements all keys from starting index until the last toIndex.
      *
      * @param fromIndex the start index (inclusive).
-     * @param toIndex the end index (exclusive).
-     * @param label label to be added
+     * @param toIndex   the end index (exclusive).
+     * @param label     label to be added
      */
     public void addValueAndShiftKeys(final int fromIndex, final int toIndex, final String label) {
         for (int i = toIndex; i >= fromIndex; i--) {
@@ -29,7 +30,7 @@ public class StringHashMapList extends ConcurrentHashMap<Integer, String> {
      * Removes elements of this list using optimised system calls.
      *
      * @param fromIndex the start index (inclusive).
-     * @param toIndex the end index (exclusive).
+     * @param toIndex   the end index (exclusive).
      */
     public void remove(final int fromIndex, final int toIndex) {
         // remove old keys
@@ -53,7 +54,7 @@ public class StringHashMapList extends ConcurrentHashMap<Integer, String> {
      * shift elements all keys from starting index until the last toIndex.
      *
      * @param fromIndex the start index (inclusive).
-     * @param toIndex the end index (exclusive).
+     * @param toIndex   the end index (exclusive).
      */
     public void shiftKeys(final int fromIndex, final int toIndex) {
         for (int i = toIndex; i >= fromIndex; i--) {
@@ -63,5 +64,4 @@ public class StringHashMapList extends ConcurrentHashMap<Integer, String> {
             }
         }
     }
-
 }

@@ -1,35 +1,9 @@
 package io.fair_acc.sample.chart;
 
-import static io.fair_acc.dataset.DataSet.DIM_X;
-
-import java.util.*;
-import java.util.stream.Collectors;
-
-import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
 import io.fair_acc.chartfx.marker.DefaultMarker;
-import io.fair_acc.chartfx.plugins.DataPointTooltip;
-import io.fair_acc.chartfx.plugins.EditAxis;
-import io.fair_acc.chartfx.plugins.Panner;
-import io.fair_acc.chartfx.plugins.TableViewer;
-import io.fair_acc.chartfx.plugins.Zoomer;
+import io.fair_acc.chartfx.plugins.*;
 import io.fair_acc.chartfx.renderer.ErrorStyle;
 import io.fair_acc.chartfx.renderer.LineStyle;
 import io.fair_acc.chartfx.renderer.datareduction.DefaultDataReducer;
@@ -40,8 +14,24 @@ import io.fair_acc.dataset.DataSetError;
 import io.fair_acc.dataset.spi.DefaultErrorDataSet;
 import io.fair_acc.dataset.testdata.spi.*;
 import io.fair_acc.dataset.utils.ProcessingProfiler;
+import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static io.fair_acc.dataset.DataSet.DIM_X;
 
 public class ErrorDataSetRendererStylingSample extends Application {
+
     private static final String STOP_TIMER = "stop timer";
     private static final String START_TIMER = "start timer";
     private static final Logger LOGGER = LoggerFactory.getLogger(RollingBufferSample.class);
@@ -60,54 +50,55 @@ public class ErrorDataSetRendererStylingSample extends Application {
     private TextField dataSetStyle;
 
     private void generateData(final XYChart chart) {
+
         long startTime = ProcessingProfiler.getTimeStamp();
         final List<DataSetError> dataSet = new ArrayList<>();
         switch (dataSetType) {
-        case OUTLIER:
-            dataSet.add(new SingleOutlierFunction("function with single outlier", nSamples));
-            break;
-        case STEP:
-            dataSet.add(new RandomStepFunction("random step function", nSamples));
-            break;
-        case SINC:
-            dataSet.add(new SincFunction("sinc function", nSamples));
-            break;
-        case GAUSS:
-            dataSet.add(new GaussFunction("gauss function", nSamples));
-            break;
-        case SINE:
-            dataSet.add(new SineFunction("sine function", nSamples));
-            break;
-        case COSINE:
-            dataSet.add(new CosineFunction("cosine function", nSamples));
-            break;
-        case MIX_TRIGONOMETRIC:
-            dataSet.add(new SineFunction("dyn. sine function", nSamples, true));
-            dataSet.add(new CosineFunction("dyn. cosine function", nSamples, true));
-            break;
-        case ERROR_TYPE_TEST:
-            dataSet.add(new ErrorTestDataSet(nSamples, errorTypeCombo.getValue()));
-            break;
-        case RANDOM_WALK:
-        default:
-            dataSet.add(new RandomWalkFunction("random walk data", nSamples));
-            break;
+            case OUTLIER:
+                dataSet.add(new SingleOutlierFunction("function with single outlier", nSamples));
+                break;
+            case STEP:
+                dataSet.add(new RandomStepFunction("random step function", nSamples));
+                break;
+            case SINC:
+                dataSet.add(new SincFunction("sinc function", nSamples));
+                break;
+            case GAUSS:
+                dataSet.add(new GaussFunction("gauss function", nSamples));
+                break;
+            case SINE:
+                dataSet.add(new SineFunction("sine function", nSamples));
+                break;
+            case COSINE:
+                dataSet.add(new CosineFunction("cosine function", nSamples));
+                break;
+            case MIX_TRIGONOMETRIC:
+                dataSet.add(new SineFunction("dyn. sine function", nSamples, true));
+                dataSet.add(new CosineFunction("dyn. cosine function", nSamples, true));
+                break;
+            case ERROR_TYPE_TEST:
+                dataSet.add(new ErrorTestDataSet(nSamples, errorTypeCombo.getValue()));
+                break;
+            case RANDOM_WALK:
+            default:
+                dataSet.add(new RandomWalkFunction("random walk data", nSamples));
+                break;
         }
 
         final List<DataSetError> dataSetsWithNaN;
         if (dataSetIncludeNaNs) {
             dataSetsWithNaN = dataSet.stream() //
-                                      .map(ds -> {
-                                          final DefaultErrorDataSet newDs = new DefaultErrorDataSet(ds);
-                                          for (int i = Math.max(Math.min(nSamples / 10, 500), 2); i >= 0; i--) { // how many gaps to produce
-                                              final int index = rnd.nextInt(nSamples - i);
-                                              for (int j = i; j >= 0; j--) { // produce gaps with 1 to n consecutive NaNs
-                                                  newDs.set(index, ds.get(DIM_X, index + j), Double.NaN);
-                                              }
-                                          }
-                                          return newDs;
-                                      })
-                                      .collect(Collectors.toList());
+                    .map(ds -> {
+                        final DefaultErrorDataSet newDs = new DefaultErrorDataSet(ds);
+                        for (int i = Math.max(Math.min(nSamples / 10, 500), 2); i >= 0; i--) { // how many gaps to produce
+                            final int index = rnd.nextInt(nSamples - i);
+                            for (int j = i; j >= 0; j--) { // produce gaps with 1 to n consecutive NaNs
+                                newDs.set(index, ds.get(DIM_X, index + j), Double.NaN);
+                            }
+                        }
+                        return newDs;
+                    })
+                    .collect(Collectors.toList());
         } else {
             dataSetsWithNaN = dataSet;
         }
@@ -271,6 +262,7 @@ public class ErrorDataSetRendererStylingSample extends Application {
     }
 
     private ParameterTab getRendererTab(final XYChart chart, final ErrorDataSetRenderer errorRenderer) {
+
         final ParameterTab pane = new ParameterTab("Renderer");
 
         final ComboBox<LineStyle> polyLineSelect = new ComboBox<>();
@@ -556,6 +548,7 @@ public class ErrorDataSetRendererStylingSample extends Application {
     }
 
     private static class ParameterTab extends Tab {
+
         private final GridPane parameterGrid = new GridPane();
         private int rowIndex;
 

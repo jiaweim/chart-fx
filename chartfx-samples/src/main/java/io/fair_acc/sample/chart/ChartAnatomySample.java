@@ -1,7 +1,12 @@
 package io.fair_acc.sample.chart;
 
-import java.util.List;
-
+import io.fair_acc.chartfx.Chart;
+import io.fair_acc.chartfx.axes.Axis;
+import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
+import io.fair_acc.chartfx.renderer.Renderer;
+import io.fair_acc.chartfx.ui.geometry.Corner;
+import io.fair_acc.chartfx.ui.geometry.Side;
+import io.fair_acc.dataset.DataSet;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.ListChangeListener.Change;
@@ -17,26 +22,21 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.fair_acc.chartfx.Chart;
-import io.fair_acc.chartfx.axes.Axis;
-import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
-import io.fair_acc.chartfx.renderer.Renderer;
-import io.fair_acc.chartfx.ui.geometry.Corner;
-import io.fair_acc.chartfx.ui.geometry.Side;
-import io.fair_acc.dataset.DataSet;
+import java.util.List;
 
 /**
  * @author rstein
  */
 public class ChartAnatomySample extends Application {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(ChartAnatomySample.class);
 
     @Override
     public void start(final Stage primaryStage) {
+
         final VBox root = new VBox();
         root.setAlignment(Pos.CENTER);
 
@@ -142,11 +142,14 @@ public class ChartAnatomySample extends Application {
      * @param args the command line arguments
      */
     public static void main(final String[] args) {
+
         Application.launch(args);
     }
 
     private static class MyLabel extends Label {
+
         public MyLabel(final String label) {
+
             super(label);
             VBox.setVgrow(this, Priority.ALWAYS);
             HBox.setHgrow(this, Priority.ALWAYS);
@@ -154,6 +157,7 @@ public class ChartAnatomySample extends Application {
         }
 
         public MyLabel(final String label, boolean rotate) {
+
             this(label);
             if (rotate) {
                 setRotate(90);

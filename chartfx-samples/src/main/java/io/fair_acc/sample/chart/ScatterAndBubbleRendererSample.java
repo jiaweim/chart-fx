@@ -1,28 +1,5 @@
 package io.fair_acc.sample.chart;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
-
-import javafx.application.Application;
-import javafx.scene.Node;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.stage.Stage;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import io.fair_acc.chartfx.Chart;
 import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
@@ -35,6 +12,27 @@ import io.fair_acc.chartfx.renderer.spi.ErrorDataSetRenderer;
 import io.fair_acc.dataset.spi.DefaultDataSet;
 import io.fair_acc.dataset.spi.DefaultErrorDataSet;
 import io.fair_acc.dataset.utils.ProcessingProfiler;
+import javafx.application.Application;
+import javafx.scene.Node;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 /**
  * example to illustrate bubble- and scatter-type plot using either the DataSetError interface or (more customisable)
@@ -43,6 +41,7 @@ import io.fair_acc.dataset.utils.ProcessingProfiler;
  * @author rstein
  */
 public class ScatterAndBubbleRendererSample extends ChartSample {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(ScatterAndBubbleRendererSample.class);
     private static final String DEMO_DATA_FILE = "testdata/2017_OECD_data.csv";
     private final Map<String, Double> lifeExpectancyWomen = new ConcurrentHashMap<>();
@@ -52,14 +51,15 @@ public class ScatterAndBubbleRendererSample extends ChartSample {
     private double maxPopulation = 1.0;
 
     private void loadDemoData(final String fileName) {
+
         try (BufferedReader csvReader = Files
-                                                .newBufferedReader(Paths.get(Objects.requireNonNull(this.getClass().getResource(fileName)).toURI()))) {
+                .newBufferedReader(Paths.get(Objects.requireNonNull(this.getClass().getResource(fileName)).toURI()))) {
             // skip first row
             String row = csvReader.readLine();
             // LOCATION,TIME,LIFEEXP65 – WOMEN,LIFEEXP65 – MEN,TIME,USD_CAP,TIME,MLN_PER
             while ((row = csvReader.readLine()) != null) {
                 String[] data = row.split(",");
-                final double pop = 1e6 * Double.parseDouble(data[7]);
+                final double pop = 1e6 * Double.parseDouble(data[7]); // the last column
                 maxPopulation = Math.max(maxPopulation, pop);
 
                 lifeExpectancyWomen.put(data[0], 65.0 + Double.parseDouble(data[2]));
@@ -107,7 +107,7 @@ public class ScatterAndBubbleRendererSample extends ChartSample {
             bubbleDataSet2b.add(gdp, lifeExpectancyMen.get(country), country);
             // N.B. markerSize is in pixel regardless of the xAxis or yAxis scale
             String markerSize = "markerSize=" + 40 * Math.sqrt(population.get(country) / maxPopulation) + "; index="
-                              + count + ";";
+                    + count + ";";
             bubbleDataSet2a.addDataStyle(count, markerSize);
             bubbleDataSet2b.addDataStyle(count, markerSize);
             if ("FRA".equals(country)) {
@@ -157,6 +157,7 @@ public class ScatterAndBubbleRendererSample extends ChartSample {
     }
 
     private static Chart getDefaultChart(final String title) {
+
         DefaultNumericAxis xAxis = new DefaultNumericAxis("GDP", "USD/capita");
         xAxis.setAutoUnitScaling(true);
         xAxis.setAutoRangePadding(0.05);
@@ -179,6 +180,7 @@ public class ScatterAndBubbleRendererSample extends ChartSample {
      * @param args the command line arguments
      */
     public static void main(final String[] args) {
+
         Application.launch(args);
     }
 }

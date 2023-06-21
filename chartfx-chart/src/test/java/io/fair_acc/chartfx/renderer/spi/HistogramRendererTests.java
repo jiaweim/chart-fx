@@ -1,29 +1,5 @@
 package io.fair_acc.chartfx.renderer.spi;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.List;
-
-import javafx.application.Platform;
-import javafx.scene.Scene;
-import javafx.scene.image.Image;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-import javafx.stage.Stage;
-
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.testfx.framework.junit5.ApplicationExtension;
-import org.testfx.framework.junit5.Start;
-
 import io.fair_acc.chartfx.Chart;
 import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
@@ -38,16 +14,33 @@ import io.fair_acc.dataset.spi.TransposedDataSet;
 import io.fair_acc.dataset.testdata.spi.GaussFunction;
 import io.fair_acc.math.DataSetMath;
 import io.fair_acc.math.MathDataSet;
+import javafx.application.Platform;
+import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
+import javafx.stage.Stage;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.testfx.framework.junit5.ApplicationExtension;
+import org.testfx.framework.junit5.Start;
+
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Tests {@link HistogramRendererTests }
  *
  * @author rstein
- *
  */
 @ExtendWith(ApplicationExtension.class)
 @ExtendWith(JavaFXInterceptorUtils.SelectiveJavaFxInterceptor.class)
 public class HistogramRendererTests {
+
     private static final Class<?> clazz = HistogramRendererTests.class;
     private static final Logger LOGGER = LoggerFactory.getLogger(clazz);
     private static final String className = clazz.getSimpleName();
@@ -68,12 +61,20 @@ public class HistogramRendererTests {
 
         root = new GridPane();
         // bar plots
-        root.addRow(0, getChart(true, false, false, LineStyle.NONE, true), getChart(false, false, false, LineStyle.NONE, true), getChart(false, true, false, LineStyle.NONE, true));
-        root.addRow(1, getChart(true, false, true, LineStyle.NONE, true), getChart(false, false, true, LineStyle.NONE, true), getChart(false, true, true, LineStyle.NONE, true));
+        root.addRow(0, getChart(true, false, false, LineStyle.NONE, true),
+                getChart(false, false, false, LineStyle.NONE, true),
+                getChart(false, true, false, LineStyle.NONE, true));
+        root.addRow(1, getChart(true, false, true, LineStyle.NONE, true),
+                getChart(false, false, true, LineStyle.NONE, true),
+                getChart(false, true, true, LineStyle.NONE, true));
 
         // histogram plots
-        root.addRow(2, getChart(true, false, false, LineStyle.BEZIER_CURVE, false), getChart(true, true, false, LineStyle.HISTOGRAM, false), getChart(false, true, false, LineStyle.HISTOGRAM_FILLED, false));
-        root.addRow(3, getChart(true, false, true, LineStyle.BEZIER_CURVE, false), getChart(true, true, true, LineStyle.HISTOGRAM, false), getChart(false, true, true, LineStyle.HISTOGRAM_FILLED, false));
+        root.addRow(2, getChart(true, false, false, LineStyle.BEZIER_CURVE, false),
+                getChart(true, true, false, LineStyle.HISTOGRAM, false),
+                getChart(false, true, false, LineStyle.HISTOGRAM_FILLED, false));
+        root.addRow(3, getChart(true, false, true, LineStyle.BEZIER_CURVE, false),
+                getChart(true, true, true, LineStyle.HISTOGRAM, false),
+                getChart(false, true, true, LineStyle.HISTOGRAM_FILLED, false));
 
         stage.setScene(new Scene(root, WIDTH, HEIGHT));
         stage.setTitle(getClass().getSimpleName());
@@ -188,7 +189,7 @@ public class HistogramRendererTests {
 
     private static List<DataSet> getTestDataSets(final boolean stacked, final boolean transposed) {
         final List<DataSet> dataSets = new ArrayList<>();
-        for (int centre : new int[] { 2 * N_SAMPLES / 5, N_SAMPLES / 3, 2 * N_SAMPLES / 3 }) {
+        for (int centre : new int[]{2 * N_SAMPLES / 5, N_SAMPLES / 3, 2 * N_SAMPLES / 3}) {
             final AbstractErrorDataSet<?> gauss = new GaussFunction("h" + centre, N_SAMPLES, centre, 0.1 * N_SAMPLES);
             gauss.addDataLabel(centre, "special point for " + gauss.getName());
             gauss.addDataStyle(centre, "strokeColor=cyan; fillColor=cyan; markerColor=cyan;");
@@ -211,6 +212,7 @@ public class HistogramRendererTests {
     }
 
     public static class SummingDataSet extends MathDataSet { // NOSONAR NOPMD -- too many parents is out of our control (Java intrinsic)
+
         public SummingDataSet(final String name, final DataSet... functions) {
             super(name, (dataSets, returnFunction) -> {
                 if (dataSets.isEmpty()) {

@@ -1,15 +1,18 @@
 // This file has been generated automatically by chartfx-generate. Do not modify!
 /*************************************************************************
  * Originally Based on CERN's ROOT analysis frame work:
- * 
+ *
  * @see root.cern.ch for details Copyright (C) 1995-2004, Rene Brun and Fons Rademakers. Authors: Rene Brun, Anna
  *      Kreshuk, Eddy Offermann, Fons Rademakers All rights reserved. Java port and extension by: Ralph J. Steinhagen,
  *      CERN, BE-BI, 2009 For the licensing terms see LICENSE. For the list of contributors see $ROOTSYS/README/CREDITS
  *************************************************************************/
 
 package io.fair_acc.math;
-@SuppressWarnings("PMD.UnnecessaryFullyQualifiedName") // the fully qualified name is needed, because we have our own Math class
+
+@SuppressWarnings("PMD.UnnecessaryFullyQualifiedName")
+// the fully qualified name is needed, because we have our own Math class
 public class MathBase {
+
     /**
      * Square root of two
      */
@@ -131,7 +134,7 @@ public class MathBase {
      */
     public static final double HC = H * C;
     /**
-    * Boltzmann's constant [J K^-1]
+     * Boltzmann's constant [J K^-1]
      */
     public static final double K = 1.3806503e-23;
     /**
@@ -178,12 +181,12 @@ public class MathBase {
     public static final double HC_CGS = H_CGS * C_CGS;
     /**
      * Molecular weight of dry air [kg kmol^-1 (or gm mol^-1)]
-     *  1976 US Standard Atmosphere,
-     *  also see http://atmos.nmsu.edu/jsdap/encyclopediawork.html
+     * 1976 US Standard Atmosphere,
+     * also see http://atmos.nmsu.edu/jsdap/encyclopediawork.html
      */
     public static final double MW_AIR = 28.9644;
     /**
-     *  [J kg^-1 K^-1]
+     * [J kg^-1 K^-1]
      */
     public static final double RG_AIR = (1000.0 * R) / MW_AIR;
     /**
@@ -192,14 +195,17 @@ public class MathBase {
     public static final double R_UNCERTAINTY = R * ((K_UNCERTAINTY / K) + (N_A_UNCERTAINTY / N_A));
 
     public static double log(double x) {
+
         return java.lang.Math.log(x);
     }
 
     public static double log10(double x) {
+
         return java.lang.Math.log10(x);
     }
 
     public static double aCosH(double arg0) {
+
         if (arg0 == 0.0)
             return 0.0;
         double ax = java.lang.Math.abs(arg0);
@@ -207,6 +213,7 @@ public class MathBase {
     }
 
     public static double aSinH(double arg0) {
+
         if (arg0 == 0.0)
             return 0.0;
         double ax = java.lang.Math.abs(arg0);
@@ -214,40 +221,48 @@ public class MathBase {
     }
 
     public static double aTanH(double arg0) {
+
         return java.lang.Math.log((1 + arg0) / (1 - arg0)) / 2;
     }
 
     // codegen: double -> long
+
     /**
      * some integer math
      *
      * @param x input px
      * @param y input py
-     * @return sqrt(px*px + py*py)
+     * @return sqrt(px * px + py * py)
      */
     public static double hypot(double x, double y) {
+
         return java.lang.Math.hypot(x, y);
     }
     //// end codegen
 
     //// codegen: double -> float, int, long
     public static double abs(double d) {
+
         return (d >= 0) ? d : -d;
     }
+
     // start: float
     public static float abs(float d) {
+
         return (d >= 0) ? d : -d;
     }
     // end: float
 
     // start: int
     public static int abs(int d) {
+
         return (d >= 0) ? d : -d;
     }
     // end: int
 
     // start: long
     public static long abs(long d) {
+
         return (d >= 0) ? d : -d;
     }
     // end: long
@@ -255,22 +270,27 @@ public class MathBase {
     //// end codegen
 
     public static short abs(short d) {
+
         return (d >= 0) ? d : ((short) -d);
     }
 
     public static double aCos(double arg0) {
+
         return java.lang.Math.acos(arg0);
     }
 
     public static double aSin(double arg0) {
+
         return java.lang.Math.asin(arg0);
     }
 
     public static double aTan(double arg0) {
+
         return java.lang.Math.atan(arg0);
     }
 
     public static double aTan2(double y, double x) {
+
         if (x != 0)
             return java.lang.Math.atan2(y, x);
         else if (y == 0)
@@ -282,77 +302,95 @@ public class MathBase {
     }
 
     public static double ceil(double x) {
+
         return java.lang.Math.ceil(x);
     }
 
     public static int ceilNInt(double x) {
+
         return nInt(java.lang.Math.ceil(x));
     }
 
     public static double cos(double arg0) {
+
         return java.lang.Math.cos(arg0);
     }
 
     public static double cosH(double arg0) {
+
         return java.lang.Math.cosh(arg0);
     }
 
     public static boolean even(long a) {
+
         return (a & 1) == 0;
     }
 
     public static double exp(double x) {
+
         return java.lang.Math.exp(x);
     }
 
     public static boolean finite(double x) {
+
         return !(Double.isInfinite(x) || Double.isNaN(x));
     }
 
     public static double floor(double x) {
+
         return java.lang.Math.floor(x);
     }
 
     public static int floorNint(double x) {
+
         return nInt(java.lang.Math.floor(x));
     }
 
     public static boolean isNaN(double x) {
+
         return Double.isNaN(x);
     }
 
     public static double ldExp(double x, int exp) {
+
         return x * java.lang.Math.pow(2, exp);
     }
 
     public static double log2(double x) {
+
         return java.lang.Math.log(x) / LOG_2;
     }
 
     //// codegen: double -> float, int, long, short
     public static double max(double a, double b) {
+
         return a >= b ? a : b;
     }
+
     // start: float
     public static float max(float a, float b) {
+
         return a >= b ? a : b;
     }
     // end: float
 
     // start: int
     public static int max(int a, int b) {
+
         return a >= b ? a : b;
     }
     // end: int
 
     // start: long
     public static long max(long a, long b) {
+
         return a >= b ? a : b;
     }
     // end: long
 
     // start: short
     public static short max(short a, short b) {
+
         return a >= b ? a : b;
     }
     // end: short
@@ -361,28 +399,34 @@ public class MathBase {
 
     //// codegen: double -> float, int, long, short
     public static double min(double a, double b) {
+
         return a <= b ? a : b;
     }
+
     // start: float
     public static float min(float a, float b) {
+
         return a <= b ? a : b;
     }
     // end: float
 
     // start: int
     public static int min(int a, int b) {
+
         return a <= b ? a : b;
     }
     // end: int
 
     // start: long
     public static long min(long a, long b) {
+
         return a <= b ? a : b;
     }
     // end: long
 
     // start: short
     public static short min(short a, short b) {
+
         return a <= b ? a : b;
     }
     // end: short
@@ -391,11 +435,12 @@ public class MathBase {
 
     /**
      * Return next prime number after x, unless x is a prime in which case x is returned.
-     * 
+     *
      * @param x input
      * @return next prime number greater/equal x
      */
     public static long nextPrime(final long x) {
+
         if (x <= 2)
             return 2;
         if (x == 3)
@@ -420,6 +465,7 @@ public class MathBase {
      * @return Round to nearest integer. Rounds half integers to the nearest even integer.
      */
     public static int nInt(double x) {
+
         int i;
         if (x >= 0) {
             i = (int) (x + 0.5);
@@ -438,6 +484,7 @@ public class MathBase {
      * @return Round to nearest integer. Rounds half integers to the nearest
      */
     public static int nInt(float x) {
+
         int i;
         if (x >= 0) {
             i = (int) (x + 0.5f);
@@ -452,31 +499,38 @@ public class MathBase {
     }
 
     public static boolean odd(long a) {
+
         return (a & 1) != 0;
     }
 
     public static double pow(double x, double y) {
+
         return java.lang.Math.pow(x, y);
     }
 
     //// codegen: double -> int, long, short
     public static double range(double lb, double ub, double x) {
+
         return x < lb ? lb : (x > ub ? ub : x);
     }
+
     // start: int
     public static int range(int lb, int ub, int x) {
+
         return x < lb ? lb : (x > ub ? ub : x);
     }
     // end: int
 
     // start: long
     public static long range(long lb, long ub, long x) {
+
         return x < lb ? lb : (x > ub ? ub : x);
     }
     // end: long
 
     // start: short
     public static short range(short lb, short ub, short x) {
+
         return x < lb ? lb : (x > ub ? ub : x);
     }
     // end: short
@@ -485,31 +539,38 @@ public class MathBase {
 
     // codegen: double -> float, int, long, short
     public static double sign(double a, double b) {
+
         return (b >= 0) ? abs(a) : -abs(a);
     }
     // end codegen
 
     public static double sin(double arg0) {
+
         return java.lang.Math.sin(arg0);
     }
 
     public static double sinH(double arg0) {
+
         return java.lang.Math.sinh(arg0);
     }
 
     public static double sqr(double x) {
+
         return x * x;
     }
 
     public static double sqrt(double x) {
+
         return java.lang.Math.sqrt(x);
     }
 
     public static double tan(double arg0) {
+
         return java.lang.Math.tan(arg0);
     }
 
     public static double tanH(double arg0) {
+
         return java.lang.Math.tanh(arg0);
     }
 }

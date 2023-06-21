@@ -1,7 +1,11 @@
 package io.fair_acc.chartfx.axes;
 
-import java.util.List;
-
+import io.fair_acc.chartfx.axes.spi.AxisRange;
+import io.fair_acc.chartfx.axes.spi.MetricPrefix;
+import io.fair_acc.chartfx.axes.spi.TickMark;
+import io.fair_acc.chartfx.ui.geometry.Side;
+import io.fair_acc.dataset.AxisDescription;
+import io.fair_acc.dataset.event.UpdateEvent;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
@@ -13,14 +17,10 @@ import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.util.StringConverter;
 
-import io.fair_acc.chartfx.axes.spi.AxisRange;
-import io.fair_acc.chartfx.axes.spi.MetricPrefix;
-import io.fair_acc.chartfx.axes.spi.TickMark;
-import io.fair_acc.chartfx.ui.geometry.Side;
-import io.fair_acc.dataset.AxisDescription;
-import io.fair_acc.dataset.event.UpdateEvent;
+import java.util.List;
 
 public interface Axis extends AxisDescription {
+
     /**
      * This is true when the axis determines its range from the data automatically
      *
@@ -43,8 +43,8 @@ public interface Axis extends AxisDescription {
     /**
      * Function allows custom drawing of axes outside the Axis environment (ie. on another canvas)
      *
-     * @param gc the graphic context on which the axis is to be drawn
-     * @param axisWidth the axis width in pixel (N.B. padding is being added)
+     * @param gc         the graphic context on which the axis is to be drawn
+     * @param axisWidth  the axis width in pixel (N.B. padding is being added)
      * @param axisHeight the axis height in pixel (N.B. padding is being added)
      */
     void drawAxis(GraphicsContext gc, double axisWidth, double axisHeight);
@@ -160,6 +160,9 @@ public interface Axis extends AxisDescription {
      */
     double getValueForDisplay(double displayPosition);
 
+    /**
+     * @return the width of the axis pane
+     */
     double getWidth();
 
     /**
@@ -182,7 +185,7 @@ public interface Axis extends AxisDescription {
      * This is {@code true} when the axis labels and data point order should be inverted
      *
      * @param value {@code true} if axis shall be inverted (i.e. drawn from 'max-&gt;min', rather than the normal
-     *        'min-&gt;max')
+     *              'min-&gt;max')
      */
     void invertAxis(boolean value);
 
@@ -196,7 +199,7 @@ public interface Axis extends AxisDescription {
     /**
      * invoke object within update listener list
      *
-     * @param updateEvent the event the listeners are notified with
+     * @param updateEvent     the event the listeners are notified with
      * @param executeParallel {@code true} execute event listener via parallel executor service
      */
     @Override
@@ -228,7 +231,7 @@ public interface Axis extends AxisDescription {
      * This is {@code true} when the axis labels and data point order should be inverted
      *
      * @return {@code true} if axis shall be inverted (i.e. drawn from 'max-&gt;min', rather than the normal
-     *         'min-&gt;max')
+     * 'min-&gt;max')
      */
     boolean isInvertedAxis();
 
@@ -256,6 +259,9 @@ public interface Axis extends AxisDescription {
 
     DoubleProperty maxProperty();
 
+    /**
+     * @return The value for the lower bound of this axis, ie min value.
+     */
     DoubleProperty minProperty();
 
     /**
@@ -343,7 +349,7 @@ public interface Axis extends AxisDescription {
     StringProperty unitProperty();
 
     /**
-     * @return the primary unit label property
+     * @return unit scaling value
      */
     DoubleProperty unitScalingProperty();
 

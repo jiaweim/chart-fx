@@ -8,8 +8,10 @@ package io.fair_acc.math;
  *
  * @author rstein
  */
-@SuppressWarnings("PMD.UnnecessaryFullyQualifiedName") // the fully qualified name is needed, because we have our own Math class
+@SuppressWarnings("PMD.UnnecessaryFullyQualifiedName")
+// the fully qualified name is needed, because we have our own Math class
 public class MathBaseFast extends MathBase {
+
     private static final int DEFAULT_TRIG_RESOLUTION = 3600; // gradations full circle (2*\pi, 360 deg resp)
     private static int precision = DEFAULT_TRIG_RESOLUTION;
     private static int modulusRad;
@@ -17,6 +19,7 @@ public class MathBaseFast extends MathBase {
     private static int modulusDeg;
     private static float[] sinRadLookup; // sine lookup table [rad]
     private static float[] sinDegLockup; // sine lookup table [deg]
+
     static {
         init();
     }
@@ -26,26 +29,32 @@ public class MathBaseFast extends MathBase {
     }
 
     public static double cos(double a) {
+
         return sinLocalLookUp((int) (a * precision + modulusRadQuater + 0.5));
     }
 
     public static float cos(float a) {
+
         return sinLocalLookUp((int) (a * precision + modulusRadQuater + 0.5f));
     }
 
     public static double cosDeg(double a) {
+
         return sinLocalLookUpDegree((int) ((a + 90f) * precision + 0.5f));
     }
 
     public static float cosDeg(float a) {
+
         return sinLocalLookUpDegree((int) ((a + 90f) * precision + 0.5f));
     }
 
     public static int getPrecision() {
+
         return precision;
     }
 
     public static void setPrecision(int precision) {
+
         if (precision <= 0) {
             throw new IllegalArgumentException("precision '" + precision + "'must be positive");
         }
@@ -54,22 +63,27 @@ public class MathBaseFast extends MathBase {
     }
 
     public static double sin(double a) {
+
         return sinLocalLookUp((int) (a * precision + 0.5));
     }
 
     public static float sin(float a) {
+
         return sinLocalLookUp((int) (a * precision + 0.5f));
     }
 
     public static double sinDeg(double a) {
+
         return sinLocalLookUpDegree((int) (a * precision + 0.5));
     }
 
     public static float sinDeg(float a) {
+
         return sinLocalLookUpDegree((int) (a * precision + 0.5f));
     }
 
     private static void init() {
+
         modulusRad = (int) (2.0 * Math.PI * precision);
         modulusRadQuater = modulusRad >> 2;
         modulusDeg = 360 * precision;
@@ -85,10 +99,12 @@ public class MathBaseFast extends MathBase {
     }
 
     private static float sinLocalLookUp(int a) {
+
         return a >= 0 ? sinRadLookup[a % (modulusRad)] : -sinRadLookup[-a % (modulusRad)];
     }
 
     private static float sinLocalLookUpDegree(int a) {
+
         return a >= 0 ? sinDegLockup[a % (modulusDeg)] : -sinDegLockup[-a % (modulusDeg)];
     }
 }

@@ -47,17 +47,16 @@ public class CategoryAxisSample extends ChartSample {
         lineChartPlot.getRenderers().clear();
         // lineChartPlot.getRenderers().add(new ReducingLineRenderer());
         final ErrorDataSetRenderer renderer = new ErrorDataSetRenderer();
-        renderer.setPolyLineStyle(LineStyle.NONE);
-//        renderer.setPolyLineStyle(LineStyle.HISTOGRAM);
+        renderer.setPolyLineStyle(LineStyle.HISTOGRAM);
         lineChartPlot.getRenderers().add(renderer);
         lineChartPlot.legendVisibleProperty().set(true);
 
-        lineChartPlot.getPlugins().add(new ParameterMeasurements());
-        lineChartPlot.getPlugins().add(new EditAxis());
-        final Zoomer zoomer = new Zoomer();
+//        lineChartPlot.getPlugins().add(new ParameterMeasurements());
+//        lineChartPlot.getPlugins().add(new EditAxis());
+//        final Zoomer zoomer = new Zoomer();
         // zoomer.setSliderVisible(false);
         // zoomer.setAddButtonsToToolBar(false);
-        lineChartPlot.getPlugins().add(zoomer);
+//        lineChartPlot.getPlugins().add(zoomer);
 
         final DefaultErrorDataSet dataSet = new DefaultErrorDataSet("myData");
 
@@ -74,7 +73,7 @@ public class CategoryAxisSample extends ChartSample {
         double y = 0;
         for (int n = 0; n < CategoryAxisSample.N_SAMPLES; n++) {
             y += RandomDataGenerator.random() - 0.5;
-            final double ex = 0.0;
+            final double ex = 0;
             final double ey = 0.1;
             dataSet.add(n, y, ex, ey);
             dataSet.addDataLabel(n, "SpecialCategory#" + n);

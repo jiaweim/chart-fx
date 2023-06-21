@@ -5,6 +5,7 @@ import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
 import io.fair_acc.chartfx.plugins.CrosshairIndicator;
 import io.fair_acc.chartfx.plugins.EditAxis;
 import io.fair_acc.chartfx.plugins.Zoomer;
+import io.fair_acc.chartfx.renderer.Renderer;
 import io.fair_acc.chartfx.ui.geometry.Side;
 import io.fair_acc.dataset.event.UpdatedDataEvent;
 import io.fair_acc.dataset.spi.DoubleDataSet;

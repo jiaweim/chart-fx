@@ -24,9 +24,11 @@ import io.fair_acc.dataset.DataSet;
 
 /**
  * Basic getter/setter tests for {@link io.fair_acc.chartfx.renderer.spi.AbstractErrorDataSetRendererParameter}
+ *
  * @author rstein
  */
 public class AbstractErrorDataSetRendererParameterTests {
+
     @Test
     public void basicGetterSetterTests() {
         assertDoesNotThrow(TestErrorDataSetRendererParameter::new);
@@ -120,6 +122,7 @@ public class AbstractErrorDataSetRendererParameterTests {
      * basic test class, only supports limited getter/setter/property functions
      */
     public static class TestErrorDataSetRendererParameter extends AbstractErrorDataSetRendererParameter<TestErrorDataSetRendererParameter> {
+
         @Override
         public Canvas drawLegendSymbol(DataSet dataSet, int dsIndex, int width, int height) {
             throw new UnsupportedOperationException();

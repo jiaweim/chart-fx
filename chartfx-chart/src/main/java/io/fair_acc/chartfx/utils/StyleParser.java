@@ -1,17 +1,18 @@
 package io.fair_acc.chartfx.utils;
 
-import java.util.*;
-import java.util.regex.Pattern;
-
+import io.fair_acc.chartfx.XYChartCss;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.fair_acc.chartfx.XYChartCss;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * Some helper routines to parse CSS-style formatting attributes
@@ -19,16 +20,26 @@ import io.fair_acc.chartfx.XYChartCss;
  * @author rstein
  */
 public final class StyleParser { // NOPMD
+
     private static final Logger LOGGER = LoggerFactory.getLogger(StyleParser.class);
     private static final int DEFAULT_FONT_SIZE = 18;
     private static final String DEFAULT_FONT = "Helvetica";
     private static final Pattern AT_LEAST_ONE_WHITESPACE_PATTERN = Pattern.compile("\\s+");
     private static final Pattern QUOTES_PATTERN = Pattern.compile("[\"']");
+    /**
+     * properties are split with '=' or ':'
+     */
     private static final Pattern STYLE_ASSIGNMENT_PATTERN = Pattern.compile("[=:]");
 
-    private StyleParser() {
-    }
+    private StyleParser() {}
 
+    /**
+     * Return the property value of given property name
+     *
+     * @param style style string to parse
+     * @param key   property key
+     * @return property value, null if the style or key is null
+     */
     public static String getPropertyValue(final String style, final String key) {
         if (style == null || key == null) {
             return null;
@@ -37,11 +48,26 @@ public final class StyleParser { // NOPMD
         return map.get(key.toLowerCase(Locale.UK));
     }
 
+    /**
+     * parse the <code>style</code> and return value of given key, the defaultValue if null.
+     *
+     * @param style        style string
+     * @param key          property key
+     * @param defaultValue default value
+     * @return property value of the key
+     */
     public static String getPropertyValue(final String style, final String key, String defaultValue) {
         final String result = getPropertyValue(style, key);
         return result != null ? result : defaultValue;
     }
 
+    /**
+     * parse the style and return boolean value of the key
+     *
+     * @param style style, such as "booleanProperty=true", "booleanProperty=false"
+     * @param key   property, such as "booleanProperty"
+     * @return boolean value
+     */
     public static Boolean getBooleanPropertyValue(final String style, final String key) {
         final String value = getPropertyValue(style, key);
         if (value == null) {
@@ -51,6 +77,13 @@ public final class StyleParser { // NOPMD
         return Boolean.parseBoolean(value);
     }
 
+    /**
+     * parse the style and return the property value in Color type.
+     *
+     * @param style style to parse
+     * @param key   property key
+     * @return property value in Color type
+     */
     public static Color getColorPropertyValue(final String style, final String key) {
         final String value = getPropertyValue(style, key);
         if (value == null) {
@@ -64,11 +97,27 @@ public final class StyleParser { // NOPMD
         }
     }
 
+    /**
+     * parse the style and return the property value in Color type, or <code>defaultColor</code> for null.
+     *
+     * @param style        style to parse
+     * @param key          property key
+     * @param defaultColor alternative value for null
+     * @return Color type property value
+     */
     public static Color getColorPropertyValue(final String style, final String key, final Color defaultColor) {
         final Color result = getColorPropertyValue(style, key);
         return result != null ? result : defaultColor;
     }
 
+    /**
+     * parse the style and return property value as double[] type, array values are split with comma ',', such as
+     * "floatingPointArray=0.1,0.2"
+     *
+     * @param style style to parse
+     * @param key   property value
+     * @return property in double[] type
+     */
     public static double[] getFloatingDecimalArrayPropertyValue(final String style, final String key) {
         final String value = getPropertyValue(style, key);
         if (value == null) {
@@ -88,6 +137,13 @@ public final class StyleParser { // NOPMD
         }
     }
 
+    /**
+     * Return double type property value
+     *
+     * @param style style to parse
+     * @param key   property key
+     * @return double property value
+     */
     public static Double getFloatingDecimalPropertyValue(final String style, final String key) {
         final String value = getPropertyValue(style, key);
         if (value == null) {
@@ -102,6 +158,13 @@ public final class StyleParser { // NOPMD
         }
     }
 
+    /**
+     * Return double type property value, or <code>defaultValue</code> for null
+     *
+     * @param style style to parse
+     * @param key   property key
+     * @return double property value
+     */
     public static double getFloatingDecimalPropertyValue(String style, String key, double defaultValue) {
         Double value = getFloatingDecimalPropertyValue(style, key);
         if (value == null) {
@@ -110,6 +173,13 @@ public final class StyleParser { // NOPMD
         return value;
     }
 
+
+    /**
+     * Return font in the style, or default font if parse failed
+     *
+     * @param style style to parse
+     * @return Font
+     */
     public static Font getFontPropertyValue(final String style) {
         if (style == null) {
             return Font.font(StyleParser.DEFAULT_FONT, StyleParser.DEFAULT_FONT_SIZE);
@@ -143,6 +213,13 @@ public final class StyleParser { // NOPMD
         return Font.font(fontName, fontWeight, fontPosture, fontSize);
     }
 
+    /**
+     * Return integer type property value
+     *
+     * @param style style to parse
+     * @param key   int property key
+     * @return integer property value
+     */
     public static Integer getIntegerPropertyValue(final String style, final String key) {
         final String value = getPropertyValue(style, key);
         if (value == null) {
@@ -156,6 +233,14 @@ public final class StyleParser { // NOPMD
             return null;
         }
     }
+
+    /**
+     * Return property value in double[] type
+     *
+     * @param style style to parse
+     * @param key   property key
+     * @return double[] as stroke dash array
+     */
     public static double[] getStrokeDashPropertyValue(final String style, final String key) {
         final String value = getPropertyValue(style, key);
         if (value == null) {
@@ -170,6 +255,12 @@ public final class StyleParser { // NOPMD
         }
     }
 
+    /**
+     * convert map containing property values into string
+     *
+     * @param map map with properties
+     * @return CSS string
+     */
     public static String mapToString(final Map<String, String> map) {
         String ret = "";
         for (final Map.Entry<String, String> entry : map.entrySet()) {
@@ -193,6 +284,7 @@ public final class StyleParser { // NOPMD
             return retVal;
         }
 
+        // remove space
         final String[] keyVals = AT_LEAST_ONE_WHITESPACE_PATTERN.matcher(style.toLowerCase(Locale.UK)).replaceAll("").split(";");
         for (final String keyVal : keyVals) {
             final String[] parts = STYLE_ASSIGNMENT_PATTERN.split(keyVal, 2);

@@ -1,15 +1,14 @@
 package io.fair_acc.chartfx.renderer;
 
-import java.util.List;
-
+import io.fair_acc.chartfx.Chart;
+import io.fair_acc.chartfx.axes.Axis;
+import io.fair_acc.dataset.DataSet;
 import javafx.beans.property.BooleanProperty;
 import javafx.collections.ObservableList;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
-import io.fair_acc.chartfx.Chart;
-import io.fair_acc.chartfx.axes.Axis;
-import io.fair_acc.dataset.DataSet;
+import java.util.List;
 
 /**
  * -- generic renderer interface --
@@ -18,11 +17,12 @@ import io.fair_acc.dataset.DataSet;
  * @author rstein
  */
 public interface Renderer {
+
     /**
      * @param dataSet the data set for which the representative icon should be generated
      * @param dsIndex index within renderer set
-     * @param width requested width of the returning Canvas
-     * @param height requested height of the returning Canvas
+     * @param width   requested width of the returning Canvas
+     * @param height  requested height of the returning Canvas
      * @return a graphical icon representation of the given data sets
      */
     Canvas drawLegendSymbol(DataSet dataSet, int dsIndex, int width, int height);
@@ -32,16 +32,18 @@ public interface Renderer {
      */
     ObservableList<Axis> getAxes();
 
+    /**
+     * @return observable list of datasets that are supposed to be drawn on the canvas
+     */
     ObservableList<DataSet> getDatasets();
 
     ObservableList<DataSet> getDatasetsCopy();
 
     /**
-     *
-     * @param gc the Canvas' GraphicsContext the renderer should draw upon
-     * @param chart the corresponding chart
+     * @param gc            the Canvas' GraphicsContext the renderer should draw upon
+     * @param chart         the corresponding chart
      * @param dataSetOffset global offset of the last drawn DataSet
-     * @param datasets list of globally (ie. in Chart) stored DataSets
+     * @param datasets      list of globally (ie. in Chart) stored DataSets
      * @return List of drawn DataSets (N.B. return '0' in case {@link #showInLegend} is false)
      */
     List<DataSet> render(GraphicsContext gc, Chart chart, int dataSetOffset, ObservableList<DataSet> datasets);

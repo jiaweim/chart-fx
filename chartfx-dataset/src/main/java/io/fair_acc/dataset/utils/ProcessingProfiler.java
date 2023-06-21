@@ -1,17 +1,16 @@
 package io.fair_acc.dataset.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Small utility class to measure ns-level processing delays
  *
  * @author rstein
- *
  */
 public final class ProcessingProfiler { // NOPMD nomen est omen
 
@@ -30,6 +29,7 @@ public final class ProcessingProfiler { // NOPMD nomen est omen
     private static boolean loggerOutput = false;
 
     private ProcessingProfiler() {
+
     }
 
     /**
@@ -37,6 +37,7 @@ public final class ProcessingProfiler { // NOPMD nomen est omen
      * @return the 'class::function(line:xxx)' string
      */
     public static List<String> getCallingClassMethod(int... recursionDepth) {
+
         ArrayList<String> list = new ArrayList<>();
         final StackTraceElement[] stacktrace = Thread.currentThread().getStackTrace();
 
@@ -61,6 +62,7 @@ public final class ProcessingProfiler { // NOPMD nomen est omen
     }
 
     private static String getCallingClassMethod(String msg) {
+
         final StackTraceElement[] stacktrace = Thread.currentThread().getStackTrace();
         // this number needs to be corrected if this class is refactored
         final int nLast = msg == null ? 4 : 3;
@@ -77,6 +79,7 @@ public final class ProcessingProfiler { // NOPMD nomen est omen
      * @return boolean flag controlling whether diagnostics time-marks are taken or the routine to be skipped
      */
     public static boolean getDebugState() {
+
         return debugState;
     }
 
@@ -84,6 +87,7 @@ public final class ProcessingProfiler { // NOPMD nomen est omen
      * @return boolean flag controlling whether the statistics/time differences are output to the logger/console or not
      */
     public static boolean getLoggerOutputState() {
+
         return loggerOutput;
     }
 
@@ -92,15 +96,17 @@ public final class ProcessingProfiler { // NOPMD nomen est omen
      * @return actual delay
      */
     public static long getTimeDiff(final long lastStamp) {
+
         return ProcessingProfiler.getTimeDiff(lastStamp, null);
     }
 
     /**
      * @param lastStamp reference time stamp
-     * @param msg custom string message that should be printed alongside the time stamp
+     * @param msg       custom string message that should be printed alongside the time stamp
      * @return actual delay
      */
     public static long getTimeDiff(final long lastStamp, final String msg) {
+
         if (!(ProcessingProfiler.debugState)) {
             return 0;
         }
@@ -113,8 +119,7 @@ public final class ProcessingProfiler { // NOPMD nomen est omen
             if (ProcessingProfiler.loggerOutput) {
                 ProcessingProfiler.LOGGER.info(message);
             } else {
-                System.out.println(message); // #NOPMD, this System.out is
-                                             // on purpose
+                System.out.println(message); // #NOPMD, this System.out is on purpose
             }
         }
         // TODO: log statistic to HashMap/histogram, etc.
@@ -132,6 +137,7 @@ public final class ProcessingProfiler { // NOPMD nomen est omen
      * @return nanoSecond resolution time stam
      */
     public static long getTimeStamp() {
+
         if (ProcessingProfiler.debugState) {
             return System.nanoTime();
         }
@@ -142,6 +148,7 @@ public final class ProcessingProfiler { // NOPMD nomen est omen
      * @return boolean flag controlling whether the statistics/time differences are output to the logger/console or not
      */
     public static boolean getVerboseOutputState() {
+
         return verboseOutput;
     }
 
@@ -151,6 +158,7 @@ public final class ProcessingProfiler { // NOPMD nomen est omen
      * @param state true: enable
      */
     public static void setDebugState(final boolean state) {
+
         debugState = state;
     }
 
@@ -160,6 +168,7 @@ public final class ProcessingProfiler { // NOPMD nomen est omen
      * @param state true: enable
      */
     public static void setLoggerOutputState(final boolean state) {
+
         loggerOutput = state;
     }
 
@@ -169,6 +178,7 @@ public final class ProcessingProfiler { // NOPMD nomen est omen
      * @param state true: enable
      */
     public static void setVerboseOutputState(final boolean state) {
+
         verboseOutput = state;
     }
 }

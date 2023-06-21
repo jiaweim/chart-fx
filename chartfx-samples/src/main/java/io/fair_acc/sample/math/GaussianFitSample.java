@@ -1,11 +1,5 @@
 package io.fair_acc.sample.math;
 
-import javafx.application.Application;
-import javafx.scene.Node;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import io.fair_acc.dataset.DataSet;
 import io.fair_acc.dataset.spi.DefaultDataSet;
 import io.fair_acc.dataset.spi.DefaultErrorDataSet;
@@ -14,13 +8,19 @@ import io.fair_acc.math.fitter.NonLinearRegressionFitter;
 import io.fair_acc.math.functions.AbstractFunction1D;
 import io.fair_acc.sample.math.utils.AbstractDemoApplication;
 import io.fair_acc.sample.math.utils.DemoChart;
+import javafx.application.Application;
+import javafx.scene.Node;
+import org.apache.commons.math3.util.FastMath;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * example illustrating fitting of a Gaussian Distribution
- * 
+ *
  * @author rstein
  */
 public class GaussianFitSample extends AbstractDemoApplication {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(GaussianFitSample.class);
     private static final int MAX_POINTS = 101;
     private DataSet fmodel;
@@ -29,6 +29,7 @@ public class GaussianFitSample extends AbstractDemoApplication {
 
     @Override
     public Node getContent() {
+
         initData();
 
         final DemoChart chart = new DemoChart();
@@ -41,7 +42,7 @@ public class GaussianFitSample extends AbstractDemoApplication {
         // user specific fitting function, here: normalised Gaussian Function
         // y := scale*1/sqrt(2*Pi*sigma^2)*exp(-0.5*(x-mu)^2/sigma^2)
         // ... MyGaussianFunction(name, double[]{mu, sigma, scale})
-        final MyGaussianFunction func = new MyGaussianFunction("gauss1", new double[] { -3.0, 1.0, 10.0 });
+        final MyGaussianFunction func = new MyGaussianFunction("gauss1", new double[]{-3.0, 1.0, 10.0});
         LOGGER.atInfo().log("before fit");
         func.printParameters();
 
@@ -53,7 +54,7 @@ public class GaussianFitSample extends AbstractDemoApplication {
         for (int i = 0; i < xValues.length; i++) {
             final double error = 0.5 * RANDOM.nextGaussian();
             xValues[i] = (i - xValues.length / 2.0) * 30.0 / MAX_POINTS; // equidistant
-                    // sampling
+            // sampling
 
             final double value = func.getValue(xValues[i]);
             // add some slope and offset to make the fit a bit more tricky
@@ -121,6 +122,7 @@ public class GaussianFitSample extends AbstractDemoApplication {
     }
 
     public static void main(final String[] args) {
+
         Application.launch(args);
     }
 
@@ -128,7 +130,9 @@ public class GaussianFitSample extends AbstractDemoApplication {
      * example fitting function y = scale/(sqrt(2*pi*sigma)*exp(- 0.5*(x-mu)^2/sigma^2)
      */
     protected static class MyGaussianFunction extends AbstractFunction1D {
+
         public MyGaussianFunction(final String name, final double[] parameter) {
+
             super(name, new double[3]);
             // declare parameter names
             this.setParameterName(0, "mu");
@@ -152,6 +156,7 @@ public class GaussianFitSample extends AbstractDemoApplication {
 
         @Override
         public double getValue(final double x) {
+
             final double mu = fparameter[0];
             final double sigma = fparameter[1];
             final double scale = fparameter[2];

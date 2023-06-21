@@ -1,14 +1,14 @@
 package io.fair_acc.dataset.spi.financial;
 
-import java.util.Iterator;
-
+import io.fair_acc.dataset.DataSet;
+import io.fair_acc.dataset.spi.AbstractDataSet;
 import io.fair_acc.dataset.spi.financial.api.attrs.AttributeModel;
 import io.fair_acc.dataset.spi.financial.api.attrs.AttributeModelAware;
 import io.fair_acc.dataset.spi.financial.api.ohlcv.IOhlcv;
 import io.fair_acc.dataset.spi.financial.api.ohlcv.IOhlcvItem;
 import io.fair_acc.dataset.spi.financial.api.ohlcv.IOhlcvItemAware;
-import io.fair_acc.dataset.DataSet;
-import io.fair_acc.dataset.spi.AbstractDataSet;
+
+import java.util.Iterator;
 
 /**
  * Dataset Domain Object for encapsulation of IOhlcv API structure.
@@ -17,6 +17,7 @@ import io.fair_acc.dataset.spi.AbstractDataSet;
  * @see IOhlcvItem API provides OHLCV item domain object access.
  */
 public class OhlcvDataSet extends AbstractDataSet<OhlcvDataSet> implements Iterable<IOhlcvItem>, IOhlcvItemAware, AttributeModelAware {
+
     public static final int DIM_Y_OPEN = 1;
     public static final int DIM_Y_HIGH = 2;
     public static final int DIM_Y_LOW = 3;
@@ -68,22 +69,22 @@ public class OhlcvDataSet extends AbstractDataSet<OhlcvDataSet> implements Itera
     public double get(int dimIndex, int index) {
         IOhlcvItem ohlcvItem = ohlcv.getOhlcvItem(index);
         switch (dimIndex) {
-        case DIM_X:
-            return isCategoryBased ? index : ohlcvItem.getTimeStamp().getTime() / 1000.0;
-        case DIM_Y_OPEN:
-            return ohlcvItem.getOpen();
-        case DIM_Y_HIGH:
-            return ohlcvItem.getHigh();
-        case DIM_Y_LOW:
-            return ohlcvItem.getLow();
-        case DIM_Y_CLOSE:
-            return ohlcvItem.getClose();
-        case DIM_Y_VOLUME:
-            return ohlcvItem.getVolume();
-        case DIM_Y_OI:
-            return ohlcvItem.getOpenInterest();
-        default:
-            throw new IllegalArgumentException("Dimension not allowed! dimIndex=" + dimIndex);
+            case DIM_X:
+                return isCategoryBased ? index : ohlcvItem.getTimeStamp().getTime() / 1000.0;
+            case DIM_Y_OPEN:
+                return ohlcvItem.getOpen();
+            case DIM_Y_HIGH:
+                return ohlcvItem.getHigh();
+            case DIM_Y_LOW:
+                return ohlcvItem.getLow();
+            case DIM_Y_CLOSE:
+                return ohlcvItem.getClose();
+            case DIM_Y_VOLUME:
+                return ohlcvItem.getVolume();
+            case DIM_Y_OI:
+                return ohlcvItem.getOpenInterest();
+            default:
+                throw new IllegalArgumentException("Dimension not allowed! dimIndex=" + dimIndex);
         }
     }
 

@@ -1,21 +1,5 @@
 package io.fair_acc.sample.chart;
 
-import java.util.List;
-import java.util.Map;
-
-import javafx.application.Application;
-import javafx.collections.ListChangeListener;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.control.ContentDisplay;
-import javafx.scene.control.Label;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.text.Font;
-import javafx.stage.Stage;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import io.fair_acc.chartfx.Chart;
 import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.Axis;
@@ -26,6 +10,20 @@ import io.fair_acc.dataset.DataSet;
 import io.fair_acc.dataset.event.AddedDataEvent;
 import io.fair_acc.dataset.spi.DoubleErrorDataSet;
 import io.fair_acc.dataset.testdata.spi.RandomDataGenerator;
+import javafx.application.Application;
+import javafx.collections.ListChangeListener;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.Label;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.text.Font;
+import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author rstein
@@ -44,7 +42,7 @@ public class ZoomerSample extends ChartSample {
         DataSet testDataSet = generateData();
 
         Label label = new Label("left-click-hold-drag for zooming. middle-button for panning.\n"
-                                + "Tip: drag horizontally/vertically/diagonally for testing; try to select the outlier");
+                + "Tip: drag horizontally/vertically/diagonally for testing; try to select the outlier");
         label.setFont(Font.font(20));
         label.setAlignment(Pos.CENTER);
         label.setContentDisplay(ContentDisplay.CENTER);

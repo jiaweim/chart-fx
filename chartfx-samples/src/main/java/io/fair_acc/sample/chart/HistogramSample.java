@@ -38,7 +38,6 @@ public class HistogramSample extends ChartSample {
     private int counter;
 
     private void fillData() {
-
         counter++;
         dataSet1.fill(RandomDataGenerator.nextGaussian() * 2 + 8.0);
         dataSet2.fill(RandomDataGenerator.nextGaussian() * 3 + 12.0);
@@ -121,7 +120,7 @@ public class HistogramSample extends ChartSample {
         // N.B. disable this if you want to use the data set's categories
         xAxis1.setCategories(categories);
 
-        // fillDemoData();
+         fillDemoData();
 
         // setting the axis categories to null forces the first data set's category
         // enable this if you want to use the data set's categories
@@ -129,18 +128,18 @@ public class HistogramSample extends ChartSample {
 
         root.getChildren().add(chart);
 
-        final Timer timer = new Timer("sample-update-timer", true);
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
 
-                fillData();
-                FXUtils.runFX(chart::requestLayout);
-            }
-        }, HistogramSample.UPDATE_DELAY, HistogramSample.UPDATE_PERIOD);
+//        final Timer timer = new Timer("sample-update-timer", true);
+//        timer.scheduleAtFixedRate(new TimerTask() {
+//            @Override
+//            public void run() {
+//                fillData();
+//                FXUtils.runFX(chart::requestLayout);
+//            }
+//        }, HistogramSample.UPDATE_DELAY, HistogramSample.UPDATE_PERIOD);
 
         primaryStage.setOnCloseRequest(evt -> {
-            timer.cancel();
+//            timer.cancel();
             Platform.exit();
         });
 

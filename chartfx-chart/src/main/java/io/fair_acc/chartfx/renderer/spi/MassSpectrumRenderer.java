@@ -13,7 +13,7 @@ import io.fair_acc.chartfx.renderer.spi.utils.BezierCurve;
 import io.fair_acc.chartfx.renderer.spi.utils.DefaultRenderColorScheme;
 import io.fair_acc.chartfx.utils.StyleParser;
 import io.fair_acc.dataset.DataSet;
-import io.fair_acc.dataset.DataSetError.ErrorType;
+import io.fair_acc.dataset.DataSetError;
 import io.fair_acc.dataset.spi.utils.Triple;
 import io.fair_acc.dataset.utils.DoubleArrayCache;
 import io.fair_acc.dataset.utils.ProcessingProfiler;
@@ -29,21 +29,7 @@ import org.slf4j.LoggerFactory;
 import java.security.InvalidParameterException;
 import java.util.*;
 
-/**
- * Renders data points with error bars and/or error surfaces It can be used e.g. to render horizontal and/or vertical
- * errors additional functionality:
- * <ul>
- * <li>bar-type plot
- * <li>polar-axis plotting
- * <li>scatter and/or bubble-chart-type plots
- * </ul>
- *
- * @author R.J. Steinhagen
- */
-@SuppressWarnings({"PMD.LongVariable", "PMD.ShortVariable"}) // short variables like x, y are perfectly fine, as well
-// as descriptive long ones
-public class ErrorDataSetRenderer extends AbstractErrorDataSetRendererParameter<ErrorDataSetRenderer>
-        implements Renderer {
+public class MassSpectrumRenderer extends AbstractErrorDataSetRendererParameter<MassSpectrumRenderer> implements Renderer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ErrorDataSetRenderer.class);
     private Marker marker = DefaultMarker.RECTANGLE; // default: rectangle
@@ -52,7 +38,7 @@ public class ErrorDataSetRenderer extends AbstractErrorDataSetRendererParameter<
     /**
      * Creates new <code>ErrorDataSetRenderer</code>.
      */
-    public ErrorDataSetRenderer() {
+    public MassSpectrumRenderer() {
         this(3);
     }
 
@@ -61,7 +47,7 @@ public class ErrorDataSetRenderer extends AbstractErrorDataSetRendererParameter<
      *
      * @param dashSize initial size (top/bottom cap) on top of the error bars
      */
-    public ErrorDataSetRenderer(final int dashSize) {
+    public MassSpectrumRenderer(final int dashSize) {
         setDashSize(dashSize);
     }
 
@@ -124,6 +110,7 @@ public class ErrorDataSetRenderer extends AbstractErrorDataSetRendererParameter<
      * @return the marker to be drawn on the data points
      */
     public Marker getMarker() {
+
         return marker;
     }
 
@@ -351,8 +338,8 @@ public class ErrorDataSetRenderer extends AbstractErrorDataSetRendererParameter<
         }
 
         final double minSize = getMarkerSize();
-        if (localCachedPoints.errorType[DataSet.DIM_X] != ErrorType.NO_ERROR
-                || localCachedPoints.errorType[DataSet.DIM_Y] == ErrorType.NO_ERROR) {
+        if (localCachedPoints.errorType[DataSet.DIM_X] != DataSetError.ErrorType.NO_ERROR
+                || localCachedPoints.errorType[DataSet.DIM_Y] == DataSetError.ErrorType.NO_ERROR) {
             // X, X_ASYMMETRIC
             for (int i = 0; i < localCachedPoints.actualDataCount; i++) {
                 final double radius = Math.max(minSize,
@@ -362,8 +349,8 @@ public class ErrorDataSetRenderer extends AbstractErrorDataSetRendererParameter<
 
                 gc.fillOval(x, y, 2 * radius, 2 * radius);
             }
-        } else if (localCachedPoints.errorType[DataSet.DIM_X] == ErrorType.NO_ERROR
-                || localCachedPoints.errorType[DataSet.DIM_Y] != ErrorType.NO_ERROR) {
+        } else if (localCachedPoints.errorType[DataSet.DIM_X] == DataSetError.ErrorType.NO_ERROR
+                || localCachedPoints.errorType[DataSet.DIM_Y] != DataSetError.ErrorType.NO_ERROR) {
             // Y, Y_ASYMMETRIC
             for (int i = 0; i < localCachedPoints.actualDataCount; i++) {
                 final double radius = Math.max(minSize,
@@ -373,8 +360,8 @@ public class ErrorDataSetRenderer extends AbstractErrorDataSetRendererParameter<
 
                 gc.fillOval(x, y, 2 * radius, 2 * radius);
             }
-        } else if (localCachedPoints.errorType[DataSet.DIM_X] != ErrorType.NO_ERROR
-                || localCachedPoints.errorType[DataSet.DIM_Y] != ErrorType.NO_ERROR) {
+        } else if (localCachedPoints.errorType[DataSet.DIM_X] != DataSetError.ErrorType.NO_ERROR
+                || localCachedPoints.errorType[DataSet.DIM_Y] != DataSetError.ErrorType.NO_ERROR) {
             // XY, XY_ASYMMETRIC
             for (int i = 0; i < localCachedPoints.actualDataCount; i++) {
                 final double width = Math.max(minSize, localCachedPoints.errorXPos[i] - localCachedPoints.errorXNeg[i]);
@@ -425,8 +412,8 @@ public class ErrorDataSetRenderer extends AbstractErrorDataSetRendererParameter<
         DefaultRenderColorScheme.setGraphicsContextAttributes(gc, lCacheP.defaultStyle);
 
         for (int i = 0; i < lCacheP.actualDataCount; i++) {
-            if (lCacheP.errorType[DataSet.DIM_X] != ErrorType.NO_ERROR
-                    && lCacheP.errorType[DataSet.DIM_Y] != ErrorType.NO_ERROR) {
+            if (lCacheP.errorType[DataSet.DIM_X] != DataSetError.ErrorType.NO_ERROR
+                    && lCacheP.errorType[DataSet.DIM_Y] != DataSetError.ErrorType.NO_ERROR) {
                 // draw error bars
                 gc.strokeLine(lCacheP.xValues[i], lCacheP.errorYNeg[i], lCacheP.xValues[i], lCacheP.errorYPos[i]);
                 gc.strokeLine(lCacheP.errorXNeg[i], lCacheP.yValues[i], lCacheP.errorXPos[i], lCacheP.yValues[i]);
@@ -442,8 +429,8 @@ public class ErrorDataSetRenderer extends AbstractErrorDataSetRendererParameter<
                         lCacheP.yValues[i] + dashHalf);
                 gc.strokeLine(lCacheP.errorXPos[i], lCacheP.yValues[i] - dashHalf, lCacheP.errorXPos[i],
                         lCacheP.yValues[i] + dashHalf);
-            } else if (lCacheP.errorType[DataSet.DIM_X] == ErrorType.NO_ERROR
-                    && lCacheP.errorType[DataSet.DIM_Y] != ErrorType.NO_ERROR) {
+            } else if (lCacheP.errorType[DataSet.DIM_X] == DataSetError.ErrorType.NO_ERROR
+                    && lCacheP.errorType[DataSet.DIM_Y] != DataSetError.ErrorType.NO_ERROR) {
                 // draw error bars
                 gc.strokeLine(lCacheP.xValues[i], lCacheP.errorYNeg[i], lCacheP.xValues[i], lCacheP.errorYPos[i]);
 
@@ -452,8 +439,8 @@ public class ErrorDataSetRenderer extends AbstractErrorDataSetRendererParameter<
                         lCacheP.errorYNeg[i]);
                 gc.strokeLine(lCacheP.xValues[i] - dashHalf, lCacheP.errorYPos[i], lCacheP.xValues[i] + dashHalf,
                         lCacheP.errorYPos[i]);
-            } else if (lCacheP.errorType[DataSet.DIM_X] != ErrorType.NO_ERROR
-                    && lCacheP.errorType[DataSet.DIM_Y] == ErrorType.NO_ERROR) {
+            } else if (lCacheP.errorType[DataSet.DIM_X] != DataSetError.ErrorType.NO_ERROR
+                    && lCacheP.errorType[DataSet.DIM_Y] == DataSetError.ErrorType.NO_ERROR) {
                 // draw error bars
                 gc.strokeLine(lCacheP.errorXNeg[i], lCacheP.yValues[i], lCacheP.errorXPos[i], lCacheP.yValues[i]);
 
@@ -621,11 +608,32 @@ public class ErrorDataSetRenderer extends AbstractErrorDataSetRendererParameter<
         gc.restore();
     }
 
+    protected void drawPeak(final GraphicsContext gc, final CachedDataPoints localCachedPoints) {
+
+        final int n = localCachedPoints.actualDataCount;
+        if (n == 0)
+            return;
+
+
+
+
+        gc.save();
+
+        for (int i = 0; i < localCachedPoints.actualDataCount; i++) {
+            final double x = localCachedPoints.xValues[i];
+            final double y = localCachedPoints.yValues[i];
+
+
+
+        }
+    }
+
     /**
      * @param gc                the graphics context from the Canvas parent
      * @param localCachedPoints reference to local cached data point object
      */
     protected void drawPolyLine(final GraphicsContext gc, final CachedDataPoints localCachedPoints) {
+
         switch (getPolyLineStyle()) {
             case NONE:
                 return;
@@ -700,7 +708,8 @@ public class ErrorDataSetRenderer extends AbstractErrorDataSetRendererParameter<
      * @return the instance of this ErrorDataSetRenderer.
      */
     @Override
-    protected ErrorDataSetRenderer getThis() {
+    protected MassSpectrumRenderer getThis() {
+
         return this;
     }
 

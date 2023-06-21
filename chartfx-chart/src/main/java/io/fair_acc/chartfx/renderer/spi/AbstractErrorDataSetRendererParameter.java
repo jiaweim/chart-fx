@@ -1,17 +1,5 @@
 package io.fair_acc.chartfx.renderer.spi;
 
-import java.util.Objects;
-
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.collections.ListChangeListener;
-
 import io.fair_acc.chartfx.axes.Axis;
 import io.fair_acc.chartfx.renderer.ErrorStyle;
 import io.fair_acc.chartfx.renderer.LineStyle;
@@ -21,18 +9,23 @@ import io.fair_acc.chartfx.renderer.datareduction.MaxDataReducer;
 import io.fair_acc.chartfx.renderer.datareduction.RamanDouglasPeukerDataReducer;
 import io.fair_acc.chartfx.renderer.datareduction.VisvalingamMaheswariWhyattDataReducer;
 import io.fair_acc.dataset.utils.AssertUtils;
+import javafx.beans.property.*;
+import javafx.collections.ListChangeListener;
+
+import java.util.Objects;
 
 /**
  * simple class to move the various parameters out of the class containing the algorithms uses the shadow field pattern
  * to minimise memory usage (lots of boiler-plate code ... sorry)
  *
- * @author rstein
  * @param <R> generic object type for renderer parameter
+ * @author rstein
  */
-@SuppressWarnings({ "PMD.TooManyMethods", "PMD.TooManyFields", "PMD.ExcessivePublicCount" }) // designated purpose of
+@SuppressWarnings({"PMD.TooManyMethods", "PMD.TooManyFields", "PMD.ExcessivePublicCount"}) // designated purpose of
 // this class
 public abstract class AbstractErrorDataSetRendererParameter<R extends AbstractErrorDataSetRendererParameter<R>>
         extends AbstractPointReductionManagment<R> {
+
     // intensity fading factor per stage
     protected static final double DEFAULT_HISTORY_INTENSITY_FADING = 0.65;
     private final ObjectProperty<ErrorStyle> errorStyle = new SimpleObjectProperty<>(this, "errorStyle",
@@ -58,7 +51,7 @@ public abstract class AbstractErrorDataSetRendererParameter<R extends AbstractEr
     private final BooleanProperty allowNaNs = new SimpleBooleanProperty(this, "allowNaNs", false);
 
     /**
-     * 
+     *
      */
     public AbstractErrorDataSetRendererParameter() {
         super();
@@ -98,7 +91,7 @@ public abstract class AbstractErrorDataSetRendererParameter<R extends AbstractEr
     }
 
     /**
-     * @return the drawChartDataSets state, ie. if all or only the DataSets attached to the Renderer shall be drawn 
+     * @return the drawChartDataSets state, ie. if all or only the DataSets attached to the Renderer shall be drawn
      */
     public BooleanProperty drawChartDataSetsProperty() {
         return drawChartDataSets;
@@ -188,8 +181,8 @@ public abstract class AbstractErrorDataSetRendererParameter<R extends AbstractEr
     }
 
     /**
-     * @see #rendererDataReducerProperty()
      * @return the active data set reducer algorithm
+     * @see #rendererDataReducerProperty()
      */
     public RendererDataReducer getRendererDataReducer() {
         return rendererDataReducerProperty().get();
@@ -230,8 +223,7 @@ public abstract class AbstractErrorDataSetRendererParameter<R extends AbstractEr
     }
 
     /**
-     * 
-     * @return whether all or only the DataSets attached to the Renderer shall be drawn 
+     * @return whether all or only the DataSets attached to the Renderer shall be drawn
      */
     public boolean isDrawChartDataSets() {
         return drawChartDataSetsProperty().get();
@@ -348,8 +340,7 @@ public abstract class AbstractErrorDataSetRendererParameter<R extends AbstractEr
     }
 
     /**
-     * 
-     * @param state whether all (true) or only the DataSets attached to the Renderer shall be drawn (false) 
+     * @param state whether all (true) or only the DataSets attached to the Renderer shall be drawn (false)
      */
     public void setDrawChartDataSets(final boolean state) {
         drawChartDataSetsProperty().set(state);
@@ -421,9 +412,9 @@ public abstract class AbstractErrorDataSetRendererParameter<R extends AbstractEr
     }
 
     /**
-     * @see #rendererDataReducerProperty()
      * @param algorithm the new data reducing algorithm to be set (null -&gt; {@link DefaultDataReducer})
      * @return itself (fluent design)
+     * @see #rendererDataReducerProperty()
      */
     public R setRendererDataReducer(final RendererDataReducer algorithm) {
         rendererDataReducerProperty().set(Objects.requireNonNullElseGet(algorithm, DefaultDataReducer::new));
@@ -435,6 +426,7 @@ public abstract class AbstractErrorDataSetRendererParameter<R extends AbstractEr
      * @return itself (fluent design)
      */
     public R setShiftBar(final boolean state) {
+
         shiftBarProperty().set(state);
         return getThis();
     }

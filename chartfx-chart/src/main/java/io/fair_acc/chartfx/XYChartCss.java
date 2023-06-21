@@ -6,6 +6,7 @@ package io.fair_acc.chartfx;
  * @author rstein
  */
 public final class XYChartCss { // NOPMD decide not to rename it for the time being
+
     public static final String DATASET_LAYOUT_OFFSET = "dsLayoutOffset";
     public static final String DATASET_INDEX = "dsIndex";
     public static final String DATASET_INTENSITY = "intensity";
@@ -25,6 +26,5 @@ public final class XYChartCss { // NOPMD decide not to rename it for the time be
     public static final String FONT_POSTURE = "fontPosture";
     public static final String FONT_SIZE = "fontSize";
 
-    private XYChartCss() {
-    }
+    private XYChartCss() {}
 }

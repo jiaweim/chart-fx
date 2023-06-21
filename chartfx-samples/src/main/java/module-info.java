@@ -33,4 +33,6 @@ module samples {
 
     opens io.fair_acc.sample;
     opens io.fair_acc.sample.chart;
+    opens io.fair_acc.sample.financial;
+    opens io.fair_acc.sample.math;
 }

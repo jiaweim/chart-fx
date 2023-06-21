@@ -8,13 +8,7 @@ import javafx.collections.ListChangeListener;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
 /**
@@ -23,6 +17,7 @@ import javafx.scene.paint.Color;
  * @author rstein
  */
 public class ToolBarFlowPane extends FlowPane {
+
     private static final int DEFAULT_TOOLBAR_HEIGHT = 28;
     private static final double CORNER_SPACE_PADDING_FACTOR = 1.8;
     private Color defaultColour = Color.web("#f4f4f4", 0.85).deriveColor(0, 1.0, .94, 1.0);
@@ -35,6 +30,7 @@ public class ToolBarFlowPane extends FlowPane {
      * @param chart the associated chart pane
      */
     public ToolBarFlowPane(final Chart chart) {
+
         super();
         this.chart = chart;
 
@@ -65,6 +61,7 @@ public class ToolBarFlowPane extends FlowPane {
     }
 
     private void adjustToolBarWidth() {
+
         final double maxLength = 0.60 * chart.getWidth();
         double length = 0.0;
         for (Node node : this.getChildren()) {
@@ -88,6 +85,7 @@ public class ToolBarFlowPane extends FlowPane {
      * @return Insets for the tool bar pane
      */
     protected Insets calculateInsets() {
+
         final double roundCornerSpace = CORNER_SPACE_PADDING_FACTOR * cornerRadius.get();
         final double sidePaddingRight = Math.max(roundCornerSpace, toolBarPadding.getRight());
         final double sidePaddingLeft = Math.max(roundCornerSpace, toolBarPadding.getLeft());
@@ -95,22 +93,27 @@ public class ToolBarFlowPane extends FlowPane {
     }
 
     public DoubleProperty cornerRadiusProperty() {
+
         return cornerRadius;
     }
 
     public Color getToolBarDefaultColor() {
+
         return this.defaultColour;
     }
 
     public Insets getToolBarInsets() {
+
         return toolBarPadding;
     }
 
     public Color getToolBarSelectedColor() {
+
         return this.selectedColour;
     }
 
     public void registerListener() {
+
         this.getChildren().addListener((ListChangeListener.Change<? extends Node> c) -> adjustToolBarWidth());
 
         setOnMouseClicked(mevt -> {
@@ -132,15 +135,18 @@ public class ToolBarFlowPane extends FlowPane {
     }
 
     public void setToolBarDefaultColor(final Color color) {
+
         this.defaultColour = color;
     }
 
     public void setToolBarInsets(final Insets padding) {
+
         toolBarPadding = padding;
         this.setPadding(toolBarPadding);
     }
 
     public void setToolBarSelectedColor(final Color color) {
+
         this.selectedColour = color;
     }
 }

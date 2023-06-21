@@ -1,23 +1,18 @@
 package io.fair_acc.dataset.spi;
 
-import java.util.Map;
-import java.util.List;
-import java.util.LinkedList;
-import java.util.ArrayList;
-import java.util.Objects;
-import java.util.Collections;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.IntToDoubleFunction;
-
 import io.fair_acc.dataset.*;
-import io.fair_acc.dataset.event.*;
 import io.fair_acc.dataset.event.EventListener;
+import io.fair_acc.dataset.event.*;
 import io.fair_acc.dataset.locks.DataSetLock;
 import io.fair_acc.dataset.locks.DefaultDataSetLock;
 import io.fair_acc.dataset.spi.utils.MathUtils;
 import io.fair_acc.dataset.spi.utils.StringHashMapList;
 import io.fair_acc.dataset.utils.AssertUtils;
+
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.IntToDoubleFunction;
 
 /**
  * <p>
@@ -34,9 +29,10 @@ import io.fair_acc.dataset.utils.AssertUtils;
  * @param <D> java generics handling of DataSet for derived classes (needed for fluent design)
  */
 public abstract class AbstractDataSet<D extends AbstractStylable<D>> extends AbstractStylable<D> implements DataSet, DataSetMetaData {
+
     private static final long serialVersionUID = -7612136495756923417L;
 
-    private static final String[] DEFAULT_AXES_NAME = { "x-Axis", "y-Axis", "z-Axis" };
+    private static final String[] DEFAULT_AXES_NAME = {"x-Axis", "y-Axis", "z-Axis"};
     private final transient AtomicBoolean autoNotification = new AtomicBoolean(true);
     private String name;
     protected final int dimension;
@@ -78,10 +74,11 @@ public abstract class AbstractDataSet<D extends AbstractStylable<D>> extends Abs
     /**
      * default constructor
      *
-     * @param name the default name of the data set (meta data)
+     * @param name      the default name of the data set (meta data)
      * @param dimension dimension of this data set
      */
     public AbstractDataSet(final String name, final int dimension) {
+
         super();
         AssertUtils.gtThanZero("dimension", dimension);
         this.name = name;
@@ -104,6 +101,7 @@ public abstract class AbstractDataSet<D extends AbstractStylable<D>> extends Abs
      * @return the previously set label or <code>null</code> if no label has been specified
      */
     public String addDataLabel(final int index, final String label) {
+
         final String retVal = lock().writeLockGuard(() -> dataLabels.put(index, label));
         fireInvalidated(new UpdatedMetaDataEvent(this, "added label"));
         return retVal;
@@ -118,6 +116,7 @@ public abstract class AbstractDataSet<D extends AbstractStylable<D>> extends Abs
      * @return itself (fluent interface)
      */
     public String addDataStyle(final int index, final String style) {
+
         final String retVal = lock().writeLockGuard(() -> dataStyles.put(index, style));
         fireInvalidated(new UpdatedMetaDataEvent(this, "added style"));
         return retVal;
@@ -125,10 +124,12 @@ public abstract class AbstractDataSet<D extends AbstractStylable<D>> extends Abs
 
     @Override
     public AtomicBoolean autoNotification() {
+
         return autoNotification;
     }
 
     protected int binarySearch(final int dimIndex, final double search, final int indexMin, final int indexMax) {
+
         if (indexMin == indexMax) {
             return indexMin;
         }
@@ -150,6 +151,7 @@ public abstract class AbstractDataSet<D extends AbstractStylable<D>> extends Abs
     }
 
     public D clearMetaInfo() {
+
         infoList.clear();
         warningList.clear();
         errorList.clear();
@@ -163,6 +165,7 @@ public abstract class AbstractDataSet<D extends AbstractStylable<D>> extends Abs
      * @return {@code true} if equal
      */
     protected boolean equalDataLabels(final DataSet other) {
+
         if (other instanceof AbstractDataSet) {
             AbstractDataSet<?> otherAbsDs = (AbstractDataSet<?>) other;
             return getDataLabelMap().equals(otherAbsDs.getDataLabelMap());
@@ -199,7 +202,7 @@ public abstract class AbstractDataSet<D extends AbstractStylable<D>> extends Abs
     /**
      * checks for equal 'get' error values, may be overwritten by derived classes
      *
-     * @param other class
+     * @param other   class
      * @param epsilon tolerance threshold
      * @return {@code true} if equal
      */
@@ -252,6 +255,7 @@ public abstract class AbstractDataSet<D extends AbstractStylable<D>> extends Abs
      * @return {@code true} if equal
      */
     protected boolean equalMetaData(final DataSet other) {
+
         if (other instanceof DataSetMetaData) {
             DataSetMetaData otherMetaDs = (DataSetMetaData) other;
             if (!getErrorList().equals(otherMetaDs.getErrorList())) {
@@ -270,6 +274,7 @@ public abstract class AbstractDataSet<D extends AbstractStylable<D>> extends Abs
 
     @Override
     public boolean equals(final Object obj) {
+
         if (this == obj) {
             return true;
         }
@@ -285,7 +290,7 @@ public abstract class AbstractDataSet<D extends AbstractStylable<D>> extends Abs
     /**
      * Indicates whether some other object is "equal to" this one.
      *
-     * @param obj the reference object with which to compare.
+     * @param obj     the reference object with which to compare.
      * @param epsilon tolerance parameter ({@code epsilon<=0} corresponds to numerically identical)
      * @return {@code true} if this object is the same as the obj argument; {@code false} otherwise.
      */
@@ -351,11 +356,12 @@ public abstract class AbstractDataSet<D extends AbstractStylable<D>> extends Abs
     /**
      * checks for equal 'get' values with tolerance band, may be overwritten by derived classes
      *
-     * @param other class
+     * @param other   class
      * @param epsilon tolerance threshold
      * @return {@code true} if equal
      */
     protected boolean equalValues(final DataSet other, final double epsilon) {
+
         if (epsilon <= 0.0) {
             for (int dimIndex = 0; dimIndex < this.getDimension(); dimIndex++) {
                 for (int index = 0; index < this.getDataCount(); index++) {
@@ -378,11 +384,13 @@ public abstract class AbstractDataSet<D extends AbstractStylable<D>> extends Abs
 
     @Override
     public boolean isVisible() {
+
         return isVisible;
     }
 
     @Override
     public D setVisible(boolean visible) {
+
         if (visible != isVisible) {
             isVisible = visible;
             fireInvalidated(new UpdatedMetaDataEvent(this, "changed visibility"));
@@ -397,6 +405,7 @@ public abstract class AbstractDataSet<D extends AbstractStylable<D>> extends Abs
      * @return itself (fluent design)
      */
     public D fireInvalidated(final UpdateEvent event) {
+
         invokeListener(event);
         return getThis();
     }
@@ -406,6 +415,7 @@ public abstract class AbstractDataSet<D extends AbstractStylable<D>> extends Abs
      */
     @Override
     public List<AxisDescription> getAxisDescriptions() {
+
         return axesDescriptions;
     }
 
@@ -418,6 +428,7 @@ public abstract class AbstractDataSet<D extends AbstractStylable<D>> extends Abs
      */
     @Override
     public String getDataLabel(final int index) {
+
         return dataLabels.get(index);
     }
 
@@ -425,6 +436,7 @@ public abstract class AbstractDataSet<D extends AbstractStylable<D>> extends Abs
      * @return data label map for given data point
      */
     public StringHashMapList getDataLabelMap() {
+
         return dataLabels;
     }
 
@@ -432,35 +444,42 @@ public abstract class AbstractDataSet<D extends AbstractStylable<D>> extends Abs
      * @return data style map (CSS-styling)
      */
     public StringHashMapList getDataStyleMap() {
+
         return dataStyles;
     }
 
     @Override
     public final int getDimension() {
+
         return dimension;
     }
 
     public EditConstraints getEditConstraints() {
+
         return editConstraints;
     }
 
     @Override
     public List<String> getErrorList() {
+
         return errorList;
     }
 
     @Override
     public List<String> getInfoList() {
+
         return infoList;
     }
 
     @Override
     public Map<String, String> getMetaInfo() {
+
         return metaInfoMap;
     }
 
     @Override
     public String getName() {
+
         return name;
     }
 
@@ -473,22 +492,26 @@ public abstract class AbstractDataSet<D extends AbstractStylable<D>> extends Abs
      */
     @Override
     public String getStyle(final int index) {
+
         return dataStyles.get(index);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     protected D getThis() {
+
         return (D) this;
     }
 
     @Override
     public List<String> getWarningList() {
+
         return warningList;
     }
 
     @Override
     public int hashCode() {
+
         final int prime = 31;
         int result = 1;
         result = prime * result + axesDescriptions.hashCode();
@@ -547,12 +570,14 @@ public abstract class AbstractDataSet<D extends AbstractStylable<D>> extends Abs
      * @return itself (fluent design)
      */
     public D setName(final String name) {
+
         this.name = name;
         return getThis();
     }
 
     @Override
     public String toString() {
+
         StringBuilder builder = new StringBuilder();
         builder.append(getClass().getName()).append(" [dim=").append(getDimension()).append(',').append(" dataCount=").append(this.getDataCount()).append(',');
         for (int i = 0; i < this.getDimension(); i++) {
@@ -581,6 +606,7 @@ public abstract class AbstractDataSet<D extends AbstractStylable<D>> extends Abs
 
     @Override
     public double[] getValues(final int dimIndex) {
+
         final int n = getDataCount();
         final double[] retValues = new double[n];
         for (int i = 0; i < n; i++) {
@@ -591,6 +617,7 @@ public abstract class AbstractDataSet<D extends AbstractStylable<D>> extends Abs
 
     @Override
     public double getValue(final int dimIndex, final double... x) {
+
         AssertUtils.checkArrayDimension("x", x, 1);
         final int index1 = getIndex(DIM_X, x);
         final double x1 = get(DIM_X, index1);
@@ -614,6 +641,7 @@ public abstract class AbstractDataSet<D extends AbstractStylable<D>> extends Abs
     }
 
     public static int binarySearch(final double search, final int indexMin, final int indexMax, IntToDoubleFunction getter) {
+
         if (indexMin == indexMax) {
             return indexMin;
         }
@@ -636,6 +664,7 @@ public abstract class AbstractDataSet<D extends AbstractStylable<D>> extends Abs
 
     @Override
     public int getIndex(final int dimIndex, final double... x) {
+
         AssertUtils.checkArrayDimension("x", x, 1);
         if (this.getDataCount() == 0) {
             return 0;
@@ -676,10 +705,12 @@ public abstract class AbstractDataSet<D extends AbstractStylable<D>> extends Abs
 
     @Override
     public synchronized List<EventListener> updateEventListener() {
+
         return updateListeners;
     }
 
     protected boolean copyMetaData(final DataSet other) {
+
         this.setName(other.getName());
         if (!(other instanceof DataSetMetaData)) {
             return false;
@@ -698,6 +729,7 @@ public abstract class AbstractDataSet<D extends AbstractStylable<D>> extends Abs
     }
 
     protected void copyDataLabelsAndStyles(final DataSet other, final boolean copy) {
+
         this.setStyle(other.getStyle());
 
         if (copy || !(other instanceof AbstractDataSet)) {

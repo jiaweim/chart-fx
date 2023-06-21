@@ -1,26 +1,5 @@
 package io.fair_acc.chartfx.renderer.spi;
 
-import static io.fair_acc.dataset.DataSet.DIM_X;
-import static io.fair_acc.dataset.DataSet.DIM_Y;
-
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
-import javafx.animation.AnimationTimer;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.collections.ObservableList;
-import javafx.geometry.Orientation;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-
 import io.fair_acc.chartfx.Chart;
 import io.fair_acc.chartfx.XYChartCss;
 import io.fair_acc.chartfx.axes.Axis;
@@ -35,10 +14,25 @@ import io.fair_acc.dataset.Histogram;
 import io.fair_acc.dataset.spi.LimitedIndexedTreeDataSet;
 import io.fair_acc.dataset.utils.DoubleArrayCache;
 import io.fair_acc.dataset.utils.ProcessingProfiler;
+import javafx.animation.AnimationTimer;
+import javafx.beans.property.*;
+import javafx.collections.ObservableList;
+import javafx.geometry.Orientation;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import static io.fair_acc.dataset.DataSet.DIM_X;
+import static io.fair_acc.dataset.DataSet.DIM_Y;
 
 /**
  * Simple renderer specialised for 1D histograms.
- *
+ * <p>
  * N.B. this is _not_ primarily optimised for speed, does not deploy caching, and is intended for DataSets
  * (and Histogram derivatives) with significantly less than 1k data points. Non-histogram DataSets are sorted by default
  * (can be overridden via #autoSortingProperty()).
@@ -47,6 +41,7 @@ import io.fair_acc.dataset.utils.ProcessingProfiler;
  * @author rstein
  */
 public class HistogramRenderer extends AbstractErrorDataSetRendererParameter<HistogramRenderer> implements Renderer {
+
     private final BooleanProperty animate = new SimpleBooleanProperty(this, "animate", false);
     private final BooleanProperty autoSorting = new SimpleBooleanProperty(this, "autoSorting", true);
     private final ObjectProperty<Chart> chartProperty = new SimpleObjectProperty<>(this, "chartProperty", null);
@@ -295,28 +290,28 @@ public class HistogramRenderer extends AbstractErrorDataSetRendererParameter<His
             });
 
             switch (getPolyLineStyle()) {
-            case NONE:
-                return;
-            case AREA:
-                drawPolyLineLine(gc, dataSets, xAxis, yAxis, dataSetOffset, true);
-                break;
-            case ZERO_ORDER_HOLDER:
-            case STAIR_CASE:
-                drawPolyLineStairCase(gc, dataSets, xAxis, yAxis, dataSetOffset, false);
-                break;
-            case HISTOGRAM:
-                drawPolyLineHistogram(gc, dataSets, xAxis, yAxis, dataSetOffset, false);
-                break;
-            case HISTOGRAM_FILLED:
-                drawPolyLineHistogram(gc, dataSets, xAxis, yAxis, dataSetOffset, true);
-                break;
-            case BEZIER_CURVE:
-                drawPolyLineHistogramBezier(gc, dataSets, xAxis, yAxis, dataSetOffset, true);
-                break;
-            case NORMAL:
-            default:
-                drawPolyLineLine(gc, dataSets, xAxis, yAxis, dataSetOffset, false);
-                break;
+                case NONE:
+                    return;
+                case AREA:
+                    drawPolyLineLine(gc, dataSets, xAxis, yAxis, dataSetOffset, true);
+                    break;
+                case ZERO_ORDER_HOLDER:
+                case STAIR_CASE:
+                    drawPolyLineStairCase(gc, dataSets, xAxis, yAxis, dataSetOffset, false);
+                    break;
+                case HISTOGRAM:
+                    drawPolyLineHistogram(gc, dataSets, xAxis, yAxis, dataSetOffset, false);
+                    break;
+                case HISTOGRAM_FILLED:
+                    drawPolyLineHistogram(gc, dataSets, xAxis, yAxis, dataSetOffset, true);
+                    break;
+                case BEZIER_CURVE:
+                    drawPolyLineHistogramBezier(gc, dataSets, xAxis, yAxis, dataSetOffset, true);
+                    break;
+                case NORMAL:
+                default:
+                    drawPolyLineLine(gc, dataSets, xAxis, yAxis, dataSetOffset, false);
+                    break;
             }
         } finally {
             // unlock in reverse order
@@ -695,6 +690,7 @@ public class HistogramRenderer extends AbstractErrorDataSetRendererParameter<His
     }
 
     private class MyTimer extends AnimationTimer {
+
         @Override
         public void handle(final long now) {
             if (!isAnimate()) {

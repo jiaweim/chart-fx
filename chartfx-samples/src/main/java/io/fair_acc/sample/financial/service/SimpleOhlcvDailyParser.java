@@ -1,5 +1,10 @@
 package io.fair_acc.sample.financial.service;
 
+import io.fair_acc.dataset.spi.financial.api.ohlcv.IOhlcv;
+import io.fair_acc.dataset.utils.StreamUtils;
+import io.fair_acc.sample.financial.dos.DefaultOHLCV;
+import io.fair_acc.sample.financial.dos.OHLCVItem;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -11,17 +16,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Stream;
 
-import io.fair_acc.dataset.spi.financial.api.ohlcv.IOhlcv;
-import io.fair_acc.dataset.utils.StreamUtils;
-import io.fair_acc.sample.financial.dos.DefaultOHLCV;
-import io.fair_acc.sample.financial.dos.OHLCVItem;
-
 /**
  * Simple Tradestation OHLC data parser.
  *
  * @author afischer
  */
 public class SimpleOhlcvDailyParser {
+
     private static final String CHART_SAMPLE_PATH = StreamUtils.CLASSPATH_PREFIX + "io/fair_acc/sample/chart/financial/%s.csv";
 
     private static final ConcurrentDateFormatAccess dateFormatParsing = new ConcurrentDateFormatAccess("MM/dd/yyyy HH:mm");
@@ -31,7 +32,7 @@ public class SimpleOhlcvDailyParser {
         String resource = String.format(CHART_SAMPLE_PATH, future);
 
         try (InputStreamReader is = new InputStreamReader(StreamUtils.getInputStream(resource));
-                BufferedReader br = new BufferedReader(is)) {
+             BufferedReader br = new BufferedReader(is)) {
             return convertTsRowStream(future, br.lines(), new DailyOhlcvItemRowParser());
         }
     }
@@ -41,8 +42,8 @@ public class SimpleOhlcvDailyParser {
      * Correct parse of each line has to be used and inserted to this method.
      */
     private static IOhlcv convertTsRowStream(String title,
-            Stream<String> rowStream,
-            TradeStationRowParser parser) throws NumberFormatException {
+                                             Stream<String> rowStream,
+                                             TradeStationRowParser parser) throws NumberFormatException {
         var ref = new TSConvertSettings(true, true);
         String symbol = new File(title).getName().replaceFirst("[.][^.]+$", "");
         Calendar cal = Calendar.getInstance();
@@ -66,6 +67,7 @@ public class SimpleOhlcvDailyParser {
     }
 
     private static class TSConvertSettings {
+
         boolean header;
         boolean useNewStyle;
 
@@ -77,6 +79,7 @@ public class SimpleOhlcvDailyParser {
 
     @FunctionalInterface
     private interface TradeStationRowParser {
+
         OHLCVItem parse(TSConvertSettings ref, Calendar cal, String r);
     }
 
@@ -87,6 +90,7 @@ public class SimpleOhlcvDailyParser {
      * 01/03/2007,09:30,775.50,781.40,775.20,780.10,2128,1711
      */
     private static class DailyOhlcvItemRowParser implements TradeStationRowParser {
+
         @Override
         public OHLCVItem parse(TSConvertSettings ref, Calendar cal, String r) {
             if (ref.header) {

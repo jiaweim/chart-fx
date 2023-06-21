@@ -5,23 +5,24 @@ import io.fair_acc.dataset.DataSet;
 import io.fair_acc.math.DataSetMath;
 import io.fair_acc.math.functions.TrigCosineFunction;
 import io.fair_acc.math.functions.TrigSineFunction;
+import io.fair_acc.math.spectra.Apodization;
 import io.fair_acc.sample.math.utils.AbstractDemoApplication;
 import io.fair_acc.sample.math.utils.DemoChart;
-import io.fair_acc.math.spectra.Apodization;
 import javafx.application.Application;
 import javafx.scene.Node;
 import javafx.scene.layout.VBox;
 
 /**
  * example illustrating the Fast-Fourier transform and math operations directly on DataSet
- * 
+ * <p>
  * N.B. Zoom into the peaks to see the details
- * 
+ * <p>
  * N.B. also works with unequal sampling and ranges of input data
- * 
+ *
  * @author rstein
  */
 public class DataSetSpectrumSample extends AbstractDemoApplication {
+
     private static final int N_SAMPLES = 200;
     private static boolean unequalSampling;
 
@@ -35,6 +36,7 @@ public class DataSetSpectrumSample extends AbstractDemoApplication {
         TrigSineFunction sineFunction = new TrigSineFunction("sine") {
             @Override
             public double getValue(final double x) {
+
                 return super.getValue(x) + 0.001 * RANDOM.nextGaussian();
             }
         };
@@ -85,6 +87,7 @@ public class DataSetSpectrumSample extends AbstractDemoApplication {
     }
 
     public static void main(final String[] args) {
+
         Application.launch(args);
     }
 }

@@ -1,23 +1,23 @@
 package io.fair_acc.chartfx.axes.spi;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
+import io.fair_acc.chartfx.axes.AxisLabelOverlapPolicy;
+import io.fair_acc.dataset.DataSet;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ObjectPropertyBase;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.util.StringConverter;
 
-import io.fair_acc.chartfx.axes.AxisLabelOverlapPolicy;
-import io.fair_acc.dataset.DataSet;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
- * A axis implementation that will works on string categories where each value as a unique category(tick mark) along the
+ * A axis implementation that will work on string categories where each value as a unique category(tick mark) along the
  * axis.
  */
 public final class CategoryAxis extends DefaultNumericAxis {
+
     private boolean forceAxisCategories = false;
 
     private boolean changeIsLocal = false;
@@ -35,9 +35,10 @@ public final class CategoryAxis extends DefaultNumericAxis {
     };
 
     /**
-     * Create a auto-ranging category axis with an empty list of categories.
+     * Create an auto-ranging category axis with an empty list of categories.
      */
     public CategoryAxis() {
+
         this((String) null);
         setTickUnit(1.0);
         changeIsLocal = true;
@@ -52,6 +53,7 @@ public final class CategoryAxis extends DefaultNumericAxis {
      * @param categories List of the categories for this axis
      */
     public CategoryAxis(final ObservableList<String> categories) {
+
         this(null, categories);
     }
 
@@ -62,6 +64,7 @@ public final class CategoryAxis extends DefaultNumericAxis {
      * @param axisLabel the axis {@link #nameProperty() label}
      */
     public CategoryAxis(final String axisLabel) {
+
         super(axisLabel);
         this.setOverlapPolicy(AxisLabelOverlapPolicy.SHIFT_ALT);
         minProperty().addListener((ch, old, val) -> {
@@ -83,10 +86,11 @@ public final class CategoryAxis extends DefaultNumericAxis {
      * Create a {@link #autoRangingProperty() non-auto-ranging} Axis with the given upper bound, lower bound and tick
      * unit.
      *
-     * @param axisLabel the axis {@link #nameProperty() label}
+     * @param axisLabel  the axis {@link #nameProperty() label}
      * @param categories List of the categories for this axis
      */
     public CategoryAxis(final String axisLabel, final ObservableList<String> categories) {
+
         super(axisLabel, 0, categories.size(), 1.0);
         changeIsLocal = true;
         setCategories(categories);
@@ -99,13 +103,15 @@ public final class CategoryAxis extends DefaultNumericAxis {
      * @return ObservableList of categories for this axis.
      */
     public ObservableList<String> getCategories() {
+
         return categories.get();
     }
 
     /**
-     * @param categories list of strings
+     * @param categories list of strings as categories
      */
     public void setCategories(final List<String> categories) {
+
         if (categories == null) {
             forceAxisCategories = false;
             setCategories(FXCollections.observableArrayList());
@@ -124,6 +130,7 @@ public final class CategoryAxis extends DefaultNumericAxis {
      * @param categoryList the category list
      */
     public void setCategories(final ObservableList<String> categoryList) {
+
         if (categoryList == null) {
             forceAxisCategories = false;
             setCategories(FXCollections.observableArrayList());
@@ -134,6 +141,7 @@ public final class CategoryAxis extends DefaultNumericAxis {
         setTickLabelFormatter(new StringConverter<>() {
             @Override
             public Number fromString(String string) {
+
                 for (int i = 0; i < getCategories().size(); i++) {
                     if (getCategories().get(i).equalsIgnoreCase(string)) {
                         return i;
@@ -144,6 +152,7 @@ public final class CategoryAxis extends DefaultNumericAxis {
 
             @Override
             public String toString(Number object) {
+
                 final int index = Math.round(object.floatValue());
                 if (index < 0 || index >= getCategories().size()) {
                     return "unknown category";
@@ -163,6 +172,7 @@ public final class CategoryAxis extends DefaultNumericAxis {
      * @return true is categories were modified, false otherwise
      */
     public boolean updateCategories(final DataSet dataSet) {
+
         if (dataSet == null || forceAxisCategories) {
             return false;
         }
@@ -194,7 +204,8 @@ public final class CategoryAxis extends DefaultNumericAxis {
 
     @Override
     protected AxisRange autoRange(final double minValue, final double maxValue, final double length,
-            final double labelSize) {
+                                  final double labelSize) {
+
         double min = minValue > 0 && isForceZeroInRange() ? 0 : minValue;
         if (isLogAxis && minValue <= 0) {
             min = DefaultNumericAxis.DEFAULT_LOG_MIN_VALUE;

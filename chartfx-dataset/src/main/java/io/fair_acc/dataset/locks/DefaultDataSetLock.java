@@ -1,12 +1,12 @@
 package io.fair_acc.dataset.locks;
 
+import io.fair_acc.dataset.DataSet;
+
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.StampedLock;
 import java.util.function.Supplier;
-
-import io.fair_acc.dataset.DataSet;
 
 /**
  * A Simple ReadWriteLock for the DataSet interface and its fluent-design approach Some implementation recommendation:
@@ -46,9 +46,10 @@ import io.fair_acc.dataset.DataSet;
  * @param <D> generics reference, usually to <code>&lt;? extends DataSet&gt;</code>
  * @author rstein
  */
-@SuppressWarnings({ "PMD.DoNotUseThreads", "PMD.CommentSize", "PMD.TooManyMethods" })
+@SuppressWarnings({"PMD.DoNotUseThreads", "PMD.CommentSize", "PMD.TooManyMethods"})
 // Runnable used as functional interface
 public class DefaultDataSetLock<D extends DataSet> implements DataSetLock<D> {
+
     private static final long serialVersionUID = 1L;
     private final transient StampedLock stampedLock = new StampedLock();
     private final AtomicLong lastReadStamp = new AtomicLong(-1L);

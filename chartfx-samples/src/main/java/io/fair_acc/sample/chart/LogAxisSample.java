@@ -1,28 +1,26 @@
 package io.fair_acc.sample.chart;
 
-import javafx.application.Application;
-import javafx.scene.Node;
-import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
-
 import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
 import io.fair_acc.chartfx.plugins.EditAxis;
 import io.fair_acc.chartfx.plugins.Zoomer;
 import io.fair_acc.dataset.spi.DoubleDataSet;
+import javafx.application.Application;
+import javafx.scene.Node;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 
 /**
- *
  * Simple example of chart with log axis
  *
  * @author rstein
- *
  */
 public class LogAxisSample extends ChartSample {
     private static final int N_SAMPLES = 1000;
 
     @Override
     public Node getChartPanel(final Stage primaryStage) {
+
         final StackPane root = new StackPane();
         DefaultNumericAxis xAxis = new DefaultNumericAxis();
         DefaultNumericAxis yAxis = new DefaultNumericAxis();
@@ -39,7 +37,7 @@ public class LogAxisSample extends ChartSample {
 
         final DoubleDataSet dataSet1 = new DoubleDataSet("data set #1");
         final DoubleDataSet dataSet2 = new DoubleDataSet("data set #2");
-        final DoubleDataSet dataSet3 = new DoubleDataSet("data set #2");
+        final DoubleDataSet dataSet3 = new DoubleDataSet("data set #3");
         chart.getDatasets().addAll(dataSet1, dataSet2, dataSet3);
 
         // classic way of adding data points

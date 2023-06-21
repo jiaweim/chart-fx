@@ -10,77 +10,100 @@ public enum DefaultMarker implements Marker {
 
     @Override
     public void draw(final GraphicsContext gc, final double x, final double y, final double size) {
+
         switch (this) {
-        case DIAMOND:
-        case DIAMOND1:
-            drawDiamond(gc, x, y, size);
-            break;
-        case DIAMOND2:
-            drawEmptyDiamond(gc, x, y, size);
-            break;
-        case CIRCLE:
-        case CIRCLE1:
-            drawCircle(gc, x, y, size);
-            break;
-        case CIRCLE2:
-            drawEmptyCircle(gc, x, y, size);
-            break;
-        case CROSS:
-            drawCross(gc, x, y, size);
-            break;
-        case PLUS:
-            drawPlus(gc, x, y, size);
-            break;
-        case RECTANGLE2:
-            drawEmptyRectangle(gc, x, y, size);
-            break;
-        case RECTANGLE:
-        case RECTANGLE1:
-        default:
-            drawRectangle(gc, x, y, size);
-            break;
+            case DIAMOND:
+            case DIAMOND1:
+                drawDiamond(gc, x, y, size);
+                break;
+            case DIAMOND2:
+                drawEmptyDiamond(gc, x, y, size);
+                break;
+            case CIRCLE:
+            case CIRCLE1:
+                drawCircle(gc, x, y, size);
+                break;
+            case CIRCLE2:
+                drawEmptyCircle(gc, x, y, size);
+                break;
+            case CROSS:
+                drawCross(gc, x, y, size);
+                break;
+            case PLUS:
+                drawPlus(gc, x, y, size);
+                break;
+            case RECTANGLE2:
+                drawEmptyRectangle(gc, x, y, size);
+                break;
+            case RECTANGLE:
+            case RECTANGLE1:
+            default:
+                drawRectangle(gc, x, y, size);
+                break;
         }
     }
 
     public static void drawCircle(final GraphicsContext gc, final double x, final double y, final double size) {
+
         gc.fillOval(x - size, y - size, 2.0 * size, 2.0 * size);
     }
 
     public static void drawCross(final GraphicsContext gc, final double x, final double y, final double size) {
+
         gc.strokeLine(x - size, y - size, x + size, y + size);
         gc.strokeLine(x - size, y + size, x + size, y - size);
     }
 
     public static void drawDiamond(final GraphicsContext gc, final double x, final double y, final double size) {
-        final double[] xPoints = { x + size, x, x - size, x, x + size };
-        final double[] yPoints = { y, y + size, y, y - size, y };
+
+        final double[] xPoints = {x + size, x, x - size, x, x + size};
+        final double[] yPoints = {y, y + size, y, y - size, y};
         gc.fillPolygon(xPoints, yPoints, xPoints.length);
     }
 
     public static void drawEmptyCircle(final GraphicsContext gc, final double x, final double y, final double size) {
+
         gc.strokeOval(x - size, y - size, 2.0 * size, 2.0 * size);
     }
 
     public static void drawEmptyDiamond(final GraphicsContext gc, final double x, final double y, final double size) {
-        final double[] xPoints = { x + size, x, x - size, x, x + size };
-        final double[] yPoints = { y, y + size, y, y - size, y };
+
+        final double[] xPoints = {x + size, x, x - size, x, x + size};
+        final double[] yPoints = {y, y + size, y, y - size, y};
         gc.strokePolygon(xPoints, yPoints, xPoints.length);
     }
 
     public static void drawEmptyRectangle(final GraphicsContext gc, final double x, final double y, final double size) {
+
         gc.strokeRect(x - size, y - size, 2.0 * size, 2.0 * size);
     }
 
     public static void drawPlus(final GraphicsContext gc, final double x, final double y, final double size) {
+
         gc.strokeLine(x, y - size, x, y + size);
         gc.strokeLine(x - size, y, x + size, y);
     }
 
+    /**
+     * draw a square with side length 2.0*size
+     *
+     * @param gc   the {@link  GraphicsContext}
+     * @param x    the x-coordinate of center point
+     * @param y    the y-coordinate of center point
+     * @param size 2*size is the square side length
+     */
     public static void drawRectangle(final GraphicsContext gc, final double x, final double y, final double size) {
+
         gc.fillRect(x - size, y - size, 2.0 * size, 2.0 * size);
     }
 
+    /**
+     * Return the {@link Marker} of given name
+     *
+     * @param name marker name, case insensitive
+     */
     public static Marker get(final String name) {
+
         if (name == null) {
             throw new IllegalArgumentException("marker type name must not be 'null'");
         }

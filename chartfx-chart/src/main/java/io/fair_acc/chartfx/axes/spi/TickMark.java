@@ -1,10 +1,9 @@
 package io.fair_acc.chartfx.axes.spi;
 
+import io.fair_acc.chartfx.ui.geometry.Side;
 import javafx.geometry.VPos;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-
-import io.fair_acc.chartfx.ui.geometry.Side;
 
 /**
  * TickMark represents the label text, its associated tick mark value and position along the axis for each tick.
@@ -12,6 +11,7 @@ import io.fair_acc.chartfx.ui.geometry.Side;
  * @author rstein
  */
 public class TickMark extends Text {
+
     private final Side side; // tick mark side (LEFT, TOP; RIGHT; BOTTOM)
     private double tickValue; // tick mark in data units
     private double tickPosition; // tick position along axis in display units
@@ -20,14 +20,14 @@ public class TickMark extends Text {
     /**
      * Creates and initialises an instance of TickMark.
      *
-     * @param side where tick mark is supposed to be drawn (N.B. controls text alignment together with rotation)
-     * @param tickValue numeric value of tick
-     * @param tickPosition position of tick in canvas pixel coordinates
-     * @param tickRotation rotation of the tick mark label in degree
+     * @param side          where tick mark is supposed to be drawn (N.B. controls text alignment together with rotation)
+     * @param tickValue     numeric value of tick
+     * @param tickPosition  position of tick in canvas pixel coordinates
+     * @param tickRotation  rotation of the tick mark label in degree
      * @param tickMarkLabel string label associated with tick
      */
     public TickMark(final Side side, final double tickValue, final double tickPosition, final double tickRotation,
-            final String tickMarkLabel) {
+                    final String tickMarkLabel) {
         super();
         this.side = side;
         this.tickValue = tickValue;
@@ -67,7 +67,7 @@ public class TickMark extends Text {
     }
 
     /**
-     * @return value tick position along the axis in display units
+     * @return value tick position along the axis in <b>display units</b>
      */
     public double getPosition() {
         return tickPosition;
@@ -82,7 +82,7 @@ public class TickMark extends Text {
 
     /**
      * @return side of axis where tick mark is supposed to be drawn (N.B. controls text alignment together with
-     *         rotation)
+     * rotation)
      */
     public Side getSide() {
         return side;
@@ -125,53 +125,53 @@ public class TickMark extends Text {
         // normalise rotation to [-360, +360]
         final int rotation = ((int) getRotation() % 360);
         switch (side) {
-        case TOP:
-            setTextAlignment(TextAlignment.CENTER);
-            setTextOrigin(VPos.BOTTOM);
-            //special alignment treatment if axes labels are to be rotated
-            if ((rotation != 0) && ((rotation % 90) == 0)) {
-                setTextAlignment(TextAlignment.LEFT);
-                setTextOrigin(VPos.CENTER);
-            } else if ((rotation % 90) != 0) {
-                // pivoting point to left-bottom label corner
-                setTextAlignment(TextAlignment.LEFT);
-                setTextOrigin(VPos.BOTTOM);
-            }
-            break;
-        case BOTTOM:
-        case CENTER_HOR:
-            setTextAlignment(TextAlignment.CENTER);
-            setTextOrigin(VPos.TOP);
-            // special alignment treatment if axes labels are to be rotated
-            if ((rotation != 0) && ((rotation % 90) == 0)) {
-                setTextAlignment(TextAlignment.LEFT);
-                setTextOrigin(VPos.CENTER);
-            } else if ((rotation % 90) != 0) {
-                // pivoting point to left-top label corner
-                setTextAlignment(TextAlignment.LEFT);
-                setTextOrigin(VPos.TOP);
-            }
-            break;
-        case LEFT:
-            setTextAlignment(TextAlignment.RIGHT);
-            setTextOrigin(VPos.CENTER);
-            // special alignment treatment if axes labels are to be rotated
-            if ((rotation != 0) && ((rotation % 90) == 0)) {
+            case TOP:
                 setTextAlignment(TextAlignment.CENTER);
                 setTextOrigin(VPos.BOTTOM);
-            }
-            break;
-        case RIGHT:
-        case CENTER_VER:
-            setTextAlignment(TextAlignment.LEFT);
-            setTextOrigin(VPos.CENTER);
-            // special alignment treatment if axes labels are to be rotated
-            if ((rotation != 0) && ((rotation % 90) == 0)) {
+                //special alignment treatment if axes labels are to be rotated
+                if ((rotation != 0) && ((rotation % 90) == 0)) {
+                    setTextAlignment(TextAlignment.LEFT);
+                    setTextOrigin(VPos.CENTER);
+                } else if ((rotation % 90) != 0) {
+                    // pivoting point to left-bottom label corner
+                    setTextAlignment(TextAlignment.LEFT);
+                    setTextOrigin(VPos.BOTTOM);
+                }
+                break;
+            case BOTTOM:
+            case CENTER_HOR:
                 setTextAlignment(TextAlignment.CENTER);
                 setTextOrigin(VPos.TOP);
-            }
-            break;
-        default:
+                // special alignment treatment if axes labels are to be rotated
+                if ((rotation != 0) && ((rotation % 90) == 0)) {
+                    setTextAlignment(TextAlignment.LEFT);
+                    setTextOrigin(VPos.CENTER);
+                } else if ((rotation % 90) != 0) {
+                    // pivoting point to left-top label corner
+                    setTextAlignment(TextAlignment.LEFT);
+                    setTextOrigin(VPos.TOP);
+                }
+                break;
+            case LEFT:
+                setTextAlignment(TextAlignment.RIGHT);
+                setTextOrigin(VPos.CENTER);
+                // special alignment treatment if axes labels are to be rotated
+                if ((rotation != 0) && ((rotation % 90) == 0)) {
+                    setTextAlignment(TextAlignment.CENTER);
+                    setTextOrigin(VPos.BOTTOM);
+                }
+                break;
+            case RIGHT:
+            case CENTER_VER:
+                setTextAlignment(TextAlignment.LEFT);
+                setTextOrigin(VPos.CENTER);
+                // special alignment treatment if axes labels are to be rotated
+                if ((rotation != 0) && ((rotation % 90) == 0)) {
+                    setTextAlignment(TextAlignment.CENTER);
+                    setTextOrigin(VPos.TOP);
+                }
+                break;
+            default:
         }
     }
 

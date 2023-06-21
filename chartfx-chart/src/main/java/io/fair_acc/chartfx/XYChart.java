@@ -1,14 +1,15 @@
 package io.fair_acc.chartfx;
 
-import java.security.InvalidParameterException;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
-
+import io.fair_acc.chartfx.axes.Axis;
+import io.fair_acc.chartfx.renderer.PolarTickStep;
+import io.fair_acc.chartfx.renderer.Renderer;
+import io.fair_acc.chartfx.renderer.spi.ErrorDataSetRenderer;
+import io.fair_acc.chartfx.renderer.spi.GridRenderer;
+import io.fair_acc.chartfx.renderer.spi.LabelledMarkerRenderer;
+import io.fair_acc.chartfx.ui.geometry.Side;
+import io.fair_acc.chartfx.utils.FXUtils;
+import io.fair_acc.dataset.DataSet;
+import io.fair_acc.dataset.utils.AssertUtils;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
@@ -25,20 +26,13 @@ import javafx.geometry.Orientation;
 import javafx.scene.Node;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.util.Duration;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.fair_acc.chartfx.axes.Axis;
-import io.fair_acc.chartfx.renderer.PolarTickStep;
-import io.fair_acc.chartfx.renderer.Renderer;
-import io.fair_acc.chartfx.renderer.spi.ErrorDataSetRenderer;
-import io.fair_acc.chartfx.renderer.spi.GridRenderer;
-import io.fair_acc.chartfx.renderer.spi.LabelledMarkerRenderer;
-import io.fair_acc.chartfx.ui.geometry.Side;
-import io.fair_acc.chartfx.utils.FXUtils;
-import io.fair_acc.dataset.DataSet;
-import io.fair_acc.dataset.utils.AssertUtils;
+import java.security.InvalidParameterException;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * Chart designed primarily to display data traces using DataSet interfaces which are more flexible and efficient than
@@ -52,6 +46,7 @@ import io.fair_acc.dataset.utils.AssertUtils;
  * @author rstein
  */
 public class XYChart extends Chart {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(XYChart.class);
     protected static final int BURST_LIMIT_MS = 15;
     protected final BooleanProperty polarPlot = new SimpleBooleanProperty(this, "polarPlot", false);
@@ -64,10 +59,9 @@ public class XYChart extends Chart {
 
     /**
      * Construct a new XYChart with the given axes.
-     *
      */
     public XYChart() {
-        this(new Axis[] {}); // NOPMD NOSONAR
+        this(new Axis[]{}); // NOPMD NOSONAR
         // N.B. this constructor is needed since JavaFX seems to instantiate fxml using reflection to find the corresponding constructor
     }
 
@@ -85,15 +79,15 @@ public class XYChart extends Chart {
                 continue;
             }
             switch (dim) {
-            case DataSet.DIM_X:
-                axis.setSide(Side.BOTTOM);
-                break;
-            case DataSet.DIM_Y:
-                axis.setSide(Side.LEFT);
-                break;
-            default:
-                axis.setSide(Side.RIGHT);
-                break;
+                case DataSet.DIM_X:
+                    axis.setSide(Side.BOTTOM);
+                    break;
+                case DataSet.DIM_Y:
+                    axis.setSide(Side.LEFT);
+                    break;
+                default:
+                    axis.setSide(Side.RIGHT);
+                    break;
             }
             getAxes().add(axis);
         }
@@ -128,7 +122,7 @@ public class XYChart extends Chart {
 
     /**
      * @return datasets attached to the chart and datasets attached to all renderers TODO: change to change listener
-     *         that add/remove datasets from a global observable list
+     * that add/remove datasets from a global observable list
      */
     public ObservableList<DataSet> getAllShownDatasets() {
         final ObservableList<DataSet> ret = FXCollections.observableArrayList();

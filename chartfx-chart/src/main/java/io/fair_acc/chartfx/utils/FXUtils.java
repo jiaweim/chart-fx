@@ -78,7 +78,7 @@ public final class FXUtils {
      * @param <T> generic for argument type
      * @param <R> generic for return type
      * @return function result of type R
-     * @throws Exception if a exception is occurred in the run method of the Runnable
+     * @throws Exception if an exception is occurred in the run method of the Runnable
      */
     public static <T, R> R runAndWait(final T argument, final Function<T, R> function) throws Exception {
         if (Platform.isFxApplicationThread()) {
