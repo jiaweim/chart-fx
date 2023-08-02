@@ -332,7 +332,6 @@ public abstract class AbstractAxisParameter extends Pane implements Axis {
     private final transient DoubleProperty unitScaling = new SimpleDoubleProperty(this, "unitScaling", 1.0) {
         @Override
         protected void invalidated() {
-
             updateAxisLabelAndUnit();
             invokeListener(new AxisChangeEvent(AbstractAxisParameter.this));
         }
@@ -474,12 +473,10 @@ public abstract class AbstractAxisParameter extends Pane implements Axis {
     }
 
     public BooleanProperty animatedProperty() {
-
         return animated;
     }
 
     public IntegerProperty animationDurationProperty() {
-
         return animationDuration;
     }
 
@@ -490,13 +487,11 @@ public abstract class AbstractAxisParameter extends Pane implements Axis {
      */
     @Override
     public BooleanProperty autoGrowRangingProperty() {
-
         return autoGrowRanging;
     }
 
     @Override
     public AtomicBoolean autoNotification() {
-
         return autoNotification;
     }
 
@@ -507,7 +502,6 @@ public abstract class AbstractAxisParameter extends Pane implements Axis {
      * @return autoRangePadding property
      */
     public DoubleProperty autoRangePaddingProperty() {
-
         return autoRangePadding;
     }
 
@@ -521,24 +515,20 @@ public abstract class AbstractAxisParameter extends Pane implements Axis {
      * @return autoRangeRounding property
      */
     public BooleanProperty autoRangeRoundingProperty() {
-
         return autoRangeRounding;
     }
 
     @Override
     public BooleanProperty autoRangingProperty() {
-
         return autoRanging;
     }
 
     @Override
     public BooleanProperty autoUnitScalingProperty() {
-
         return autoUnitScaling;
     }
 
     public DoubleProperty axisLabelGapProperty() {
-
         return axisLabelGap;
     }
 
@@ -548,18 +538,15 @@ public abstract class AbstractAxisParameter extends Pane implements Axis {
     }
 
     public DoubleProperty axisPaddingProperty() {
-
         return axisPadding;
     }
 
     public DoubleProperty axisCenterPositionProperty() {
-
         return axisCenterPosition;
     }
 
     @Override
     public boolean clear() {
-
         final boolean oldState = autoNotification().getAndSet(false);
         minProp.set(DEFAULT_MIN_RANGE);
         maxProp.set(DEFAULT_MAX_RANGE);
@@ -570,7 +557,6 @@ public abstract class AbstractAxisParameter extends Pane implements Axis {
 
     @Override
     public boolean contains(final double value) {
-
         return Double.isFinite(value) && (value >= getMin()) && (value <= getMax());
     }
 
@@ -580,13 +566,11 @@ public abstract class AbstractAxisParameter extends Pane implements Axis {
      * @return value of the {@link #animationDurationProperty} property
      */
     public int getAnimationDuration() {
-
         return animationDurationProperty().get();
     }
 
     @Override
     public AxisRange getAutoRange() {
-
         return autoRange;
     }
 
@@ -596,12 +580,10 @@ public abstract class AbstractAxisParameter extends Pane implements Axis {
      * @return the auto range padding
      */
     public double getAutoRangePadding() {
-
         return autoRangePaddingProperty().get();
     }
 
     public double getAxisCenterPosition() {
-
         return axisCenterPositionProperty().get();
     }
 
@@ -609,44 +591,36 @@ public abstract class AbstractAxisParameter extends Pane implements Axis {
      * @return the axisLabel
      */
     public Text getAxisLabel() {
-
         return axisLabel;
     }
 
     public double getAxisLabelGap() {
-
         return axisLabelGapProperty().get();
     }
 
     public TextAlignment getAxisLabelTextAlignment() {
-
         return axisLabelTextAlignmentProperty().get();
     }
 
     public double getAxisPadding() {
-
         return axisPaddingProperty().get();
     }
 
     @Override
     public List<CssMetaData<? extends Styleable, ?>> getCssMetaData() {
-
         return AbstractAxisParameter.getClassCssMetaData();
     }
 
     public IntegerProperty dimIndexProperty() {
-
         return dimIndex;
     }
 
     public void setDimIndex(final int dimIndex) {
-
         dimIndexProperty().set(dimIndex);
     }
 
     @Override
     public int getDimIndex() {
-
         return dimIndexProperty().get();
     }
 
@@ -655,7 +629,6 @@ public abstract class AbstractAxisParameter extends Pane implements Axis {
      */
     @Override
     public double getLength() {
-
         if (getSide() == null) {
             return Double.NaN;
         }
@@ -668,7 +641,6 @@ public abstract class AbstractAxisParameter extends Pane implements Axis {
      * @return the majorTickStyle for custom user-code based styling
      */
     public Path getMajorTickStyle() {
-
         return majorTickStyle;
     }
 
@@ -745,35 +717,29 @@ public abstract class AbstractAxisParameter extends Pane implements Axis {
 
     @Override
     public Font getTickLabelFont() {
-
         return tickLabelFontProperty().get();
     }
 
     @Override
     public StringConverter<Number> getTickLabelFormatter() {
-
         return tickLabelFormatterProperty().getValue();
     }
 
     @Override
     public double getTickLabelGap() {
-
         return tickLabelGapProperty().get();
     }
 
     public double getTickLabelRotation() {
-
         return tickLabelRotationProperty().getValue();
     }
 
     @Override
     public double getTickLabelSpacing() {
-
         return tickLabelSpacingProperty().get();
     }
 
     public double getTickLength() {
-
         return tickLengthProperty().get();
     }
 
@@ -799,25 +765,21 @@ public abstract class AbstractAxisParameter extends Pane implements Axis {
      */
     @Override
     public double getTickUnit() {
-
         return tickUnitProperty().get();
     }
 
     @Override
     public String getUnit() {
-
         return unitProperty().get();
     }
 
     @Override
     public double getUnitScaling() {
-
         return unitScalingProperty().get();
     }
 
     @Override
     public AxisRange getUserRange() {
-
         return userRange;
     }
 
@@ -827,7 +789,6 @@ public abstract class AbstractAxisParameter extends Pane implements Axis {
      * layout iteration.
      */
     public void invalidate() {
-
         validProperty().set(false);
     }
 
@@ -839,7 +800,6 @@ public abstract class AbstractAxisParameter extends Pane implements Axis {
      */
     @Override
     public void invertAxis(final boolean value) {
-
         invertAxisProperty().set(value);
     }
 
@@ -850,7 +810,6 @@ public abstract class AbstractAxisParameter extends Pane implements Axis {
      */
     @Override
     public BooleanProperty invertAxisProperty() {
-
         return invertAxis;
     }
 
@@ -862,7 +821,6 @@ public abstract class AbstractAxisParameter extends Pane implements Axis {
      */
     @Override
     public void invokeListener(final UpdateEvent updateEvent, final boolean executeParallel) {
-
         synchronized (autoNotification()) {
             if (!autoNotification().get()) {
                 // avoids duplicate update events
@@ -877,7 +835,6 @@ public abstract class AbstractAxisParameter extends Pane implements Axis {
      * @return value of {@link #animatedProperty} property
      */
     public boolean isAnimated() {
-
         return animatedProperty().get();
     }
 
@@ -923,22 +880,18 @@ public abstract class AbstractAxisParameter extends Pane implements Axis {
      */
     @Override
     public boolean isInvertedAxis() {
-
         return invertAxisProperty().get();
     }
 
     public boolean isMinorTickVisible() {
-
         return minorTickVisibleProperty().get();
     }
 
     public boolean isTickLabelsVisible() {
-
         return tickLabelsVisibleProperty().get();
     }
 
     public boolean isTickMarkVisible() {
-
         return tickMarkVisibleProperty().get();
     }
 
@@ -949,7 +902,6 @@ public abstract class AbstractAxisParameter extends Pane implements Axis {
      */
     @Override
     public boolean isTimeAxis() {
-
         return timeAxisProperty().get();
     }
 
@@ -957,7 +909,6 @@ public abstract class AbstractAxisParameter extends Pane implements Axis {
      * @return true if current axis range and physical size calculations are valid
      */
     public boolean isValid() {
-
         return validProperty().get();
     }
 
@@ -965,13 +916,11 @@ public abstract class AbstractAxisParameter extends Pane implements Axis {
      * @return the maximum number of major ticks property
      */
     public IntegerProperty maxMajorTickLabelCountProperty() {
-
         return maxMajorTickLabelCount;
     }
 
     @Override
     public DoubleProperty maxProperty() {
-
         return maxProp;
     }
 
@@ -979,34 +928,28 @@ public abstract class AbstractAxisParameter extends Pane implements Axis {
      * @return minor tick count property, the actual number of minor tick marks is one less than this
      */
     public IntegerProperty minorTickCountProperty() {
-
         return minorTickCount;
     }
 
     public DoubleProperty minorTickLengthProperty() {
-
         return minorTickLength;
     }
 
     public BooleanProperty minorTickVisibleProperty() {
-
         return minorTickVisible;
     }
 
     @Override
     public DoubleProperty minProperty() {
-
         return minProp;
     }
 
     @Override
     public StringProperty nameProperty() {
-
         return axisName;
     }
 
     public ObjectProperty<AxisLabelOverlapPolicy> overlapPolicyProperty() {
-
         return overlapPolicy;
     }
 
@@ -1019,7 +962,6 @@ public abstract class AbstractAxisParameter extends Pane implements Axis {
 
     @Override
     public boolean set(final double min, final double max) {
-
         final double oldMin = minProp.get();
         final double oldMax = maxProp.get();
         final boolean oldState = autoNotification().getAndSet(false);
@@ -1036,7 +978,6 @@ public abstract class AbstractAxisParameter extends Pane implements Axis {
 
     @Override
     public boolean set(final String axisName, final String... axisUnit) {
-
         boolean changed = false;
         final boolean oldState = autoNotification().getAndSet(false);
         if (!equalString(axisName, getName())) {
@@ -1056,7 +997,6 @@ public abstract class AbstractAxisParameter extends Pane implements Axis {
 
     @Override
     public boolean set(final String axisName, final String axisUnit, final double rangeMin, final double rangeMax) {
-
         final boolean oldState = autoNotification().getAndSet(false);
         boolean changed = this.set(axisName, axisUnit);
         changed |= this.set(rangeMin, rangeMax);
@@ -1072,7 +1012,6 @@ public abstract class AbstractAxisParameter extends Pane implements Axis {
      */
     @Override
     public void setAnimated(final boolean value) {
-
         animatedProperty().set(value);
     }
 
@@ -1082,7 +1021,6 @@ public abstract class AbstractAxisParameter extends Pane implements Axis {
      * @param value animation duration in milliseconds
      */
     public void setAnimationDuration(final int value) {
-
         animationDurationProperty().set(value);
     }
 
@@ -1282,19 +1220,16 @@ public abstract class AbstractAxisParameter extends Pane implements Axis {
      */
     @Override
     public void setTimeAxis(final boolean value) {
-
         timeAxisProperty().set(value);
     }
 
     @Override
     public void setUnit(final String value) {
-
         unitProperty().set(value);
     }
 
     @Override
     public void setUnitScaling(final double value) {
-
         if (!Double.isFinite(value) || (value == 0)) {
             throw new IllegalArgumentException("provided number is not finite and/or zero: " + value);
         }
@@ -1391,7 +1326,6 @@ public abstract class AbstractAxisParameter extends Pane implements Axis {
     }
 
     protected void updateAxisLabelAndUnit() {
-
         final String axisPrimaryLabel = getName();
         String localAxisUnit = getUnit();
         final boolean isAutoScaling = isAutoUnitScaling();
@@ -1404,7 +1338,7 @@ public abstract class AbstractAxisParameter extends Pane implements Axis {
             localAxisUnit = "";
         }
 
-        if (localAxisUnit == null) {
+        if (axisPrefix.isBlank() && (localAxisUnit == null || localAxisUnit.isBlank())) {
             getAxisLabel().setText(axisPrimaryLabel);
         } else {
             getAxisLabel().setText(axisPrimaryLabel + " [" + axisPrefix + localAxisUnit + "]");

@@ -6,6 +6,7 @@ package io.fair_acc.chartfx.renderer;
  * @author rstein
  */
 public enum ErrorStyle {
+
     NONE("NONE"),
     ERRORBARS("ERRORBARS"),
     ERRORSURFACE("ERRORSURFACE"),

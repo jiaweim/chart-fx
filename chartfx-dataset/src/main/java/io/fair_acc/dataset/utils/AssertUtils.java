@@ -7,11 +7,11 @@ package io.fair_acc.dataset.utils;
  * @author rstein
  */
 public final class AssertUtils {
+
     private static final String MUST_BE_GREATER_THAN_OR_EQUAL_TO_0 = " must be greater than or equal to 0!";
     private static final String MUST_BE_NON_EMPTY = " must be non-empty!";
 
-    private AssertUtils() {
-    }
+    private AssertUtils() {}
 
     /**
      * The method returns true if both values area equal. The method differs from simple == compare because it takes
@@ -19,7 +19,6 @@ public final class AssertUtils {
      *
      * @param v1 to be checked
      * @param v2 to be checked
-     *
      * @return <code>true</code> if v1 and v2 are Double.NaN or v1 == v2.
      */
     public static boolean areEqual(final double v1, final double v2) {
@@ -29,9 +28,8 @@ public final class AssertUtils {
     /**
      * Asserts if the specified object is an instance of the specified type.
      *
-     * @param obj to be checked
+     * @param obj  to be checked
      * @param type required class type
-     *
      * @throws IllegalArgumentException in case of problems
      */
     public static void assertType(final Object obj, final Class<?> type) {
@@ -93,8 +91,7 @@ public final class AssertUtils {
     /**
      * Asserts that the specified arrays have the same length.
      *
-     * @param <T> generics object to be checked
-     *
+     * @param <T>    generics object to be checked
      * @param array1 to be checked
      * @param array2 to be checked
      */
@@ -113,15 +110,15 @@ public final class AssertUtils {
     public static void equalDoubleArrays(final double[] array1, final double[] array2) {
         if (array1.length != array2.length) {
             throw new IllegalArgumentException("The double arrays must have the same length! length1 = " + array1.length
-                                               + " vs. length2 = " + array2.length);
+                    + " vs. length2 = " + array2.length);
         }
     }
 
     /**
      * Asserts that the specified arrays have the same length or are at least min size.
      *
-     * @param array1 to be checked
-     * @param array2 to be checked
+     * @param array1   to be checked
+     * @param array2   to be checked
      * @param nMinSize minimum required size
      */
     public static void equalDoubleArrays(final double[] array1, final double[] array2, final int nMinSize) {
@@ -129,7 +126,7 @@ public final class AssertUtils {
         final int length2 = Math.min(nMinSize, array2.length);
         if (length1 != length2) {
             throw new IllegalArgumentException("The double arrays must have the same length! length1 = " + array1.length
-                                               + " vs. length2 = " + array2.length + " (nMinSize = " + nMinSize + ")");
+                    + " vs. length2 = " + array2.length + " (nMinSize = " + nMinSize + ")");
         }
     }
 
@@ -142,15 +139,15 @@ public final class AssertUtils {
     public static void equalFloatArrays(final float[] array1, final float[] array2) {
         if (array1.length != array2.length) {
             throw new IllegalArgumentException("The float arrays must have the same length! length1 = " + array1.length
-                                               + " vs. length2 = " + array2.length);
+                    + " vs. length2 = " + array2.length);
         }
     }
 
     /**
      * Asserts that the specified arrays have the same length or are at least min size.
      *
-     * @param array1 to be checked
-     * @param array2 to be checked
+     * @param array1   to be checked
+     * @param array2   to be checked
      * @param nMinSize minimum required size
      */
     public static void equalFloatArrays(final float[] array1, final float[] array2, final int nMinSize) {
@@ -158,14 +155,14 @@ public final class AssertUtils {
         final int length2 = Math.min(nMinSize, array2.length);
         if (length1 != length2) {
             throw new IllegalArgumentException("The double arrays must have the same length! length1 = " + array1.length
-                                               + " vs. length2 = " + array2.length + " (nMinSize = " + nMinSize + ")");
+                    + " vs. length2 = " + array2.length + " (nMinSize = " + nMinSize + ")");
         }
     }
 
     /**
      * Checks if the int value is &gt;= 0
      *
-     * @param name name to be included in the exception message
+     * @param name  name to be included in the exception message
      * @param value to be checked
      */
     public static void gtEqThanZero(final String name, final double value) {
@@ -177,7 +174,7 @@ public final class AssertUtils {
     /**
      * Checks if the int value is &gt;= 0
      *
-     * @param name name to be included in the exception message
+     * @param name  name to be included in the exception message
      * @param value to be checked
      */
     public static void gtEqThanZero(final String name, final int value) {
@@ -189,9 +186,8 @@ public final class AssertUtils {
     /**
      * Checks if the value is &gt;= 0
      *
-     * @param <T> generics object to be checked
-     *
-     * @param name name to be included in the exception message
+     * @param <T>   generics object to be checked
+     * @param name  name to be included in the exception message
      * @param value to be checked
      */
     public static <T extends Number> void gtEqThanZero(final String name, final T value) {
@@ -203,7 +199,7 @@ public final class AssertUtils {
     /**
      * Checks if the int value is &gt;= 0
      *
-     * @param name name to be included in the exception message
+     * @param name  name to be included in the exception message
      * @param value to be checked
      */
     public static void gtThanZero(final String name, final int value) {
@@ -215,9 +211,8 @@ public final class AssertUtils {
     /**
      * Checks if the value is &gt;= 0
      *
-     * @param <T> generics object to be checked
-     *
-     * @param name name to be included in the exception message
+     * @param <T>   generics object to be checked
+     * @param name  name to be included in the exception message
      * @param value to be checked
      */
     public static <T extends Number> void gtThanZero(final String name, final T value) {
@@ -229,7 +224,7 @@ public final class AssertUtils {
     /**
      * Checks if the index is &gt;= 0 and &lt; bounds
      *
-     * @param index index to be checked
+     * @param index  index to be checked
      * @param bounds maximum bound
      */
     public static void indexInBounds(final int index, final int bounds) {
@@ -239,8 +234,8 @@ public final class AssertUtils {
     /**
      * Checks if the index is &gt;= 0 and &lt; bounds
      *
-     * @param index index to be checked
-     * @param bounds maximum bound
+     * @param index   index to be checked
+     * @param bounds  maximum bound
      * @param message exception message
      */
     public static void indexInBounds(final int index, final int bounds, final String message) {
@@ -254,7 +249,7 @@ public final class AssertUtils {
      *
      * @param index1 index1 to be checked
      * @param index2 index1 to be checked
-     * @param msg exception message
+     * @param msg    exception message
      */
     public static void indexOrder(final int index1, final int index2, final String msg) {
         if (index1 > index2) {
@@ -266,9 +261,9 @@ public final class AssertUtils {
      * Checks if the index1 &lt;= index2
      *
      * @param index1 index1 to be checked
-     * @param name1 name of index1
+     * @param name1  name of index1
      * @param index2 index1 to be checked
-     * @param name2 name of index2
+     * @param name2  name of index2
      */
     public static void indexOrder(final int index1, final String name1, final int index2, final String name2) {
         if (index1 > index2) {
@@ -281,8 +276,8 @@ public final class AssertUtils {
      * Checks if the variable is less or equal than the reference
      *
      * @param name name to be included in exception message.
-     * @param ref reference
-     * @param len object to be checked
+     * @param ref  reference
+     * @param len  object to be checked
      */
     public static void gtOrEqual(final String name, final double ref, final double len) {
         if (len < ref) {
@@ -294,8 +289,8 @@ public final class AssertUtils {
      * Checks if the variable is less or equal than the reference
      *
      * @param name name to be included in exception message.
-     * @param ref reference
-     * @param len object to be checked
+     * @param ref  reference
+     * @param len  object to be checked
      */
     public static void gtOrEqual(final String name, final float ref, final float len) {
         if (len < ref) {
@@ -307,8 +302,8 @@ public final class AssertUtils {
      * Checks if the variable is greater or equal than the reference
      *
      * @param name name to be included in exception message.
-     * @param ref reference
-     * @param len object to be checked
+     * @param ref  reference
+     * @param len  object to be checked
      */
     public static void gtOrEqual(final String name, final int ref, final int len) {
         if (len < ref) {
@@ -320,8 +315,8 @@ public final class AssertUtils {
      * Checks if the variable is less or equal than the reference
      *
      * @param name name to be included in exception message.
-     * @param ref reference
-     * @param len object to be checked
+     * @param ref  reference
+     * @param len  object to be checked
      */
     public static void gtOrEqual(final String name, final long ref, final long len) {
         if (len < ref) {
@@ -358,14 +353,14 @@ public final class AssertUtils {
     }
 
     public static void nonEmptyArray(final String name, final int[] array) {
-        AssertUtils.notNull(name, array);
+        notNull(name, array);
         if (array.length == 0) {
             throw new IllegalArgumentException("The " + name + MUST_BE_NON_EMPTY);
         }
     }
 
     public static void nonEmptyArray(final String name, final Object[] array) {
-        AssertUtils.notNull(name, array);
+        notNull(name, array);
         if (array.length == 0) {
             throw new IllegalArgumentException("The " + name + MUST_BE_NON_EMPTY);
         }
@@ -380,10 +375,9 @@ public final class AssertUtils {
     /**
      * Checks if the object is not null.
      *
-     * @param <T> generics object to be checked
-     *
+     * @param <T>  generics object to be checked
      * @param name name to be included in exception message.
-     * @param obj object to be checked
+     * @param obj  object to be checked
      */
     public static <T> void notNull(final String name, final T obj) {
         if (obj == null) {

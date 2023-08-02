@@ -74,7 +74,6 @@ public class ErrorDataSetRenderer extends AbstractErrorDataSetRendererParameter<
      */
     @Override
     public Canvas drawLegendSymbol(final DataSet dataSet, final int dsIndex, final int width, final int height) {
-
         final Canvas canvas = new Canvas(width, height);
         final GraphicsContext gc = canvas.getGraphicsContext2D();
 
@@ -652,6 +651,12 @@ public class ErrorDataSetRenderer extends AbstractErrorDataSetRendererParameter<
         }
     }
 
+    /**
+     * marker of given dataset style
+     *
+     * @param dataSetStyle dataset css style
+     * @return marker type, marker color, marker size
+     */
     protected Triple<Marker, Color, Double> getDefaultMarker(final String dataSetStyle) {
 
         Marker defaultMarker = getMarker();

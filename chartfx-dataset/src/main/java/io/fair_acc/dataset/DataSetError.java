@@ -5,16 +5,17 @@ package io.fair_acc.dataset;
  * error. This interface is kept most general. However, derived classes may have dummy implementation for error types
  * that are not relevant. For plotting speed improvement this simplification can/should be indicated via the
  *
- * @see #getErrorType(int dimIndex) interface for error type details
  * @author rstein
+ * @see #getErrorType(int dimIndex) interface for error type details
  */
 public interface DataSetError extends DataSet {
+
     /**
      * Returns the negative error along the 'dimIndex' axis of a point specified by the <code>x</code> coordinate.
      * Please note that errors are assumed to be always positive!
      *
      * @param dimIndex the dimension index (ie. '0' equals 'X', '1' equals 'Y')
-     * @param x horizontal 'dimIndex' coordinate
+     * @param x        horizontal 'dimIndex' coordinate
      * @return negative 'dimIndex' error
      */
     default double getErrorNegative(final int dimIndex, final double x) {
@@ -44,7 +45,7 @@ public interface DataSetError extends DataSet {
      * that errors are assumed to be always positive!
      *
      * @param dimIndex the dimension index (ie. '0' equals 'X', '1' equals 'Y')
-     * @param index of negative 'dimIndex' error to be returned.
+     * @param index    of negative 'dimIndex' error to be returned.
      * @return negative 'dimIndex' error
      */
     double getErrorNegative(final int dimIndex, final int index);
@@ -54,7 +55,7 @@ public interface DataSetError extends DataSet {
      * Please note that errors are assumed to be always positive!
      *
      * @param dimIndex the dimension index (ie. '0' equals 'X', '1' equals 'Y')
-     * @param x horizontal 'dimIndex' coordinate
+     * @param x        horizontal 'dimIndex' coordinate
      * @return positive 'dimIndex' error
      */
     default double getErrorPositive(final int dimIndex, final double x) {
@@ -84,7 +85,7 @@ public interface DataSetError extends DataSet {
      * that errors are assumed to be always positive!
      *
      * @param dimIndex the dimension index (ie. '0' equals 'X', '1' equals 'Y')
-     * @param index of positive 'dimIndex' error to be returned.
+     * @param index    of positive 'dimIndex' error to be returned.
      * @return positive 'dimIndex' error
      */
     double getErrorPositive(final int dimIndex, final int index);
@@ -92,7 +93,7 @@ public interface DataSetError extends DataSet {
     /**
      * Returns the negative error along the 'dimIndex' axis for all available data points. Please note that errors are
      * assumed to be always positive!
-     * 
+     *
      * @param dimIndex the dimension index (ie. '0' equals 'X', '1' equals 'Y')
      * @return array containing negative 'dimIndex' error
      */

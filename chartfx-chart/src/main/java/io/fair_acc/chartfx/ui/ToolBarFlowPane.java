@@ -30,7 +30,6 @@ public class ToolBarFlowPane extends FlowPane {
      * @param chart the associated chart pane
      */
     public ToolBarFlowPane(final Chart chart) {
-
         super();
         this.chart = chart;
 
@@ -85,7 +84,6 @@ public class ToolBarFlowPane extends FlowPane {
      * @return Insets for the tool bar pane
      */
     protected Insets calculateInsets() {
-
         final double roundCornerSpace = CORNER_SPACE_PADDING_FACTOR * cornerRadius.get();
         final double sidePaddingRight = Math.max(roundCornerSpace, toolBarPadding.getRight());
         final double sidePaddingLeft = Math.max(roundCornerSpace, toolBarPadding.getLeft());
@@ -93,22 +91,18 @@ public class ToolBarFlowPane extends FlowPane {
     }
 
     public DoubleProperty cornerRadiusProperty() {
-
         return cornerRadius;
     }
 
     public Color getToolBarDefaultColor() {
-
         return this.defaultColour;
     }
 
     public Insets getToolBarInsets() {
-
         return toolBarPadding;
     }
 
     public Color getToolBarSelectedColor() {
-
         return this.selectedColour;
     }
 
@@ -135,18 +129,15 @@ public class ToolBarFlowPane extends FlowPane {
     }
 
     public void setToolBarDefaultColor(final Color color) {
-
         this.defaultColour = color;
     }
 
     public void setToolBarInsets(final Insets padding) {
-
         toolBarPadding = padding;
         this.setPadding(toolBarPadding);
     }
 
     public void setToolBarSelectedColor(final Color color) {
-
         this.selectedColour = color;
     }
 }

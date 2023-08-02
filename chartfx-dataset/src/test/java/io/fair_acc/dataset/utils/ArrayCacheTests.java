@@ -1,17 +1,16 @@
 package io.fair_acc.dataset.utils;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Regression testing for @see ArrayCache
- * 
+ *
  * @author rstein
  */
 public class ArrayCacheTests {
+
     @Test
     public void doubleArrayTests() {
         final String uniqueIdentifier = "doubleArray";

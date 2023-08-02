@@ -1,12 +1,6 @@
 package io.fair_acc.dataset.event;
 
-import org.openjdk.jmh.annotations.Benchmark;
-import org.openjdk.jmh.annotations.Fork;
-import org.openjdk.jmh.annotations.Param;
-import org.openjdk.jmh.annotations.Scope;
-import org.openjdk.jmh.annotations.Setup;
-import org.openjdk.jmh.annotations.State;
-import org.openjdk.jmh.annotations.Warmup;
+import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.infra.Blackhole;
 
 /**
@@ -17,12 +11,13 @@ import org.openjdk.jmh.infra.Blackhole;
  * - spawn new handlers in new threads
  * - all handlers have threads polling events
  * Measure throughput, latency
- * 
+ *
  * @author Alexander Krimm
  */
 @State(Scope.Benchmark)
 public class EventBenchmark {
-    @Param({ "true", "false" })
+
+    @Param({"true", "false"})
     private boolean parallel;
 
     private TestEventSource es1;
@@ -77,13 +72,13 @@ public class EventBenchmark {
         es3 = new TestEventSource();
         es3.addListener(event ->
 
-                {
-                    int val = (Integer) event.getPayLoad() + 1;
-                    if (val < 10) {
-                        Blackhole.consumeCPU(100);
-                        es3.invokeListener(new UpdateEvent(es3, "test", val), parallel);
-                    }
-                });
+        {
+            int val = (Integer) event.getPayLoad() + 1;
+            if (val < 10) {
+                Blackhole.consumeCPU(100);
+                es3.invokeListener(new UpdateEvent(es3, "test", val), parallel);
+            }
+        });
     }
 
     @Benchmark

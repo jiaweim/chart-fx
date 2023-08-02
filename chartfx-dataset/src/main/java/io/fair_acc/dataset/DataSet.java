@@ -35,7 +35,6 @@ public interface DataSet extends EventSource, Serializable {
      * @return Axis Label
      */
     default AxisDescription getAxisDescription(int dim) {
-
         return getAxisDescriptions().get(dim);
     }
 

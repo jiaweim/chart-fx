@@ -36,12 +36,7 @@ public final class DataSetMath { // NOPMD - nomen est omen
     private static final String DIFFERENTIAL = DIFFERENTIAL_SYMBOL + "/" + DIFFERENTIAL_SYMBOL + "x";
     public static Formatter<Number> DEFAULT_FORMATTER = new DefaultNumberFormatter(); // NOSONAR NOPMD -- explicitly not getter/setter
 
-    /**
-     *
-     */
-    private DataSetMath() {
-        // private function, never called
-    }
+    private DataSetMath() {}
 
     public static DoubleErrorDataSet applyMathOperation(final DoubleErrorDataSet ret, final MathOp op, final double x1, final double y1, final double y2, final double eyn1, final double eyp1, final double eyn2, final double eyp2) { // NOPMD NOSONAR
         // switch through math operations
@@ -115,13 +110,11 @@ public final class DataSetMath { // NOPMD - nomen est omen
 
     @SafeVarargs
     public static DataSet addFunction(final DataSet function1, final DataSet function2, @NotNull final Formatter<Number>... format) {
-
         return mathFunction(function1, function2, MathOp.ADD, format);
     }
 
     @SafeVarargs
     public static DataSet addFunction(final DataSet function, final double value, @NotNull final Formatter<Number>... format) {
-
         return mathFunction(function, value, MathOp.ADD, format);
     }
 
@@ -266,19 +259,16 @@ public final class DataSetMath { // NOPMD - nomen est omen
 
     @SafeVarargs
     public static DataSet dbFunction(final DataSet function, @NotNull final Formatter<Number>... format) {
-
         return mathFunction(function, 0.0, MathOp.DB, format);
     }
 
     @SafeVarargs
     public static DataSet dbFunction(final DataSet function1, final DataSet function2, @NotNull final Formatter<Number>... format) {
-
         return mathFunction(function1, function2, MathOp.DB, format);
     }
 
     @SafeVarargs
     public static DataSet derivativeFunction(final DataSet function, @NotNull final Formatter<Number>... format) {
-
         return derivativeFunction(function, +1.0, format);
     }
 
@@ -355,13 +345,11 @@ public final class DataSetMath { // NOPMD - nomen est omen
 
     @SafeVarargs
     public static DataSet divideFunction(final DataSet function1, final DataSet function2, @NotNull final Formatter<Number>... format) {
-
         return mathFunction(function1, function2, MathOp.DIVIDE, format);
     }
 
     @SafeVarargs
     public static DataSet divideFunction(final DataSet function, final double value, @NotNull final Formatter<Number>... format) {
-
         return mathFunction(function, value, MathOp.DIVIDE, format);
     }
 
@@ -374,7 +362,6 @@ public final class DataSetMath { // NOPMD - nomen est omen
      * @return the given interpolated error
      */
     public static double error(final DataSet dataSet, final ErrType eType, final double x) {
-
         return error(dataSet, eType, -1, x, true);
     }
 
@@ -387,7 +374,6 @@ public final class DataSetMath { // NOPMD - nomen est omen
      * @return the given error
      */
     public static double error(final DataSet dataSet, final ErrType eType, final int index) {
-
         return error(dataSet, eType, index, 0.0, false);
     }
 
@@ -492,7 +478,6 @@ public final class DataSetMath { // NOPMD - nomen est omen
 
     @SafeVarargs
     public static DataSet geometricMeanFilteredFunction(final DataSet function, final double width, @NotNull final Formatter<Number>... format) {
-
         return filterFunction(function, width, Filter.GEOMMEAN, format);
     }
 
@@ -659,7 +644,6 @@ public final class DataSetMath { // NOPMD - nomen est omen
 
     @SafeVarargs
     public static DataSet integrateFunction(final DataSet function, @NotNull final Formatter<Number>... format) {
-
         return integrateFunction(function, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, format);
     }
 
@@ -844,37 +828,31 @@ public final class DataSetMath { // NOPMD - nomen est omen
     }
 
     public static double integralWidth(@NotNull DataSet function, final double centre, final double maxWidth, final double threshold) {
-
         return SimpleDataSetEstimators.getZeroCrossing(integrateFromCentre(function, centre, maxWidth, true), threshold);
     }
 
     @SafeVarargs
     public static DataSet inversedbFunction(final DataSet function, @NotNull final Formatter<Number>... format) {
-
         return mathFunction(function, 1.0, MathOp.INV_DB, format);
     }
 
     @SafeVarargs
     public static DataSet log10Function(final DataSet function, @NotNull final Formatter<Number>... format) {
-
         return mathFunction(function, 0.0, MathOp.LOG10, format);
     }
 
     @SafeVarargs
     public static DataSet log10Function(final DataSet function1, final DataSet function2, @NotNull final Formatter<Number>... format) {
-
         return mathFunction(function1, function2, MathOp.LOG10, format);
     }
 
     @SafeVarargs
     public static DataSet lowPassFilterFunction(final DataSet function, final double width, @NotNull final Formatter<Number>... format) {
-
         return filterFunction(function, width, Filter.MEAN, format);
     }
 
     @SafeVarargs
     public static DataSet magnitudeSpectrum(final DataSet function, @NotNull final Formatter<Number>... format) {
-
         return magnitudeSpectrum(function, Apodization.Hann, false, false, format);
     }
 
@@ -909,7 +887,6 @@ public final class DataSetMath { // NOPMD - nomen est omen
 
     @SafeVarargs
     public static DataSet magnitudeSpectrumComplex(final DataSet function, @NotNull final Formatter<Number>... format) {
-
         return magnitudeSpectrumComplex(function, Apodization.Hann, false, false, format);
     }
 
@@ -950,7 +927,6 @@ public final class DataSetMath { // NOPMD - nomen est omen
     }
 
     public static DataSet magnitudeSpectrumDecibel(final DataSet function) {
-
         return magnitudeSpectrum(function, Apodization.Hann, true, false);
     }
 
@@ -1093,37 +1069,31 @@ public final class DataSetMath { // NOPMD - nomen est omen
 
     @SafeVarargs
     public static DataSet maxFilteredFunction(final DataSet function, final double width, @NotNull final Formatter<Number>... format) {
-
         return filterFunction(function, width, Filter.MAX, format);
     }
 
     @SafeVarargs
     public static DataSet medianFilteredFunction(final DataSet function, final double width, @NotNull final Formatter<Number>... format) {
-
         return filterFunction(function, width, Filter.MEDIAN, format);
     }
 
     @SafeVarargs
     public static DataSet minFilteredFunction(final DataSet function, final double width, @NotNull final Formatter<Number>... format) {
-
         return filterFunction(function, width, Filter.MIN, format);
     }
 
     @SafeVarargs
     public static DataSet multiplyFunction(final DataSet function1, final DataSet function2, @NotNull final Formatter<Number>... format) {
-
         return mathFunction(function1, function2, MathOp.MULTIPLY, format);
     }
 
     @SafeVarargs
     public static DataSet multiplyFunction(final DataSet function, final double value, @NotNull final Formatter<Number>... format) {
-
         return mathFunction(function, value, MathOp.MULTIPLY, format);
     }
 
     @SafeVarargs
     public static DataSet normalisedFunction(final DataSet function, @NotNull final Formatter<Number>... format) {
-
         return normalisedFunction(function, 1.0, format);
     }
 
@@ -1150,19 +1120,16 @@ public final class DataSetMath { // NOPMD - nomen est omen
 
     @SafeVarargs
     public static DataSet normalisedMagnitudeSpectrumDecibel(final DataSet function, @NotNull final Formatter<Number>... format) {
-
         return magnitudeSpectrum(function, Apodization.Hann, true, true, format);
     }
 
     @SafeVarargs
     public static DataSet peakToPeakFilteredFunction(final DataSet function, final double width, @NotNull final Formatter<Number>... format) {
-
         return filterFunction(function, width, Filter.P2P, format);
     }
 
     @SafeVarargs
     public static DataSet rmsFilteredFunction(final DataSet function, final double width, @NotNull final Formatter<Number>... format) {
-
         return filterFunction(function, width, Filter.RMS, format);
     }
 
@@ -1195,43 +1162,36 @@ public final class DataSetMath { // NOPMD - nomen est omen
 
     @SafeVarargs
     public static DataSet sqrFunction(final DataSet function, final double value, @NotNull final Formatter<Number>... format) {
-
         return mathFunction(function, value, MathOp.SQR, format);
     }
 
     @SafeVarargs
     public static DataSet sqrFunction(final DataSet function1, final DataSet function2, @NotNull final Formatter<Number>... format) {
-
         return mathFunction(function1, function2, MathOp.SQR, format);
     }
 
     @SafeVarargs
     public static DataSet sqrtFunction(final DataSet function, final double value, @NotNull final Formatter<Number>... format) {
-
         return mathFunction(function, value, MathOp.SQRT, format);
     }
 
     @SafeVarargs
     public static DataSet sqrtFunction(final DataSet function1, final DataSet function2, @NotNull final Formatter<Number>... format) {
-
         return mathFunction(function1, function2, MathOp.SQRT, format);
     }
 
     @SafeVarargs
     public static DataSet subtractFunction(final DataSet function1, final DataSet function2, @NotNull final Formatter<Number>... format) {
-
         return mathFunction(function1, function2, MathOp.SUBTRACT, format);
     }
 
     @SafeVarargs
     public static DataSet subtractFunction(final DataSet function, final double value, @NotNull final Formatter<Number>... format) {
-
         return mathFunction(function, value, MathOp.SUBTRACT, format);
     }
 
     @SafeVarargs
     private static Formatter<Number> getFormatter(@NotNull final Formatter<Number>... format) {
-
         return Objects.requireNonNull(format, "user-supplied format").length > 0 ? format[0] : DEFAULT_FORMATTER;
     }
 

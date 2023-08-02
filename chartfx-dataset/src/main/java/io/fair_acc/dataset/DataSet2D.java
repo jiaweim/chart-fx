@@ -11,7 +11,6 @@ public interface DataSet2D extends DataSet {
 
     @Override
     default int getDimension() {
-
         return 2;
     }
 
@@ -22,7 +21,6 @@ public interface DataSet2D extends DataSet {
      * @return the y value
      */
     default double getValue(final double x) {
-
         return getValue(DIM_Y, x);
     }
 
@@ -33,7 +31,6 @@ public interface DataSet2D extends DataSet {
      * @return the x value
      */
     default double getX(final int index) {
-
         return get(DIM_X, index);
     }
 
@@ -45,7 +42,6 @@ public interface DataSet2D extends DataSet {
      * @return the index of the data point
      */
     default int getXIndex(double x) {
-
         return getIndex(DIM_X, x);
     }
 
@@ -53,7 +49,6 @@ public interface DataSet2D extends DataSet {
      * @return the x value array
      */
     default double[] getXValues() {
-
         return getValues(DIM_X);
     }
 
@@ -64,7 +59,6 @@ public interface DataSet2D extends DataSet {
      * @return the y value
      */
     default double getY(final int index) {
-
         return get(DIM_Y, index);
     }
 
@@ -76,7 +70,6 @@ public interface DataSet2D extends DataSet {
      * @return the index of the data point
      */
     default int getYIndex(double y) {
-
         return getIndex(DIM_Y, y);
     }
 
@@ -84,7 +77,6 @@ public interface DataSet2D extends DataSet {
      * @return the x value array
      */
     default double[] getYValues() {
-
         return getValues(DIM_Y);
     }
 }

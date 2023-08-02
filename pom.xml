@@ -32,13 +32,14 @@
         <skipTests>true</skipTests>
         <revision>11</revision>
         <sha1>3</sha1>
-        <changelist>1</changelist>
+        <changelist>2</changelist>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.moduleName>io.fair-acc.chartfx-parent</project.moduleName>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
 
-        <javafx.version>17.0.7</javafx.version>
+        <!-- 2023-07-18 发布的最新 LTS 版-->
+        <javafx.version>17.0.8</javafx.version>
         <controlsfx.version>11.1.2</controlsfx.version>
         <ikonli.version>12.3.1</ikonli.version>
 

@@ -195,19 +195,16 @@ public abstract class Chart extends HiddenSidesPane implements Observable {
     protected final StringProperty title = new StringPropertyBase() {
         @Override
         public Object getBean() {
-
             return Chart.this;
         }
 
         @Override
         public String getName() {
-
             return "title";
         }
 
         @Override
         protected void invalidated() {
-
             titleLabel.setText(get());
         }
     };
@@ -506,13 +503,11 @@ public abstract class Chart extends HiddenSidesPane implements Observable {
 
     @Override
     public String getUserAgentStylesheet() {
-
         return CHART_CSS;
     }
 
     @Override
     public void addListener(final InvalidationListener listener) {
-
         Objects.requireNonNull(listener, "InvalidationListener must not be null");
         listeners.add(listener);
     }
@@ -523,17 +518,14 @@ public abstract class Chart extends HiddenSidesPane implements Observable {
      * @param keyFrames Array of KeyFrames to play
      */
     public void animate(final KeyFrame... keyFrames) {
-
         animator.animate(keyFrames);
     }
 
     public final BooleanProperty animatedProperty() {
-
         return animated;
     }
 
     public BooleanProperty autoNotificationProperty() {
-
         return autoNotification;
     }
 
@@ -543,7 +535,6 @@ public abstract class Chart extends HiddenSidesPane implements Observable {
      * @return itself (fluent design)
      */
     public Chart fireInvalidated() {
-
         synchronized (autoNotification) {
             if (!isAutoNotification() || listeners.isEmpty()) {
                 return this;
@@ -563,7 +554,6 @@ public abstract class Chart extends HiddenSidesPane implements Observable {
      * @return datasets attached to the chart and datasets attached to all renderers
      */
     public ObservableList<DataSet> getAllDatasets() {
-
         if (getRenderers() == null) {
             return allDataSets;
         }
@@ -579,12 +569,10 @@ public abstract class Chart extends HiddenSidesPane implements Observable {
      * @return observable list of axes that are supposed to be used by the renderer
      */
     public ObservableList<Axis> getAxes() {
-
         return axesList;
     }
 
     public GridPane getAxesAndCanvasPane() {
-
         return axesAndCanvasPane;
     }
 
@@ -609,7 +597,6 @@ public abstract class Chart extends HiddenSidesPane implements Observable {
     }
 
     public final Pane getCanvasForeground() {
-
         return canvasForeground;
     }
 
@@ -617,7 +604,6 @@ public abstract class Chart extends HiddenSidesPane implements Observable {
      * @return datasets attached to the chart and drawn by all renderers
      */
     public ObservableList<DataSet> getDatasets() {
-
         return datasets;
     }
 
@@ -660,17 +646,14 @@ public abstract class Chart extends HiddenSidesPane implements Observable {
     }
 
     public final Legend getLegend() {
-
         return legend.getValue();
     }
 
     public final Side getLegendSide() {
-
         return legendSide.get();
     }
 
     public final Pane getMeasurementBar(final Side side) {
-
         return measurementBar.get(side);
     }
 
@@ -708,12 +691,10 @@ public abstract class Chart extends HiddenSidesPane implements Observable {
      * @return observable list of associated chart renderers
      */
     public ObservableList<Renderer> getRenderers() {
-
         return renderers;
     }
 
     public final String getTitle() {
-
         return title.get();
     }
 
@@ -728,7 +709,6 @@ public abstract class Chart extends HiddenSidesPane implements Observable {
     }
 
     public final Side getTitleSide() {
-
         return titleSide.get();
     }
 
@@ -736,12 +716,10 @@ public abstract class Chart extends HiddenSidesPane implements Observable {
      * @return toolbar pane
      */
     public final FlowPane getToolBar() {
-
         return toolBar;
     }
 
     public final ObjectProperty<Side> getToolBarSideProperty() {
-
         return toolBarSide;
     }
 

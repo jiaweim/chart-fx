@@ -2,12 +2,12 @@ package io.fair_acc.dataset;
 
 /**
  * @author rstein
- *
  */
 public interface Histogram2D extends GridDataSet {
+
     /**
      * Increment bin with abscissa X, Y, and Z by 1.
-     *
+     * <p>
      * if x is less than the low-edge of the first bin, the Underflow bin is incremented if x is equal to or greater
      * than the upper edge of last bin, the Overflow bin is incremented
      *
@@ -19,7 +19,7 @@ public interface Histogram2D extends GridDataSet {
 
     /**
      * Increment bin with abscissa X by with a weight w.
-     *
+     * <p>
      * if x is less than the low-edge of the first bin, the Underflow bin is incremented if x is equal to or greater
      * than the upper edge of last bin, the Overflow bin is incremented
      *

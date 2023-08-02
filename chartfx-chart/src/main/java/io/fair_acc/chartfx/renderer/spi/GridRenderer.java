@@ -50,9 +50,21 @@ public class GridRenderer extends Pane implements Renderer {
     // protected final BooleanProperty drawGridOnTop = new
     // SimpleStyleableBooleanProperty(StyleableProperties.GRID_ON_TOP,
     // this, "drawGridOnTop", true);
+    /**
+     * horizontal major grid line
+     */
     private final Line horMajorGridStyleNode;
+    /**
+     * vertical major grid line
+     */
     private final Line verMajorGridStyleNode;
+    /**
+     * horizontal minor grid line
+     */
     private final Line horMinorGridStyleNode;
+    /**
+     * vertical minor grid line
+     */
     private final Line verMinorGridStyleNode;
     private final Line drawGridOnTopNode;
     private final Group gridStyleNodes = new Group();
@@ -85,8 +97,8 @@ public class GridRenderer extends Pane implements Renderer {
         drawGridOnTopNode.getStyleClass().add(GridRenderer.STYLE_CLASS_GRID_ON_TOP);
         drawGridOnTopNode.setVisible(true);
 
-        gridStyleNodes.getChildren().addAll(horMajorGridStyleNode, verMajorGridStyleNode, horMinorGridStyleNode,
-                verMinorGridStyleNode, drawGridOnTopNode);
+        gridStyleNodes.getChildren().addAll(horMajorGridStyleNode, verMajorGridStyleNode,
+                horMinorGridStyleNode, verMinorGridStyleNode, drawGridOnTopNode);
 
         getChildren().add(gridStyleNodes);
         final Scene scene = new Scene(this);

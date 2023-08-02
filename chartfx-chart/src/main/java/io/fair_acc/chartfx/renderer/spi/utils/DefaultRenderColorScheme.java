@@ -157,6 +157,8 @@ public final class DefaultRenderColorScheme {
     }
 
     /**
+     * Return color for given dataset index
+     *
      * @param index dataset index
      * @return {@link Color} for the dataset
      */
@@ -228,7 +230,15 @@ public final class DefaultRenderColorScheme {
         }
     }
 
+    /**
+     * set the line style for GraphicsContext, namely lineWidth, lineDashes, fill and stroke
+     *
+     * @param gc           GraphicsContext to set
+     * @param defaultStyle css style
+     * @param dsIndex      dataset index
+     */
     public static void setLineScheme(final GraphicsContext gc, final String defaultStyle, final int dsIndex) {
+
         AssertUtils.gtEqThanZero("setLineScheme dsIndex", dsIndex);
         final Map<String, List<String>> map = splitQuery(defaultStyle);
 
@@ -243,10 +253,11 @@ public final class DefaultRenderColorScheme {
     }
 
     /**
-     * set schema
-     * @param gc
-     * @param defaultStyle
-     * @param dsIndex
+     * set schema for marker
+     *
+     * @param gc           GraphicsContext to set
+     * @param defaultStyle css style
+     * @param dsIndex      dataset index
      */
     public static void setMarkerScheme(final GraphicsContext gc, final String defaultStyle, final int dsIndex) {
 

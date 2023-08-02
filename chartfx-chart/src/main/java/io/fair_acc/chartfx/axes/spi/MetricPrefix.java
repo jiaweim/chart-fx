@@ -72,6 +72,12 @@ public enum MetricPrefix {
         return NONE;
     }
 
+    /**
+     * Return the metric prefix for given scaling value
+     *
+     * @param scaling scaling value
+     * @return short metric prefix
+     */
     public static String getShortPrefix(final double scaling) {
         for (final MetricPrefix e : MetricPrefix.values()) {
             if (scaling == e.getPower()) {

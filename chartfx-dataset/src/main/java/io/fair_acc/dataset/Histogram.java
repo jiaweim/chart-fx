@@ -2,28 +2,29 @@ package io.fair_acc.dataset;
 
 /**
  * Specialized DataSet interface for storing and processing Histogram data.
- *
+ * <p>
  * A histogram with bins 1...N is defined by n+1 values defining the steps between the bins.
  * The bins can be equidistant or not.
- *
+ * <p>
  * The bins 0 and N+1 have a special meaning and contain the data for data which is out of range.
  * They are not drawn by default.
  *
  * @author rstein
  */
 public interface Histogram extends DataSet, DataSetMetaData {
+
     /**
      * Increment bin content by 1. More...
-     * 
+     *
      * @param bin global bin ID
      */
     void addBinContent(int bin);
 
     /**
      * Increment bin content by a weight w. More...
-     * 
+     *
      * @param bin global bin ID
-     * @param w weight
+     * @param w   weight
      */
     void addBinContent(int bin, double w);
 
@@ -44,13 +45,12 @@ public interface Histogram extends DataSet, DataSetMetaData {
 
     /**
      * @param dimIndex the dimension index
-     * @param x spatial real-valued coordinate for dimension dimIndex
+     * @param x        spatial real-valued coordinate for dimension dimIndex
      * @return bin index corresponding to spatial x and y coordinates
      */
     int findBin(final int dimIndex, final double x);
 
     /**
-     *
      * @param dimIndex the dimension index
      * @param binIndex index
      * @return bin centre for axis with dimIndex
@@ -64,7 +64,6 @@ public interface Histogram extends DataSet, DataSetMetaData {
     int getBinCount(final int dimIndex);
 
     /**
-     *
      * @param dimIndex the dimension index
      * @param boundary for upper or lower bound limits
      * @param binIndex index
@@ -74,11 +73,11 @@ public interface Histogram extends DataSet, DataSetMetaData {
 
     /**
      * Return content of bin number bin.
-     *
+     * <p>
      * Convention for numbering bins
-     *
+     * <p>
      * For all histogram types: nbins, xlow, xup
-     *
+     * <p>
      * bin = 0; underflow bin bin = 1; first bin with low-edge xlow INCLUDED bin = nbins; last bin with upper-edge xup
      * EXCLUDED bin = nbins+1; overflow bin
      *
@@ -88,7 +87,6 @@ public interface Histogram extends DataSet, DataSetMetaData {
     double getBinContent(int bin);
 
     /**
-     *
      * @return true if bin sizes are equal
      */
     boolean isEquiDistant();

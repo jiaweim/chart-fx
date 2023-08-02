@@ -1,22 +1,5 @@
 package io.fair_acc.sample.math;
 
-import static io.fair_acc.dataset.DataSet.DIM_Y;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.BiFunction;
-import java.util.stream.Collectors;
-
-import javafx.application.Application;
-import javafx.scene.Node;
-import javafx.scene.layout.VBox;
-
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import io.fair_acc.chartfx.XYChartCss;
 import io.fair_acc.chartfx.renderer.spi.LabelledMarkerRenderer;
 import io.fair_acc.dataset.DataSet;
@@ -25,6 +8,21 @@ import io.fair_acc.dataset.testdata.spi.GaussFunction;
 import io.fair_acc.math.DataSetMath;
 import io.fair_acc.sample.math.utils.AbstractDemoApplication;
 import io.fair_acc.sample.math.utils.DemoChart;
+import javafx.application.Application;
+import javafx.scene.Node;
+import javafx.scene.layout.VBox;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.BiFunction;
+import java.util.stream.Collectors;
+
+import static io.fair_acc.dataset.DataSet.DIM_Y;
 
 /**
  * Reads schottky measurement data and provides width estimates based on (a-) symmetric integration intervals
@@ -32,6 +30,7 @@ import io.fair_acc.sample.math.utils.DemoChart;
  * @author rstein
  */
 public class PeakWidthSample extends AbstractDemoApplication {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(PeakWidthSample.class);
     private static final String FILE_NAME = "./LongSchottkySIS18.dat";
     private static final String MEAS_STROKE_COLOUR = "strokeColor=lightGray";
@@ -69,8 +68,8 @@ public class PeakWidthSample extends AbstractDemoApplication {
             gauss2.add(x, A2 * GaussFunction.gauss(x, 0, SIGMA2) * SIGMA2);
         }
 
-        final var dataOffset = average.getAxisDescription(DIM_Y).getMin();
-        final var avgOffsetCompensated = DataSetMath.subtractFunction(average, dataOffset);
+        final double dataOffset = average.getAxisDescription(DIM_Y).getMin();
+        final DataSet avgOffsetCompensated = DataSetMath.subtractFunction(average, dataOffset);
         avgOffsetCompensated.setStyle("strokeColor=black");
         final List<DataSet> linDataOffsetCompensated = linearData.stream().map(ds -> DataSetMath.subtractFunction(ds, dataOffset).setStyle(MEAS_STROKE_COLOUR)).collect(Collectors.toList());
 

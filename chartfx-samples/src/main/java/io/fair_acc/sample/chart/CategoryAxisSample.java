@@ -4,9 +4,6 @@ import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.AxisLabelOverlapPolicy;
 import io.fair_acc.chartfx.axes.spi.CategoryAxis;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
-import io.fair_acc.chartfx.plugins.EditAxis;
-import io.fair_acc.chartfx.plugins.ParameterMeasurements;
-import io.fair_acc.chartfx.plugins.Zoomer;
 import io.fair_acc.chartfx.renderer.LineStyle;
 import io.fair_acc.chartfx.renderer.spi.ErrorDataSetRenderer;
 import io.fair_acc.dataset.spi.DefaultErrorDataSet;
@@ -94,7 +91,6 @@ public class CategoryAxisSample extends ChartSample {
      * @param args the command line arguments
      */
     public static void main(final String[] args) {
-
         Application.launch(args);
     }
 }

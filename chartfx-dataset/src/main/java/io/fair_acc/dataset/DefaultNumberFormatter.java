@@ -15,7 +15,7 @@ import java.util.Locale;
  * <li> FIXED_WIDTH_ONLY: using decimal representations only. The string width is set via #setNumberOfCharacters(int)</li>
  * <li> FIXED_WIDTH_EXP: using exponential representation only. The string width is set via #setNumberOfCharacters(int)</li>
  * <li> FIXED_WIDTH_AND_EXP: using decimal or exponential representations, with preference order: shorter representation, more significant digits.
- *
+ * <p>
  * The string width is set via #setNumberOfCharacters(int)
  * N.B. This mode is only useful for #getNumberOfCharacters width &gt;= 6 (due to 'E[+,-]0' and potential decimal point overhead of '4')
  * </li>
@@ -76,8 +76,8 @@ public class DefaultNumberFormatter implements Formatter<Number> {
         if (FormatMode.BYTE_PREFIX.equals(formatMode)) {
             return metricParse(string, true);
         }
-        final var ret = Double.valueOf(string); // NOSONAR NOPMD
-        final var retInt = ret.longValue();
+        final Double ret = Double.valueOf(string); // NOSONAR NOPMD
+        final long retInt = ret.longValue();
         if (retInt == ret) {
             return retInt; // return as long value
         }
@@ -86,17 +86,14 @@ public class DefaultNumberFormatter implements Formatter<Number> {
 
     @Override
     public final Class<Number> getClassInstance() {
-
         return Number.class;
     }
 
     public int getFixedPrecision() {
-
         return fixedPrecision;
     }
 
     public void setFixedPrecision(final int fixedPrecision) {
-
         assert fixedPrecision >= 0 : "precision must be larger 0, is: " + fixedPrecision;
         fixPrecisionFormat = "%." + fixedPrecision + "f%c";
         fixPrecisionFormatZero = "%." + fixedPrecision + "f";
@@ -107,44 +104,36 @@ public class DefaultNumberFormatter implements Formatter<Number> {
     }
 
     public FormatMode getFormatMode() {
-
         return formatMode;
     }
 
     public void setFormatMode(final FormatMode formatMode) {
-
         this.formatMode = formatMode;
     }
 
     public int getNumberOfCharacters() {
-
         return numberOfCharacters;
     }
 
     public void setNumberOfCharacters(final int numberOfCharacters) {
-
         assert numberOfCharacters >= 0 : "numberOfCharacters must be larger 0, is: " + numberOfCharacters;
         fixedLengthFormat = "%1$" + numberOfCharacters + 's';
         this.numberOfCharacters = numberOfCharacters;
     }
 
     public SignConvention getSignConvention() {
-
         return signConvention;
     }
 
     public void setSignConvention(final SignConvention signConvention) {
-
         this.signConvention = signConvention;
     }
 
     public SignConvention getSignConventionExp() {
-
         return signConventionExp;
     }
 
     public void setSignConventionExp(final SignConvention signConventionExp) {
-
         this.signConventionExp = signConventionExp;
     }
 
@@ -275,7 +264,6 @@ public class DefaultNumberFormatter implements Formatter<Number> {
     }
 
     protected static String getSignPrefix(SignConvention sign, boolean posValue) {
-
         switch (sign) {
             case FORCE_SIGN:
                 return "%+";
@@ -330,7 +318,6 @@ public class DefaultNumberFormatter implements Formatter<Number> {
         JDK; // JDK default 'toString()' method
 
         boolean fixedWidth() {
-
             return this == FIXED_WIDTH_ONLY || this == FIXED_WIDTH_AND_EXP || this == FIXED_WIDTH_EXP;
         }
     }

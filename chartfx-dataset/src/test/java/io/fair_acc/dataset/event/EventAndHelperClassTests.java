@@ -1,20 +1,19 @@
 package io.fair_acc.dataset.event;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class EventAndHelperClassTests {
+
     private final static Object payload = new Object();
     private static final EventSource testEventSource = new EventSource() {
         @Override
@@ -36,10 +35,9 @@ public class EventAndHelperClassTests {
 
     @DisplayName("UpdateEvent class constructors")
     @ParameterizedTest(name = "event class - {0}")
-    @ValueSource(classes = { AddedDataEvent.class, AddedDataEvent.class, InvalidatedEvent.class, RemovedDataEvent.class, //
-                         UpdatedDataEvent.class, UpdatedMetaDataEvent.class, UpdateEvent.class })
-    public void
-    testConstructors(final Class<? extends UpdateEvent> eventClass) //
+    @ValueSource(classes = {AddedDataEvent.class, AddedDataEvent.class, InvalidatedEvent.class, RemovedDataEvent.class, //
+            UpdatedDataEvent.class, UpdatedMetaDataEvent.class, UpdateEvent.class})
+    public void testConstructors(final Class<? extends UpdateEvent> eventClass) //
             throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
         Constructor<? extends UpdateEvent> constructor1 = eventClass.getConstructor(EventSource.class);
         assertNotNull(constructor1);
@@ -68,7 +66,7 @@ public class EventAndHelperClassTests {
 
     @DisplayName("UpdateAxisEvent class constructors")
     @ParameterizedTest(name = "event class - {0}")
-    @ValueSource(classes = { AxisChangeEvent.class, AxisNameChangeEvent.class, AxisRangeChangeEvent.class })
+    @ValueSource(classes = {AxisChangeEvent.class, AxisNameChangeEvent.class, AxisRangeChangeEvent.class})
     public void testAxisConstructors(final Class<? extends AxisChangeEvent> eventClass) //
             throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
         Constructor<? extends AxisChangeEvent> constructor0 = eventClass.getConstructor(EventSource.class);

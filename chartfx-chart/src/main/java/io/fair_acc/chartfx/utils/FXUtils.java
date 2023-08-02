@@ -1,5 +1,10 @@
 package io.fair_acc.chartfx.utils;
 
+import javafx.application.Platform;
+import javafx.scene.Scene;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -10,12 +15,6 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import javafx.application.Platform;
-import javafx.scene.Scene;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * Small tool to execute/call JavaFX GUI-related code from potentially non-JavaFX thread (equivalent to old:
  * SwingUtilities.invokeLater(...) ... invokeAndWait(...) tools)
@@ -23,8 +22,12 @@ import org.slf4j.LoggerFactory;
  * @author rstein
  */
 public final class FXUtils {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(FXUtils.class);
 
+    /**
+     * assert in JavaFX Thread
+     */
     public static void assertJavaFxThread() {
         if (!Platform.isFxApplicationThread()) {
             throw new IllegalStateException("access JavaFX from non-JavaFX thread - please fix");
@@ -33,7 +36,9 @@ public final class FXUtils {
 
     /**
      * If you run into any situation where all of your scenes end, the thread managing all of this will just peter out.
-     * To prevent this from happening, add this line:
+     * To prevent this from happening, add this line.
+     * <p>
+     * As a side effect, JavaFX does not exit after closing all javafx windows.
      */
     public static void keepJavaFxAlive() {
         Platform.setImplicitExit(false);
@@ -42,10 +47,10 @@ public final class FXUtils {
     /**
      * Invokes a Runnable in JFX Thread and waits while it's finished. Like SwingUtilities.invokeAndWait does for EDT.
      *
-     * @author hendrikebbers
-     * @author rstein
      * @param function Runnable function that should be executed within the JavaFX thread
      * @throws Exception if a exception is occurred in the run method of the Runnable
+     * @author hendrikebbers
+     * @author rstein
      */
     public static void runAndWait(final Runnable function) throws Exception {
         runAndWait("runAndWait(Runnable)", t -> {
@@ -57,12 +62,12 @@ public final class FXUtils {
     /**
      * Invokes a Runnable in JFX Thread and waits while it's finished. Like SwingUtilities.invokeAndWait does for EDT.
      *
-     * @author hendrikebbers
-     * @author rstein
      * @param function Supplier function that should be executed within the JavaFX thread
-     * @param <R> generic for return type
+     * @param <R>      generic for return type
      * @return function result of type R
      * @throws Exception if a exception is occurred in the run method of the Runnable
+     * @author hendrikebbers
+     * @author rstein
      */
     public static <R> R runAndWait(final Supplier<R> function) throws Exception {
         return runAndWait("runAndWait(Supplier<R>)", t -> function.get());
@@ -71,14 +76,14 @@ public final class FXUtils {
     /**
      * Invokes a Runnable in JFX Thread and waits while it's finished. Like SwingUtilities.invokeAndWait does for EDT.
      *
-     * @author hendrikebbers, original author
-     * @author rstein, extension to Function, Supplier, Runnable
      * @param argument function argument
      * @param function transform function that should be executed within the JavaFX thread
-     * @param <T> generic for argument type
-     * @param <R> generic for return type
+     * @param <T>      generic for argument type
+     * @param <R>      generic for return type
      * @return function result of type R
      * @throws Exception if an exception is occurred in the run method of the Runnable
+     * @author hendrikebbers, original author
+     * @author rstein, extension to Function, Supplier, Runnable
      */
     public static <T, R> R runAndWait(final T argument, final Function<T, R> function) throws Exception {
         if (Platform.isFxApplicationThread()) {
@@ -187,7 +192,8 @@ public final class FXUtils {
                             run.getAndSet(false);
                             lock.unlock();
                         }
-                    } }, timeoutMillis);
+                    }
+                }, timeoutMillis);
             }
             while (run.get()) {
                 condition.await();
@@ -210,10 +216,12 @@ public final class FXUtils {
     }
 
     private static class ExceptionWrapper {
+
         private Exception t;
     }
 
     private static class RunnableWithReturn<R> implements Runnable {
+
         private final Supplier<R> internalRunnable;
         private final Object lock = new Object();
         private R returnValue;

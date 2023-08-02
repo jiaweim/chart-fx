@@ -1,16 +1,16 @@
 package io.fair_acc.sample.dataset;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
+import io.fair_acc.dataset.spi.CircularDoubleErrorDataSet;
+import io.fair_acc.dataset.spi.FifoDoubleErrorDataSet;
 import io.fair_acc.dataset.utils.ProcessingProfiler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.fair_acc.dataset.spi.CircularDoubleErrorDataSet;
-import io.fair_acc.dataset.spi.FifoDoubleErrorDataSet;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class FifoDoubleErrorDataSetSample {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(FifoDoubleErrorDataSetSample.class);
     private static final int TEST_LENGTH_MILLIS = 30000;
 

@@ -1,9 +1,13 @@
 package io.fair_acc.chartfx.legend.spi;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
+import io.fair_acc.chartfx.XYChartCss;
+import io.fair_acc.chartfx.legend.Legend;
+import io.fair_acc.chartfx.renderer.Renderer;
+import io.fair_acc.chartfx.utils.StyleParser;
+import io.fair_acc.dataset.DataSet;
+import io.fair_acc.dataset.event.EventListener;
+import io.fair_acc.dataset.event.UpdateEvent;
+import io.fair_acc.dataset.event.UpdatedMetaDataEvent;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -20,14 +24,9 @@ import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 
-import io.fair_acc.chartfx.XYChartCss;
-import io.fair_acc.chartfx.legend.Legend;
-import io.fair_acc.chartfx.renderer.Renderer;
-import io.fair_acc.chartfx.utils.StyleParser;
-import io.fair_acc.dataset.DataSet;
-import io.fair_acc.dataset.event.EventListener;
-import io.fair_acc.dataset.event.UpdateEvent;
-import io.fair_acc.dataset.event.UpdatedMetaDataEvent;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * A chart legend that displays a list of items with symbols in a box
@@ -35,6 +34,7 @@ import io.fair_acc.dataset.event.UpdatedMetaDataEvent;
  * @author rstein
  */
 public class DefaultLegend extends FlowPane implements Legend {
+
     // TODO: transform static integers to styleable property fields
     private static final int GAP = 5;
     private static final int SYMBOL_WIDTH = 20;
@@ -121,6 +121,7 @@ public class DefaultLegend extends FlowPane implements Legend {
     }
 
     public static class DatasetVisibilityListener implements EventListener {
+
         private LegendItem item;
         private DataSet series;
 
@@ -160,21 +161,11 @@ public class DefaultLegend extends FlowPane implements Legend {
         itemsProperty().set(value);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see io.fair_acc.chartfx.legend.Legend#setVertical(boolean)
-     */
     @Override
     public final void setVertical(final boolean value) {
         verticalProperty().set(value);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see io.fair_acc.chartfx.legend.Legend#updateLegend(java.util.List, java.util.List)
-     */
     @Override
     public void updateLegend(final List<DataSet> dataSets, final List<Renderer> renderers, final boolean forceUpdate) {
         // list of already drawn data sets in the legend
@@ -253,6 +244,7 @@ public class DefaultLegend extends FlowPane implements Legend {
      * A item to be displayed on a Legend
      */
     public static class LegendItem extends Label {
+
         public LegendItem(final String text, final Node symbol) {
             setText(text);
             getStyleClass().add("chart-legend-item");

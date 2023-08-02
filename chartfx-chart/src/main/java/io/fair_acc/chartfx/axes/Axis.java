@@ -328,7 +328,7 @@ public interface Axis extends AxisDescription {
     void setUnitScaling(final double value);
 
     /**
-     * @param value the new axis primary unit label
+     * @param value the unit scaling
      */
     void setUnitScaling(final MetricPrefix value);
 

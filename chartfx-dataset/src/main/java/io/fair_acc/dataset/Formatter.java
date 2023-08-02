@@ -37,7 +37,6 @@ public interface Formatter<T> {
      * @throws NumberFormatException in case of parsing errors
      */
     default T fromString(@NotNull final String string, @NotNull final ParsePosition pos) {
-
         final int end = string.indexOf(' ', pos.getIndex());
         if (end == -1) {
             return fromString(string.substring(pos.getIndex()));

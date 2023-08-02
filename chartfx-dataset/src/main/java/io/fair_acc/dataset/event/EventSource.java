@@ -1,13 +1,13 @@
 package io.fair_acc.dataset.event;
 
+import io.fair_acc.dataset.utils.AggregateException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import io.fair_acc.dataset.utils.AggregateException;
 
 /**
  * @author rstein
@@ -31,7 +31,6 @@ public interface EventSource {
      * @see #removeListener(EventListener)
      */
     default void addListener(EventListener listener) {
-
         synchronized (updateEventListener()) {
             Objects.requireNonNull(listener, "UpdateListener must not be null");
             if (!updateEventListener().contains(listener)) {
@@ -56,7 +55,6 @@ public interface EventSource {
      * invoke object within update listener list
      */
     default void invokeListener() {
-
         invokeListener(null);
     }
 
@@ -66,7 +64,6 @@ public interface EventSource {
      * @param updateEvent the event the listeners are notified with
      */
     default void invokeListener(final UpdateEvent updateEvent) {
-
         invokeListener(updateEvent, true);
     }
 
@@ -79,7 +76,6 @@ public interface EventSource {
     @SuppressWarnings("PMD.NPathComplexity")
     // cannot be further split w/o adding unwanted further public default implementations (N.B. 'private default' ... is forbidden)
     default void invokeListener(final UpdateEvent updateEvent, final boolean executeParallel) {
-
         if (updateEventListener() == null || !isAutoNotification()) {
             return;
         }
@@ -146,7 +142,6 @@ public interface EventSource {
      * @return <code>true</code> if automatic notification is enabled
      */
     default boolean isAutoNotification() {
-
         return autoNotification().get();
     }
 
@@ -163,7 +158,6 @@ public interface EventSource {
      * @see #addListener(EventListener)
      */
     default void removeListener(EventListener listener) {
-
         synchronized (updateEventListener()) {
             Objects.requireNonNull(listener, "UpdateListener must not be null");
             updateEventListener().remove(listener);

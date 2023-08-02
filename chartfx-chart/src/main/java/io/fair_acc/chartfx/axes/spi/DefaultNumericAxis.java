@@ -136,7 +136,6 @@ public class DefaultNumericAxis extends AbstractAxis implements Axis {
      */
     public DefaultNumericAxis(final String axisLabel, final double lowerBound, final double upperBound,
                               final double tickUnit) {
-
         super(lowerBound, upperBound);
         this.setName(axisLabel);
         if (lowerBound >= upperBound) {
