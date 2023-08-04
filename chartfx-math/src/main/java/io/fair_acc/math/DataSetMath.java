@@ -771,6 +771,10 @@ public final class DataSetMath { // NOPMD - nomen est omen
         return retFunction;
     }
 
+    public static DataSet integrateFromCentre(@NotNull DataSet function, final double centre, final double width, final boolean normalise) {
+        return integrateFromCentre(function, centre, width, normalise, new Formatter[0]);
+    }
+
     @SafeVarargs
     public static DataSet integrateFromCentre(@NotNull DataSet function, final double centre, final double width, final boolean normalise, @NotNull final Formatter<Number>... format) {
 
@@ -1002,68 +1006,77 @@ public final class DataSetMath { // NOPMD - nomen est omen
         return xValues;
     }
 
+    /**
+     * apply given function to the y-values of the {@link DataSet}
+     *
+     * @param dataSet {@link DataSet} to modify
+     * @param value   value applied to the {@link DataSet}
+     * @param op      {@link MathOp} to apply
+     * @param format  {@link Formatter} used to format function-name
+     * @return {@link DataSet} after apply the math function
+     */
     @SafeVarargs
-    public static DataSet mathFunction(final DataSet function, final double value, final MathOp op, @NotNull final Formatter<Number>... format) {
+    public static DataSet mathFunction(final DataSet dataSet, final double value, final MathOp op, @NotNull final Formatter<Number>... format) {
 
-        final String functionName = getFormatter(format).format("{0}({1})", op.getTag(), function.getName());
-        final double[] y = function.getValues(DIM_Y);
-        final double[] eyn = Arrays.copyOf(errors(function, EYN), y.length);
-        final double[] eyp = Arrays.copyOf(errors(function, EYP), y.length);
+        final String functionName = getFormatter(format).format("{0}({1})", op.getTag(), dataSet.getName());
+        final double[] y = dataSet.getValues(DIM_Y);
+        final double[] eyn = Arrays.copyOf(errors(dataSet, EYN), y.length);
+        final double[] eyp = Arrays.copyOf(errors(dataSet, EYP), y.length);
 
-        final int ncount = function.getDataCount();
+        final int ncount = dataSet.getDataCount();
         switch (op) {
             case ADD:
-                return new DoubleErrorDataSet(functionName, function.getValues(DIM_X), ArrayMath.add(y, value), eyn, eyp,
+                return new DoubleErrorDataSet(functionName, dataSet.getValues(DIM_X), ArrayMath.add(y, value), eyn, eyp,
                         ncount, true);
             case SUBTRACT:
-                return new DoubleErrorDataSet(functionName, function.getValues(DIM_X), ArrayMath.subtract(y, value), eyn, eyp,
+                return new DoubleErrorDataSet(functionName, dataSet.getValues(DIM_X), ArrayMath.subtract(y, value), eyn, eyp,
                         ncount, true);
             case MULTIPLY:
-                return new DoubleErrorDataSet(functionName, function.getValues(DIM_X), ArrayMath.multiply(y, value),
+                return new DoubleErrorDataSet(functionName, dataSet.getValues(DIM_X), ArrayMath.multiply(y, value),
                         ArrayMath.multiply(eyn, value), ArrayMath.multiply(eyp, value), ncount, true);
             case DIVIDE:
-                return new DoubleErrorDataSet(functionName, function.getValues(DIM_X), ArrayMath.divide(y, value),
+                return new DoubleErrorDataSet(functionName, dataSet.getValues(DIM_X), ArrayMath.divide(y, value),
                         ArrayMath.divide(eyn, value), ArrayMath.divide(eyp, value), ncount, true);
             case SQR:
                 for (var i = 0; i < eyn.length; i++) {
                     eyn[i] = 2 * MathBase.abs(y[i] + value) * eyn[i];
                     eyp[i] = 2 * MathBase.abs(y[i] + value) * eyp[i];
                 }
-                return new DoubleErrorDataSet(functionName, function.getValues(DIM_X), value == 0.0 ? ArrayMath.sqr(y) : ArrayMath.sqr(ArrayMath.add(y, value)), eyn, eyp, ncount,
+                return new DoubleErrorDataSet(functionName, dataSet.getValues(DIM_X), value == 0.0 ? ArrayMath.sqr(y) : ArrayMath.sqr(ArrayMath.add(y, value)), eyn, eyp, ncount,
                         true);
             case SQRT:
                 for (var i = 0; i < eyn.length; i++) {
                     eyn[i] = MathBase.sqrt(MathBase.abs(y[i] + value)) * eyn[i];
                     eyp[i] = MathBase.sqrt(MathBase.abs(y[i] + value)) * eyp[i];
                 }
-                return new DoubleErrorDataSet(functionName, function.getValues(DIM_X), value == 0.0 ? ArrayMath.sqrt(y) : ArrayMath.sqrt(ArrayMath.add(y, value)), eyn, eyp, ncount,
+                return new DoubleErrorDataSet(functionName, dataSet.getValues(DIM_X), value == 0.0 ? ArrayMath.sqrt(y) : ArrayMath.sqrt(ArrayMath.add(y, value)), eyn, eyp, ncount,
                         true);
             case LOG10:
                 for (var i = 0; i < eyn.length; i++) {
                     eyn[i] = 0.0; // 0.0 as a work-around
                     eyp[i] = 0.0;
                 }
-                return new DoubleErrorDataSet(functionName, function.getValues(DIM_X), ArrayMath.tenLog10(y), eyn, eyp,
+                return new DoubleErrorDataSet(functionName, dataSet.getValues(DIM_X), ArrayMath.tenLog10(y), eyn, eyp,
                         ncount, true);
             case DB:
                 for (var i = 0; i < eyn.length; i++) {
                     eyn[i] = 0.0; // 0.0 as a work-around
                     eyp[i] = 0.0;
                 }
-                return new DoubleErrorDataSet(functionName, function.getValues(DIM_X), ArrayMath.decibel(y), eyn, eyp, ncount,
+                return new DoubleErrorDataSet(functionName, dataSet.getValues(DIM_X), ArrayMath.decibel(y), eyn, eyp, ncount,
                         true);
             case INV_DB:
                 for (var i = 0; i < eyn.length; i++) {
                     eyn[i] = 0.0; // 0.0 as a work-around
                     eyp[i] = 0.0;
                 }
-                return new DoubleErrorDataSet(functionName, function.getValues(DIM_X), ArrayMath.inverseDecibel(y), eyn, eyp,
+                return new DoubleErrorDataSet(functionName, dataSet.getValues(DIM_X), ArrayMath.inverseDecibel(y), eyn, eyp,
                         ncount, true);
             case IDENTITY:
             default:
                 // return copy if nothing else matches
-                return new DoubleErrorDataSet(functionName, function.getValues(DIM_X), function.getValues(DIM_Y),
-                        errors(function, EYN), errors(function, EYP), ncount, true);
+                return new DoubleErrorDataSet(functionName, dataSet.getValues(DIM_X), dataSet.getValues(DIM_Y),
+                        errors(dataSet, EYN), errors(dataSet, EYP), ncount, true);
         }
     }
 
@@ -1190,6 +1203,16 @@ public final class DataSetMath { // NOPMD - nomen est omen
         return mathFunction(function, value, MathOp.SUBTRACT, format);
     }
 
+    public static DataSet subtractFunction(final DataSet function, final double value) {
+        return mathFunction(function, value, MathOp.SUBTRACT);
+    }
+
+    /**
+     * if format is not empty, return the first Formatter, else return the DEFAULT_FORMATTER
+     *
+     * @param format user supplied formats
+     * @return Formatter to use
+     */
     @SafeVarargs
     private static Formatter<Number> getFormatter(@NotNull final Formatter<Number>... format) {
         return Objects.requireNonNull(format, "user-supplied format").length > 0 ? format[0] : DEFAULT_FORMATTER;

@@ -33,7 +33,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 /**
  * Class containing the properties, getters and setters for the AbstractNumericAxis class
  * <p>
- * intention is to move the boiler-plate code here for better readability of the AbstractNumericAxis class
+ * intention is to move the boiler-plate code here for better readability of the AbstractAxis class
  *
  * @author rstein
  */
@@ -320,7 +320,6 @@ public abstract class AbstractAxisParameter extends Pane implements Axis {
     private final transient BooleanProperty autoUnitScaling = new SimpleBooleanProperty(this, "autoUnitScaling", false) {
         @Override
         protected void invalidated() {
-
             updateAxisLabelAndUnit();
             invokeListener(new AxisChangeEvent(AbstractAxisParameter.this));
         }
@@ -1060,23 +1059,19 @@ public abstract class AbstractAxisParameter extends Pane implements Axis {
 
     @Override
     public void setAutoRanging(final boolean value) {
-
         autoRangingProperty().set(value);
     }
 
     @Override
     public void setAutoUnitScaling(final boolean value) {
-
         autoUnitScalingProperty().set(value);
     }
 
     public void setAxisCenterPosition(final double value) {
-
         axisCenterPositionProperty().set(value);
     }
 
     public void setAxisLabelGap(final double value) {
-
         axisLabelGapProperty().set(value);
     }
 
@@ -1126,28 +1121,23 @@ public abstract class AbstractAxisParameter extends Pane implements Axis {
      * @param value the desired number of minor ticks
      */
     public void setMinorTickCount(final int value) {
-
         minorTickCountProperty().set(value);
     }
 
     public void setMinorTickLength(final double value) {
-
         minorTickLengthProperty().set(value);
     }
 
     public void setMinorTickVisible(final boolean value) {
-
         minorTickVisibleProperty().set(value);
     }
 
     @Override
     public void setName(final String value) {
-
         nameProperty().set(value);
     }
 
     public void setOverlapPolicy(final AxisLabelOverlapPolicy value) {
-
         overlapPolicyProperty().set(value);
     }
 

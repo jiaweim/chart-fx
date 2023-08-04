@@ -2,6 +2,7 @@ package io.fair_acc.sample.chart;
 
 import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
+import io.fair_acc.chartfx.plugins.Zoomer;
 import io.fair_acc.dataset.spi.DoubleDataSet;
 import javafx.application.Application;
 import javafx.scene.Node;
@@ -25,6 +26,7 @@ public class LineChartSample extends ChartSample {
         yAxis.setAutoRangePadding(0.5); // here: 50% padding on top and bottom of axis
 
         final XYChart chart = new XYChart(new DefaultNumericAxis(), yAxis);
+        chart.getPlugins().add(new Zoomer());
 
         final DoubleDataSet dataSet1 = new DoubleDataSet("data set #1");
         chart.getDatasets().addAll(dataSet1); // for two data sets

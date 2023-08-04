@@ -53,7 +53,6 @@ public final class CategoryAxis extends DefaultNumericAxis {
      * @param categories List of the categories for this axis
      */
     public CategoryAxis(final ObservableList<String> categories) {
-
         this(null, categories);
     }
 
@@ -64,7 +63,6 @@ public final class CategoryAxis extends DefaultNumericAxis {
      * @param axisLabel the axis {@link #nameProperty() label}
      */
     public CategoryAxis(final String axisLabel) {
-
         super(axisLabel);
         this.setOverlapPolicy(AxisLabelOverlapPolicy.SHIFT_ALT);
         minProperty().addListener((ch, old, val) -> {
@@ -90,7 +88,6 @@ public final class CategoryAxis extends DefaultNumericAxis {
      * @param categories List of the categories for this axis
      */
     public CategoryAxis(final String axisLabel, final ObservableList<String> categories) {
-
         super(axisLabel, 0, categories.size(), 1.0);
         changeIsLocal = true;
         setCategories(categories);
@@ -103,7 +100,6 @@ public final class CategoryAxis extends DefaultNumericAxis {
      * @return ObservableList of categories for this axis.
      */
     public ObservableList<String> getCategories() {
-
         return categories.get();
     }
 
@@ -111,7 +107,6 @@ public final class CategoryAxis extends DefaultNumericAxis {
      * @param categories list of strings as categories
      */
     public void setCategories(final List<String> categories) {
-
         if (categories == null) {
             forceAxisCategories = false;
             setCategories(FXCollections.observableArrayList());
@@ -130,7 +125,6 @@ public final class CategoryAxis extends DefaultNumericAxis {
      * @param categoryList the category list
      */
     public void setCategories(final ObservableList<String> categoryList) {
-
         if (categoryList == null) {
             forceAxisCategories = false;
             setCategories(FXCollections.observableArrayList());
@@ -172,7 +166,6 @@ public final class CategoryAxis extends DefaultNumericAxis {
      * @return true is categories were modified, false otherwise
      */
     public boolean updateCategories(final DataSet dataSet) {
-
         if (dataSet == null || forceAxisCategories) {
             return false;
         }
@@ -205,7 +198,6 @@ public final class CategoryAxis extends DefaultNumericAxis {
     @Override
     protected AxisRange autoRange(final double minValue, final double maxValue, final double length,
                                   final double labelSize) {
-
         double min = minValue > 0 && isForceZeroInRange() ? 0 : minValue;
         if (isLogAxis && minValue <= 0) {
             min = DefaultNumericAxis.DEFAULT_LOG_MIN_VALUE;

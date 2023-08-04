@@ -31,6 +31,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * GridRenderer is used to generate grid-lines in the chart.
+ */
 @SuppressWarnings("PMD.GodClass")
 public class GridRenderer extends Pane implements Renderer {
 

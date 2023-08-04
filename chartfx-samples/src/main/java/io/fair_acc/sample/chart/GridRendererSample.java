@@ -1,6 +1,7 @@
 package io.fair_acc.sample.chart;
 
 import javafx.application.Application;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.layout.FlowPane;
@@ -15,6 +16,7 @@ public class GridRendererSample extends ChartSample {
     public Node getChartPanel(final Stage primaryStage) {
         final FlowPane root = new FlowPane();
         root.setAlignment(Pos.CENTER);
+        root.setOrientation(Orientation.VERTICAL);
 
         final XYChart xyChart1 = new XYChart(new DefaultNumericAxis("x-Axis 1", 0, 100, 10),
                 new DefaultNumericAxis("y-Axis 1", 0, 100, 20));
@@ -26,10 +28,10 @@ public class GridRendererSample extends ChartSample {
         xyChart2.getGridRenderer().getHorizontalMinorGrid().setVisible(true);
         xyChart2.getGridRenderer().getVerticalMinorGrid().setVisible(true);
 
-        xyChart2.getGridRenderer().getHorizontalMajorGrid().setVisible(false);
-        xyChart2.getGridRenderer().getHorizontalMinorGrid().setVisible(true); // implicit major = true
-        xyChart2.getGridRenderer().getVerticalMajorGrid().setVisible(true);
-        xyChart2.getGridRenderer().getVerticalMinorGrid().setVisible(true);
+//        xyChart2.getGridRenderer().getHorizontalMajorGrid().setVisible(false);
+//        xyChart2.getGridRenderer().getHorizontalMinorGrid().setVisible(true); // implicit major = true
+//        xyChart2.getGridRenderer().getVerticalMajorGrid().setVisible(true);
+//        xyChart2.getGridRenderer().getVerticalMinorGrid().setVisible(true);
         //        xyChart2.getGridRenderer().getVerticalMinorGrid().setStyle(".chart-minor-grid-lines{visible:true}");
         //        xyChart2.getGridRenderer().getHorizontalMajorGrid().setStyle("-fx-stroke: blue;-fx-stroke-width:4;");
         //        xyChart2.getGridRenderer().getVerticalMajorGrid().setStyle("-fx-stroke: darkblue");

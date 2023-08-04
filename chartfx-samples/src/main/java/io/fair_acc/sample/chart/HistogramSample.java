@@ -120,7 +120,8 @@ public class HistogramSample extends ChartSample {
         // N.B. disable this if you want to use the data set's categories
         xAxis1.setCategories(categories);
 
-         fillDemoData();
+//         fillDemoData();
+         fillData();
 
         // setting the axis categories to null forces the first data set's category
         // enable this if you want to use the data set's categories

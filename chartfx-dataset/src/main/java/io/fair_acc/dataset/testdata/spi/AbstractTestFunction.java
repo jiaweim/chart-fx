@@ -8,23 +8,24 @@ import io.fair_acc.dataset.testdata.TestDataSet;
 /**
  * abstract error data set for graphical testing purposes
  *
- * @author rstein
  * @param <D> generics for fluent design
+ * @author rstein
  */
 public abstract class AbstractTestFunction<D extends AbstractTestFunction<D>> extends AbstractErrorDataSet<D>
         implements TestDataSet<D> {
+
     private static final long serialVersionUID = 3145097895719258628L;
     private double[] data;
 
     /**
-     * @param name data set name
+     * @param name  data set name
      * @param count number of samples
      */
     public AbstractTestFunction(final String name, final int count) {
         super(name, 2, ErrorType.SYMMETRIC, ErrorType.SYMMETRIC);
         // this part needs to be adjusted to you internal applications data
         // transfer/management likings
-        data = generateY(count);
+        this.data = generateY(count);
     }
 
     @Override
@@ -38,12 +39,12 @@ public abstract class AbstractTestFunction<D extends AbstractTestFunction<D>> ex
 
     @Override
     public double get(final int dimIndex, final int index) {
-        return dimIndex == DIM_X ? index : data[index];
+        return dimIndex == DIM_X ? index : this.data[index];
     }
 
     @Override
     public int getDataCount() {
-        return data.length;
+        return this.data.length;
     }
 
     @Override
@@ -64,7 +65,7 @@ public abstract class AbstractTestFunction<D extends AbstractTestFunction<D>> ex
     @Override
     public D update() {
         lock().writeLockGuard(() -> {
-            data = generateY(data.length);
+            this.data = generateY(data.length);
             recomputeLimits(DIM_X);
             recomputeLimits(DIM_Y);
         });

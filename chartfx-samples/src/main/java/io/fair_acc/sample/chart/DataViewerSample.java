@@ -1,44 +1,5 @@
 package io.fair_acc.sample.chart;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import javafx.animation.Animation;
-import javafx.animation.RotateTransition;
-import javafx.application.Application;
-import javafx.beans.DefaultProperty;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.collections.FXCollections;
-import javafx.geometry.Pos;
-import javafx.scene.Group;
-import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.ContentDisplay;
-import javafx.scene.control.Label;
-import javafx.scene.control.Tooltip;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Polygon;
-import javafx.scene.shape.Rectangle;
-import javafx.stage.Stage;
-import javafx.util.Duration;
-
-import org.kordamp.ikonli.javafx.FontIcon;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.plugins.EditAxis;
 import io.fair_acc.chartfx.plugins.ParameterMeasurements;
@@ -61,6 +22,29 @@ import io.fair_acc.dataset.testdata.TestDataSet;
 import io.fair_acc.dataset.testdata.spi.RandomStepFunction;
 import io.fair_acc.dataset.testdata.spi.RandomWalkFunction;
 import io.fair_acc.dataset.utils.ProcessingProfiler;
+import javafx.animation.Animation;
+import javafx.animation.RotateTransition;
+import javafx.application.Application;
+import javafx.beans.DefaultProperty;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.collections.FXCollections;
+import javafx.geometry.Pos;
+import javafx.scene.Group;
+import javafx.scene.Node;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Polygon;
+import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
+import javafx.util.Duration;
+import org.kordamp.ikonli.javafx.FontIcon;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.*;
 
 /**
  * @author Grzegorz Kruk
@@ -68,6 +52,7 @@ import io.fair_acc.dataset.utils.ProcessingProfiler;
  */
 @DefaultProperty("views")
 public class DataViewerSample extends ChartSample {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(DataViewerSample.class);
     private static final String TITLE = DataViewerSample.class.getSimpleName();
     protected static final String FONT_AWESOME = "FontAwesome";
@@ -158,18 +143,18 @@ public class DataViewerSample extends ChartSample {
         final XYChart jChart = createChart();
         final DataViewWindow newDataViewerPane = new DataViewWindow("Chart" + count, jChart, windowDecoration.getValue());
         switch (initialWindowState.getValue()) {
-        case DETACHED:
-            // alternate: add immediately to undocked state
-            view1.getUndockedChildren().add(newDataViewerPane);
-            break;
-        case MINIMISED:
-            // alternate: add immediately to minimised state
-            view1.getMinimisedChildren().add(newDataViewerPane);
-            break;
-        case VISIBLE:
-        default:
-            view1.getVisibleChildren().add(newDataViewerPane);
-            break;
+            case DETACHED:
+                // alternate: add immediately to undocked state
+                view1.getUndockedChildren().add(newDataViewerPane);
+                break;
+            case MINIMISED:
+                // alternate: add immediately to minimised state
+                view1.getMinimisedChildren().add(newDataViewerPane);
+                break;
+            case VISIBLE:
+            default:
+                view1.getVisibleChildren().add(newDataViewerPane);
+                break;
         }
 
         newDataViewerPane.addListener(dataWindowEventListener);
@@ -179,7 +164,7 @@ public class DataViewerSample extends ChartSample {
         });
         newDataViewerPane.closedProperty().addListener((ch, o, n) -> {
             LOGGER.atInfo().log("newDataViewerPane Window '" + newDataViewerPane.getName()
-                                + "' has been closed - performing clean-up actions");
+                    + "' has been closed - performing clean-up actions");
             // perform some custom clean-up action
         });
 
@@ -342,6 +327,7 @@ public class DataViewerSample extends ChartSample {
     }
 
     private static class TestChart extends XYChart {
+
         private TestChart() {
             super();
             getPlugins().add(new ParameterMeasurements());
@@ -352,6 +338,7 @@ public class DataViewerSample extends ChartSample {
     }
 
     private static class UpdateTask extends TimerTask {
+
         private final TestDataSet<?>[] dataSets;
         private int count;
 

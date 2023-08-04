@@ -1,10 +1,5 @@
 package io.fair_acc.chartfx.renderer.spi.utils;
 
-import java.util.Arrays;
-import java.util.WeakHashMap;
-import java.util.stream.Collectors;
-import java.util.stream.DoubleStream;
-
 import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -14,15 +9,19 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Line;
 
+import java.util.Arrays;
+import java.util.WeakHashMap;
+import java.util.stream.Collectors;
+import java.util.stream.DoubleStream;
+
 /**
  * Workaround for dashed line JavaFX performance bottleneck for strictly horizontal and vertical lines as used in the
  * GridRenderer
- * 
+ * <p>
  * see e.g. option 3 in:
  * https://stackoverflow.com/questions/47102734/performances-issue-when-drawing-dashed-line-in-java/47166129#47166129
  *
  * @author rstein
- *
  */
 public final class DashPatternStyle { // NOPMD nomen est omen
 
@@ -33,7 +32,7 @@ public final class DashPatternStyle { // NOPMD nomen est omen
     }
 
     private static Integer computeHash(final Paint color, final double strokeWidth, final boolean isHorizontal,
-            final double[] pattern) {
+                                       final double[] pattern) {
         int hash = 7;
         hash = 31 * hash + color.hashCode();
         hash = 31 * hash + Double.hashCode(strokeWidth);
@@ -49,7 +48,7 @@ public final class DashPatternStyle { // NOPMD nomen est omen
     }
 
     private static ImagePattern createDefaultHatch(final Paint color, final double strokeWidth,
-            final boolean isHorizontal, final double[] pattern) {
+                                                   final boolean isHorizontal, final double[] pattern) {
         final Integer hash = computeHash(color, strokeWidth, isHorizontal, pattern);
 
         return DashPatternStyle.dashHashMap.computeIfAbsent(hash, t -> {
@@ -62,7 +61,7 @@ public final class DashPatternStyle { // NOPMD nomen est omen
             final Pane pane = new Pane();
             pane.setPrefSize(width, height);
             final Line fw = isHorizontal ? new Line(0, middle, dashPatternLength, middle)
-                                         : new Line(middle, 0, middle, dashPatternLength);
+                    : new Line(middle, 0, middle, dashPatternLength);
 
             fw.setSmooth(false);
             fw.setStroke(color);
@@ -89,14 +88,15 @@ public final class DashPatternStyle { // NOPMD nomen est omen
             return 1.0;
         }
         double ret = 0;
-        for (int i = 0; i < pattern.length; i++) { // NOPMD for loop is faster than forEach
-            ret += pattern[i];
+        for (double v : pattern) { // NOPMD for loop is faster than forEach
+            ret += v;
         }
         return ret;
     }
 
-    public static void strokeDashedLine(final GraphicsContext gc, final double x0, final double y0, final double x1,
-            final double y1) {
+    public static void strokeDashedLine(final GraphicsContext gc,
+                                        final double x0, final double y0,
+                                        final double x1, final double y1) {
         final Paint color = gc.getStroke();
         final double strokeWidth = Math.max(gc.getLineWidth(), 1);
         final double strokeWidthHalf = strokeWidth / 2.0;

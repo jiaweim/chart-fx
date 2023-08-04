@@ -41,7 +41,6 @@ public enum Side {
      * @return {@code true} if this represents a horizontal side of a rectangle
      */
     public boolean isHorizontal() {
-
         return this == TOP || this == BOTTOM || this == CENTER_HOR;
     }
 
@@ -51,7 +50,6 @@ public enum Side {
      * @return {@code true} if this represents a vertical side of a rectangle
      */
     public boolean isVertical() {
-
         return this == LEFT || this == RIGHT || this == CENTER_VER;
     }
 }

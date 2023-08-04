@@ -608,7 +608,6 @@ public abstract class Chart extends HiddenSidesPane implements Observable {
     }
 
     public Axis getFirstAxis(final Orientation orientation) {
-
         for (final Axis axis : getAxes()) {
             if (axis.getSide() == null) {
                 continue;
@@ -699,12 +698,10 @@ public abstract class Chart extends HiddenSidesPane implements Observable {
     }
 
     public final StackPane getTitleLegendCornerPane(final Corner corner) {
-
         return titleLegendCorner.get(corner);
     }
 
     public final Pane getTitleLegendPane(final Side side) {
-
         return titleLegendPane.get(side);
     }
 
@@ -724,7 +721,6 @@ public abstract class Chart extends HiddenSidesPane implements Observable {
     }
 
     public final Side getToolBarSide() {
-
         return toolBarSideProperty().get();
     }
 
@@ -844,7 +840,6 @@ public abstract class Chart extends HiddenSidesPane implements Observable {
 
     @Override
     public void requestLayout() {
-
         if (DEBUG && LOGGER.isDebugEnabled()) {
             // normal debugDepth = 1 but for more verbose logging (e.g. recursion) use > 10
             for (int debugDepth = 1; debugDepth < 2; debugDepth++) {
@@ -858,27 +853,22 @@ public abstract class Chart extends HiddenSidesPane implements Observable {
     }
 
     public final void setAnimated(final boolean value) {
-
         animated.set(value);
     }
 
     public void setAutoNotification(final boolean flag) {
-
         autoNotification.set(flag);
     }
 
     public final void setLegend(final Legend value) {
-
         legend.set(value);
     }
 
     public final void setLegendSide(final Side value) {
-
         legendSide.set(value);
     }
 
     public final void setLegendVisible(final boolean value) {
-
         legendVisible.set(value);
     }
 
@@ -919,7 +909,6 @@ public abstract class Chart extends HiddenSidesPane implements Observable {
     }
 
     public final void setToolBarSide(final Side value) {
-
         toolBarSide.set(value);
     }
 
@@ -927,27 +916,22 @@ public abstract class Chart extends HiddenSidesPane implements Observable {
      * @return property indicating if chart is actively visible in Scene/Window
      */
     public ReadOnlyBooleanProperty showingProperty() {
-
         return showing;
     }
 
     public final StringProperty titleProperty() {
-
         return title;
     }
 
     public final ObjectProperty<Side> titleSideProperty() {
-
         return titleSide;
     }
 
     public BooleanProperty toolBarPinnedProperty() {
-
         return toolBarPinned;
     }
 
     public final ObjectProperty<Side> toolBarSideProperty() {
-
         return toolBarSide;
     }
 
@@ -962,7 +946,6 @@ public abstract class Chart extends HiddenSidesPane implements Observable {
      * @return point in plot area coordinates
      */
     public final Point2D toPlotArea(final double xCoord, final double yCoord) {
-
         final Bounds plotAreaBounds = getCanvas().getBoundsInParent();
         return new Point2D(xCoord - plotAreaBounds.getMinX(), yCoord - plotAreaBounds.getMinY());
     }
@@ -983,7 +966,6 @@ public abstract class Chart extends HiddenSidesPane implements Observable {
      * @param animation The animation to play
      */
     protected void animate(final Animation animation) {
-
         animator.animate(animation);
     }
 
@@ -1002,7 +984,6 @@ public abstract class Chart extends HiddenSidesPane implements Observable {
      * @param change the new axis change that is being added
      */
     protected void axesChangedLocal(final ListChangeListener.Change<? extends Axis> change) {
-
         while (change.next()) {
             change.getRemoved().forEach(set -> {
                 AssertUtils.notNull("to be removed axis is null", set);
@@ -1027,7 +1008,6 @@ public abstract class Chart extends HiddenSidesPane implements Observable {
      * @param axisObj the calling axis object
      */
     protected void axesInvalidated(final Object axisObj) {
-
         if (!(axisObj instanceof Axis) || layoutOngoing || isAxesUpdate) {
             return;
         }
@@ -1053,7 +1033,6 @@ public abstract class Chart extends HiddenSidesPane implements Observable {
     }
 
     protected void datasetsChanged(final ListChangeListener.Change<? extends DataSet> change) {
-
         boolean dataSetChanges = false;
         FXUtils.assertJavaFxThread();
         while (change.next()) {
@@ -1082,7 +1061,6 @@ public abstract class Chart extends HiddenSidesPane implements Observable {
     }
 
     protected void executeFireInvalidated() {
-
         new ArrayList<>(listeners).forEach(listener -> listener.invalidated(this));
     }
 
@@ -1092,17 +1070,14 @@ public abstract class Chart extends HiddenSidesPane implements Observable {
      */
     @Override
     protected List<CssMetaData<? extends Styleable, ?>> getControlCssMetaData() {
-
         return Chart.getClassCssMetaData();
     }
 
     protected void layoutPluginsChildren() {
-
         plugins.forEach(ChartPlugin::layoutChildren);
     }
 
     protected void pluginAdded(final ChartPlugin plugin) {
-
         plugin.setChart(Chart.this);
         final Group group = Chart.createChildGroup();
         Bindings.bindContent(group.getChildren(), plugin.getChartChildren());
@@ -1113,7 +1088,6 @@ public abstract class Chart extends HiddenSidesPane implements Observable {
     // ------------------------------------------------------------------------------
 
     protected void pluginRemoved(final ChartPlugin plugin) {
-
         plugin.setChart(null);
         final Group group = pluginGroups.remove(plugin);
         Bindings.unbindContent(group, plugin.getChartChildren());
@@ -1122,7 +1096,6 @@ public abstract class Chart extends HiddenSidesPane implements Observable {
     }
 
     protected void pluginsChanged(final ListChangeListener.Change<? extends ChartPlugin> change) {
-
         while (change.next()) {
             change.getRemoved().forEach(this::pluginRemoved);
             change.getAddedSubList().forEach(this::pluginAdded);
@@ -1139,7 +1112,6 @@ public abstract class Chart extends HiddenSidesPane implements Observable {
     // ------------------------------------------------------------------------------
 
     protected void registerShowingListener() {
-
         sceneProperty().addListener(scenePropertyListener);
 
         showing.addListener((ch, o, n) -> {
@@ -1156,7 +1128,6 @@ public abstract class Chart extends HiddenSidesPane implements Observable {
     }
 
     protected void rendererChanged(final ListChangeListener.Change<? extends Renderer> change) {
-
         FXUtils.assertJavaFxThread();
         while (change.next()) {
             // handle added renderer
@@ -1187,12 +1158,10 @@ public abstract class Chart extends HiddenSidesPane implements Observable {
      * @return true if should animate
      */
     protected final boolean shouldAnimate() {
-
         return isAnimated() && getScene() != null;
     }
 
     protected void updateLegend(final List<DataSet> dataSets, final List<Renderer> renderers) {
-
         final Legend legend = getLegend();
         if (legend == null) {
             return;
@@ -1201,7 +1170,6 @@ public abstract class Chart extends HiddenSidesPane implements Observable {
     }
 
     protected void updatePluginsArea() {
-
         pluginsArea.getChildren().setAll(plugins.stream().map(pluginGroups::get).collect(Collectors.toList()));
         requestLayout();
     }
@@ -1211,12 +1179,10 @@ public abstract class Chart extends HiddenSidesPane implements Observable {
      * @since JavaFX 8.0
      */
     public static List<CssMetaData<? extends Styleable, ?>> getClassCssMetaData() {
-
         return CSS.getCssMetaData();
     }
 
     protected static Group createChildGroup() {
-
         final Group group = new Group();
         group.setManaged(false);
         group.setAutoSizeChildren(false);
@@ -1225,9 +1191,7 @@ public abstract class Chart extends HiddenSidesPane implements Observable {
     }
 
     protected static class ChartHBox extends HBox {
-
         public ChartHBox(Node... nodes) {
-
             super();
             setAlignment(Pos.CENTER);
             setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
@@ -1236,16 +1200,13 @@ public abstract class Chart extends HiddenSidesPane implements Observable {
         }
 
         public ChartHBox(final boolean fill) {
-
             this();
             setFillHeight(fill);
         }
     }
 
     protected static class ChartVBox extends VBox {
-
         public ChartVBox(Node... nodes) {
-
             super();
             setAlignment(Pos.CENTER);
             setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
@@ -1254,7 +1215,6 @@ public abstract class Chart extends HiddenSidesPane implements Observable {
         }
 
         public ChartVBox(final boolean fill) {
-
             this();
             setFillWidth(fill);
         }

@@ -28,8 +28,8 @@ public class FifoDoubleErrorDataSetTests {
 
         FifoDoubleErrorDataSet testDataSet = new FifoDoubleErrorDataSet("test data set", 10, 8.0);
         assertEquals(0, testDataSet.getDataCount());
-
         assertEquals(8.0, testDataSet.getMaxDistance());
+
         testDataSet.setMaxDistance(10.0);
         assertEquals(10.0, testDataSet.getMaxDistance());
 
@@ -46,7 +46,9 @@ public class FifoDoubleErrorDataSetTests {
         final double[] yErrorNeg = new double[] { 0.1, 0.2, 0.3, 0.4, 0.5, 0.6 };
         final double[] yErrorPos = new double[] { 1.1, 1.2, 1.3, 1.4, 1.5, 1.6 };
         final double[] xError = new double[] { 0, 0, 0, 0, 0, 0 };
+
         testDataSet.add(xValues, yValues, yErrorNeg, yErrorPos);
+
         assertEquals(6, testDataSet.getDataCount());
         assertArrayEquals(xValues, testDataSet.getValues(DataSet.DIM_X));
         assertArrayEquals(yValues, testDataSet.getValues(DataSet.DIM_Y));

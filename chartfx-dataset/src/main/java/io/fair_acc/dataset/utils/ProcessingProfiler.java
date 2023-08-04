@@ -28,16 +28,13 @@ public final class ProcessingProfiler { // NOPMD nomen est omen
      */
     private static boolean loggerOutput = false;
 
-    private ProcessingProfiler() {
-
-    }
+    private ProcessingProfiler() {}
 
     /**
      * @param recursionDepth 0 being the calling function
      * @return the 'class::function(line:xxx)' string
      */
     public static List<String> getCallingClassMethod(int... recursionDepth) {
-
         ArrayList<String> list = new ArrayList<>();
         final StackTraceElement[] stacktrace = Thread.currentThread().getStackTrace();
 
@@ -79,7 +76,6 @@ public final class ProcessingProfiler { // NOPMD nomen est omen
      * @return boolean flag controlling whether diagnostics time-marks are taken or the routine to be skipped
      */
     public static boolean getDebugState() {
-
         return debugState;
     }
 
@@ -87,7 +83,6 @@ public final class ProcessingProfiler { // NOPMD nomen est omen
      * @return boolean flag controlling whether the statistics/time differences are output to the logger/console or not
      */
     public static boolean getLoggerOutputState() {
-
         return loggerOutput;
     }
 
@@ -96,7 +91,6 @@ public final class ProcessingProfiler { // NOPMD nomen est omen
      * @return actual delay
      */
     public static long getTimeDiff(final long lastStamp) {
-
         return ProcessingProfiler.getTimeDiff(lastStamp, null);
     }
 
@@ -106,7 +100,6 @@ public final class ProcessingProfiler { // NOPMD nomen est omen
      * @return actual delay
      */
     public static long getTimeDiff(final long lastStamp, final String msg) {
-
         if (!(ProcessingProfiler.debugState)) {
             return 0;
         }
@@ -137,7 +130,6 @@ public final class ProcessingProfiler { // NOPMD nomen est omen
      * @return nanoSecond resolution time stam
      */
     public static long getTimeStamp() {
-
         if (ProcessingProfiler.debugState) {
             return System.nanoTime();
         }
@@ -148,7 +140,6 @@ public final class ProcessingProfiler { // NOPMD nomen est omen
      * @return boolean flag controlling whether the statistics/time differences are output to the logger/console or not
      */
     public static boolean getVerboseOutputState() {
-
         return verboseOutput;
     }
 

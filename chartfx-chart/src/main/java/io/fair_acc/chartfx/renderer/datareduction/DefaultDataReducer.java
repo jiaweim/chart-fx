@@ -1,21 +1,21 @@
 package io.fair_acc.chartfx.renderer.datareduction;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-
 import io.fair_acc.chartfx.renderer.RendererDataReducer;
 import io.fair_acc.dataset.utils.AssertUtils;
 import io.fair_acc.dataset.utils.ProcessingProfiler;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 
 /**
  * Default data reduction algorithm implementation for the ErrorDataSet Renderer <br>
- * Simple algorithm that reduces the number of points if neighbouring x coordinates are closer than the user-defined
+ * Simple algorithm that reduces the number of points if neighboring x coordinates are closer than the user-defined
  * dash size. Points in between are dropped and their errors propagated to the following drawn data point. N.B.
  * numerical complexity: average = worst-case = O(n)
  *
  * @author rstein
  */
 public class DefaultDataReducer implements RendererDataReducer {
+
     protected IntegerProperty minPointPixelDistance = new SimpleIntegerProperty(this, "minPixelDistance", 6) {
         @Override
         public void set(final int value) {
@@ -41,21 +41,21 @@ public class DefaultDataReducer implements RendererDataReducer {
      * Internal function to the ErrorDataSetRenderer arrays are cached copies and operations are assumed to be performed
      * in-place (&lt;-&gt; for performance reasons/minimisation of memory allocation)
      *
-     * @param xValues array of x coordinates
-     * @param yValues array of y coordinates
+     * @param xValues         array of x coordinates
+     * @param yValues         array of y coordinates
      * @param xPointErrorsPos array of coordinates containing x+exp
      * @param xPointErrorsNeg array of coordinates containing x-exn
      * @param yPointErrorsPos array of coordinates containing x+eyp
      * @param yPointErrorsNeg array of coordinates containing x+eyn
-     * @param pointSelected array containing the points that have been specially selected by the user
-     * @param indexMin minimum index of those array that shall be considered
-     * @param indexMax maximum index of those array that shall be considered
+     * @param pointSelected   array containing the points that have been specially selected by the user
+     * @param indexMin        minimum index of those array that shall be considered
+     * @param indexMax        maximum index of those array that shall be considered
      * @return effective number of points that remain after the reduction
      */
     @Override
     public int reducePoints(final double[] xValues, final double[] yValues, final double[] xPointErrorsPos,
-            final double[] xPointErrorsNeg, final double[] yPointErrorsPos, final double[] yPointErrorsNeg,
-            final String[] styles, final boolean[] pointSelected, final int indexMin, final int indexMax) {
+                            final double[] xPointErrorsNeg, final double[] yPointErrorsPos, final double[] yPointErrorsNeg,
+                            final String[] styles, final boolean[] pointSelected, final int indexMin, final int indexMax) {
         AssertUtils.nonEmptyArray("xValues", xValues);
         final int defaultDataLength = xValues.length;
         AssertUtils.checkArrayDimension("yValues", yValues, defaultDataLength);
@@ -86,8 +86,8 @@ public class DefaultDataReducer implements RendererDataReducer {
     }
 
     private int reducePointsInternal(final double[] xValues, final double[] yValues, final double[] xPointErrorsPos,
-            final double[] xPointErrorsNeg, final double[] yPointErrorsPos, final double[] yPointErrorsNeg,
-            final String[] styles, final boolean[] pointSelected, final int indexMin, final int indexMax) {
+                                     final double[] xPointErrorsNeg, final double[] yPointErrorsPos, final double[] yPointErrorsNeg,
+                                     final String[] styles, final boolean[] pointSelected, final int indexMin, final int indexMax) {
         final long start = ProcessingProfiler.getTimeStamp();
         int count = 0;
         int ncount = 0;
@@ -239,8 +239,8 @@ public class DefaultDataReducer implements RendererDataReducer {
     }
 
     private int reducePointsInternal(final double[] xValues, final double[] yValues, final double[] yPointErrorsPos,
-            final double[] yPointErrorsNeg, final String[] styles, final boolean[] pointSelected, final int indexMin,
-            final int indexMax) {
+                                     final double[] yPointErrorsNeg, final String[] styles, final boolean[] pointSelected, final int indexMin,
+                                     final int indexMax) {
         final long start = ProcessingProfiler.getTimeStamp();
         int count = 0;
         int ncount = 0;
@@ -375,7 +375,7 @@ public class DefaultDataReducer implements RendererDataReducer {
     }
 
     private int reducePointsInternal(final double[] xValues, final double[] yValues, final String[] styles,
-            final boolean[] pointSelected, final int indexMin, final int indexMax) {
+                                     final boolean[] pointSelected, final int indexMin, final int indexMax) {
         final long start = ProcessingProfiler.getTimeStamp();
         int count = 0;
         int ncount = 0;

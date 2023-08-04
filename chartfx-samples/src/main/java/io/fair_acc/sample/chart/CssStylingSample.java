@@ -28,17 +28,18 @@ import io.fair_acc.dataset.testdata.spi.RandomWalkFunction;
 
 /**
  * Simple example of how to use css to change the appearance of the chart.
- * 
+ *
  * @author akrimm
  */
 public class CssStylingSample extends ChartSample {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(CssStylingSample.class);
     private static final int N_SAMPLES = 100; // default number of data points
     public static final ObservableList<String> CSS_LIST = FXCollections.observableArrayList("none", "CustomCss1.css", "CustomCss2.css");
 
     @Override
     public Node getChartPanel(final Stage primaryStage) {
-        final ComboBox<String> globalCssBox = new ComboBox<String>(CSS_LIST);
+        final ComboBox<String> globalCssBox = new ComboBox<>(CSS_LIST);
         globalCssBox.getSelectionModel().select(0);
 
         final DefaultNumericAxis yAxis = new DefaultNumericAxis();
@@ -48,8 +49,10 @@ public class CssStylingSample extends ChartSample {
         final XYChart chart = new XYChart(new DefaultNumericAxis(), yAxis);
         chart.getPlugins().addAll(new Zoomer(), new CrosshairIndicator(), new EditAxis()); // standard plugin, useful for most cases
 
-        chart.getDatasets().addAll(new GaussFunction("Gauss", N_SAMPLES), new CosineFunction("Cosine", N_SAMPLES)); // for two data sets
-        final ComboBox<String> cssBox = new ComboBox<String>(CSS_LIST);
+        chart.getDatasets().addAll(new GaussFunction("Gauss", N_SAMPLES),
+                new CosineFunction("Cosine", N_SAMPLES)); // for two data sets
+
+        final ComboBox<String> cssBox = new ComboBox<>(CSS_LIST);
         cssBox.getSelectionModel().select(0);
         VBox.setVgrow(chart, Priority.ALWAYS);
 
@@ -61,7 +64,7 @@ public class CssStylingSample extends ChartSample {
         chartRight.getPlugins().addAll(new Zoomer(), new DataPointTooltip(), new EditAxis()); // standard plugin, useful for most cases
 
         chartRight.getDatasets().addAll(new RandomWalkFunction("RandomWalk", N_SAMPLES));
-        final ComboBox<String> cssBoxRight = new ComboBox<String>(CSS_LIST);
+        final ComboBox<String> cssBoxRight = new ComboBox<>(CSS_LIST);
         cssBoxRight.getSelectionModel().select(0);
         VBox.setVgrow(chartRight, Priority.ALWAYS);
 
@@ -72,13 +75,6 @@ public class CssStylingSample extends ChartSample {
         VBox.setVgrow(hBox, Priority.ALWAYS);
         hBox.getChildren().forEach(child -> HBox.setHgrow(child, Priority.ALWAYS));
 
-        //globalCssBox.valueProperty().addListener((prop, oldVal, newVal) -> {
-        //    if ("none".equals(newVal)) {
-        //        scene.getStylesheets().clear();
-        //    } else {
-        //        scene.getStylesheets().setAll(Objects.requireNonNull(CssStylingSample.class.getResource(newVal), "could not load css file: " + newVal).toExternalForm());
-        //    }
-        //});
         cssBox.valueProperty().addListener((prop, oldVal, newVal) -> {
             if ("none".equals(newVal)) {
                 chart.getStylesheets().clear();

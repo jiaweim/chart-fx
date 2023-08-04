@@ -116,7 +116,6 @@ public abstract class AbstractDataSet<D extends AbstractStylable<D>> extends Abs
      * @return itself (fluent interface)
      */
     public String addDataStyle(final int index, final String style) {
-
         final String retVal = lock().writeLockGuard(() -> dataStyles.put(index, style));
         fireInvalidated(new UpdatedMetaDataEvent(this, "added style"));
         return retVal;
@@ -124,7 +123,6 @@ public abstract class AbstractDataSet<D extends AbstractStylable<D>> extends Abs
 
     @Override
     public AtomicBoolean autoNotification() {
-
         return autoNotification;
     }
 
@@ -405,7 +403,6 @@ public abstract class AbstractDataSet<D extends AbstractStylable<D>> extends Abs
      * @return itself (fluent design)
      */
     public D fireInvalidated(final UpdateEvent event) {
-
         invokeListener(event);
         return getThis();
     }
@@ -415,7 +412,6 @@ public abstract class AbstractDataSet<D extends AbstractStylable<D>> extends Abs
      */
     @Override
     public List<AxisDescription> getAxisDescriptions() {
-
         return axesDescriptions;
     }
 
@@ -428,7 +424,6 @@ public abstract class AbstractDataSet<D extends AbstractStylable<D>> extends Abs
      */
     @Override
     public String getDataLabel(final int index) {
-
         return dataLabels.get(index);
     }
 
@@ -436,7 +431,6 @@ public abstract class AbstractDataSet<D extends AbstractStylable<D>> extends Abs
      * @return data label map for given data point
      */
     public StringHashMapList getDataLabelMap() {
-
         return dataLabels;
     }
 
@@ -444,24 +438,20 @@ public abstract class AbstractDataSet<D extends AbstractStylable<D>> extends Abs
      * @return data style map (CSS-styling)
      */
     public StringHashMapList getDataStyleMap() {
-
         return dataStyles;
     }
 
     @Override
     public final int getDimension() {
-
         return dimension;
     }
 
     public EditConstraints getEditConstraints() {
-
         return editConstraints;
     }
 
     @Override
     public List<String> getErrorList() {
-
         return errorList;
     }
 
@@ -473,13 +463,11 @@ public abstract class AbstractDataSet<D extends AbstractStylable<D>> extends Abs
 
     @Override
     public Map<String, String> getMetaInfo() {
-
         return metaInfoMap;
     }
 
     @Override
     public String getName() {
-
         return name;
     }
 
@@ -492,20 +480,17 @@ public abstract class AbstractDataSet<D extends AbstractStylable<D>> extends Abs
      */
     @Override
     public String getStyle(final int index) {
-
         return dataStyles.get(index);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     protected D getThis() {
-
         return (D) this;
     }
 
     @Override
     public List<String> getWarningList() {
-
         return warningList;
     }
 
@@ -570,7 +555,6 @@ public abstract class AbstractDataSet<D extends AbstractStylable<D>> extends Abs
      * @return itself (fluent design)
      */
     public D setName(final String name) {
-
         this.name = name;
         return getThis();
     }
@@ -705,7 +689,6 @@ public abstract class AbstractDataSet<D extends AbstractStylable<D>> extends Abs
 
     @Override
     public synchronized List<EventListener> updateEventListener() {
-
         return updateListeners;
     }
 

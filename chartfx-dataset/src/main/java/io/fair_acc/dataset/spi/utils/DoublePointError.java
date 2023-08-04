@@ -13,19 +13,18 @@ public class DoublePointError extends Tuple<DoublePoint, DoublePoint> {
     }
 
     /**
-     * 
-     * @param x new X coordinate
-     * @param y new Y coordinate
+     * @param x      new X coordinate
+     * @param y      new Y coordinate
      * @param errorX error of X coordinate
      * @param errorY error of Y coordinate
      */
-    public DoublePointError(final double x, final double y, final double errorX, final double errorY) {
+    public DoublePointError(final double x, final double y,
+                            final double errorX, final double errorY) {
         this(new DoublePoint(x, errorX), new DoublePoint(y, errorY));
-
     }
 
     /**
-     * @param x new X coordinate
+     * @param x new X coordinate, the first value is x coordinate, the second value is the error
      * @param y new Y coordinate N.B. errors are implicitly assumed to be zero
      */
     private DoublePointError(final DoublePoint x, final DoublePoint y) {
@@ -33,7 +32,6 @@ public class DoublePointError extends Tuple<DoublePoint, DoublePoint> {
     }
 
     /**
-     * 
      * @return assigned error of x coordinate
      */
     public double getErrorX() {
@@ -41,7 +39,6 @@ public class DoublePointError extends Tuple<DoublePoint, DoublePoint> {
     }
 
     /**
-     * 
      * @return assigned error of y coordinate
      */
     public double getErrorY() {
@@ -49,7 +46,6 @@ public class DoublePointError extends Tuple<DoublePoint, DoublePoint> {
     }
 
     /**
-     * 
      * @return x coordinate
      */
     public double getX() {
@@ -57,7 +53,6 @@ public class DoublePointError extends Tuple<DoublePoint, DoublePoint> {
     }
 
     /**
-     * 
      * @return y coordinate
      */
     public double getY() {
@@ -74,9 +69,9 @@ public class DoublePointError extends Tuple<DoublePoint, DoublePoint> {
     }
 
     /**
-     * @param newX the x coordinate to set
+     * @param newX      the x coordinate to set
      * @param newErrorX the error estimate of the x coordinate
-     * @param newY the Y coordinate to set
+     * @param newY      the Y coordinate to set
      * @param newErrorY the error estimate of the y coordinate
      */
     public void set(final double newX, final double newErrorX, final double newY, final double newErrorY) {

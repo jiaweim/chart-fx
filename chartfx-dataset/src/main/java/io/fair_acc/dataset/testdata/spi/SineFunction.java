@@ -42,5 +42,4 @@ public class SineFunction extends AbstractTestFunction<SineFunction> {
         }
         return retVal;
     }
-
 }

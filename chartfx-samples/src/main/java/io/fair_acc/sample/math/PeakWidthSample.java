@@ -52,7 +52,7 @@ public class PeakWidthSample extends AbstractDemoApplication {
         final List<DataSet> linearData = rawData.stream().map(DataSetMath::inversedbFunction).collect(Collectors.toList());
         linearData.forEach(ds -> ds.setStyle(MEAS_STROKE_COLOUR));
 
-        var average = new DoubleDataSet("average", N_SAMPLES);
+        DoubleDataSet average = new DoubleDataSet("average", N_SAMPLES);
         final var gauss1 = new DoubleDataSet("gauss1", N_SAMPLES);
         final var gauss2 = new DoubleDataSet("gauss2", N_SAMPLES);
         gauss1.setStyle("strokeColor=darkred");
@@ -91,9 +91,9 @@ public class PeakWidthSample extends AbstractDemoApplication {
         final BiFunction<DataSet, Double, DataSet> integralWidth = (ds, offset) -> DataSetMath.integrateFromCentre(DataSetMath.subtractFunction(ds, offset), Double.NaN, MAX_INT_WIDTH, true);
 
         final List<DataSet> intData = linearData.stream().map(ds -> integralWidth.apply(ds, dataOffset)).map(ds -> ds.setStyle(MEAS_STROKE_COLOUR)).collect(Collectors.toList());
-        final var intAverage = DataSetMath.integrateFromCentre(avgOffsetCompensated, Double.NaN, MAX_INT_WIDTH, true);
-        final var intGauss1 = DataSetMath.integrateFromCentre(gauss1, Double.NaN, MAX_INT_WIDTH, true);
-        final var intGauss2 = DataSetMath.integrateFromCentre(gauss2, Double.NaN, MAX_INT_WIDTH, true);
+        final DataSet intAverage = DataSetMath.integrateFromCentre(avgOffsetCompensated, Double.NaN, MAX_INT_WIDTH, true);
+        final DataSet intGauss1 = DataSetMath.integrateFromCentre(gauss1, Double.NaN, MAX_INT_WIDTH, true);
+        final DataSet intGauss2 = DataSetMath.integrateFromCentre(gauss2, Double.NaN, MAX_INT_WIDTH, true);
         intGauss1.setStyle("strokeColor=darkred");
         intGauss2.setStyle("strokeColor=darkgreen");
 

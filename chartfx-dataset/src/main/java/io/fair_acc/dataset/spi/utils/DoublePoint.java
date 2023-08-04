@@ -1,6 +1,8 @@
 package io.fair_acc.dataset.spi.utils;
 
 /**
+ * Point with double value
+ *
  * @author rstein
  */
 public class DoublePoint extends Tuple<Double, Double> {
@@ -24,14 +26,14 @@ public class DoublePoint extends Tuple<Double, Double> {
      * @return the x coordinate
      */
     public Double getX() {
-        return x;
+        return this.x;
     }
 
     /**
      * @return the y coordinate
      */
     public Double getY() {
-        return y;
+        return this.y;
     }
 
     /**
@@ -39,8 +41,8 @@ public class DoublePoint extends Tuple<Double, Double> {
      * @param newY the Y coordinate to set
      */
     public void set(final double newX, final double newY) {
-        x = newX;
-        y = newY;
+        this.x = newX;
+        this.y = newY;
     }
 
     @Override

@@ -6,13 +6,13 @@ package io.fair_acc.dataset.testdata.spi;
  * @author rstein
  */
 public class GaussFunction extends AbstractTestFunction<GaussFunction> {
+
     private static final long serialVersionUID = -2090964369869257806L;
     private final double centre;
     private final double sigma;
 
     /**
-     * 
-     * @param name data set name
+     * @param name  data set name
      * @param count number of samples
      */
     public GaussFunction(final String name, final int count) {
@@ -23,10 +23,9 @@ public class GaussFunction extends AbstractTestFunction<GaussFunction> {
     }
 
     /**
-     *
-     * @param name data set name
+     * @param name  data set name
      * @param count number of samples
-     * @param mean mean position [0,count[
+     * @param mean  mean position [0,count[
      * @param sigma standard deviation [0, inf[
      */
     public GaussFunction(final String name, final int count, final double mean, final double sigma) {
@@ -46,7 +45,6 @@ public class GaussFunction extends AbstractTestFunction<GaussFunction> {
     }
 
     /**
-     * 
      * @param x coordinate X
      * @return value of Gaussian function at x (mean = 0, sigma = 1)
      */
@@ -55,9 +53,8 @@ public class GaussFunction extends AbstractTestFunction<GaussFunction> {
     }
 
     /**
-     * 
-     * @param x coordiante x
-     * @param mu mean value of Gaussian function
+     * @param x     coordiante x
+     * @param mu    mean value of Gaussian function
      * @param sigma standard deviation of Gaussian function
      * @return value of Gaussian function at x
      */

@@ -176,9 +176,22 @@ class CachedDataPoints {
         });
     }
 
+    /**
+     * compute screen coordinates for the {@link DataSet}
+     *
+     * @param xAxis               x-axis
+     * @param yAxis               y-axis
+     * @param dataSet             {@link DataSet}
+     * @param dsIndex             index of the {@link DataSet}
+     * @param min
+     * @param max
+     * @param localRendErrorStyle
+     * @param isPolarPlot
+     * @param doAllowForNaNs
+     */
     protected void computeScreenCoordinates(final Axis xAxis, final Axis yAxis, final DataSet dataSet,
-            final int dsIndex, final int min, final int max, final ErrorStyle localRendErrorStyle,
-            final boolean isPolarPlot, final boolean doAllowForNaNs) {
+                                            final int dsIndex, final int min, final int max, final ErrorStyle localRendErrorStyle,
+                                            final boolean isPolarPlot, final boolean doAllowForNaNs) {
 
         setBoundaryConditions(xAxis, yAxis, dataSet, dsIndex, min, max, localRendErrorStyle, isPolarPlot,
                 doAllowForNaNs);
@@ -188,7 +201,7 @@ class CachedDataPoints {
     }
 
     private void computeScreenCoordinatesEuclidean(final Axis xAxis, final Axis yAxis, final DataSet dataSet,
-            final int min, final int max) {
+                                                   final int min, final int max) {
 
         for (int dimIndex = 0; dimIndex < 2; dimIndex++) {
             switch (errorType[dimIndex]) {
@@ -215,8 +228,8 @@ class CachedDataPoints {
     }
 
     protected void computeScreenCoordinatesInParallel(final Axis xAxis, final Axis yAxis, final DataSet dataSet,
-            final int dsIndex, final int min, final int max, final ErrorStyle localRendErrorStyle,
-            final boolean isPolarPlot, final boolean doAllowForNaNs) {
+                                                      final int dsIndex, final int min, final int max, final ErrorStyle localRendErrorStyle,
+                                                      final boolean isPolarPlot, final boolean doAllowForNaNs) {
 
         setBoundaryConditions(xAxis, yAxis, dataSet, dsIndex, min, max, localRendErrorStyle, isPolarPlot,
                 doAllowForNaNs);
@@ -226,7 +239,7 @@ class CachedDataPoints {
     }
 
     protected void computeScreenCoordinatesNonThreaded(final Axis xAxis, final Axis yAxis, final DataSet dataSet,
-            final int min, final int max) {
+                                                       final int min, final int max) {
 
         if (polarPlot) {
             computeScreenCoordinatesPolar(yAxis, dataSet, min, max);
@@ -236,7 +249,7 @@ class CachedDataPoints {
     }
 
     protected void computeScreenCoordinatesParallel(final Axis xAxis, final Axis yAxis, final DataSet dataSet,
-            final int min, final int max) {
+                                                    final int min, final int max) {
 
         final int minthreshold = 1000;
         final int divThread = (int) Math
@@ -282,7 +295,7 @@ class CachedDataPoints {
     }
 
     private void computeWithError(final Axis yAxis, final DataSet dataSet, final int dimIndex, final int min,
-            final int max) {
+                                  final int max) {
 
         if (dataSet instanceof DataSetError) {
             dataSet.lock().readLockGuardOptimistic(() -> {
@@ -331,7 +344,7 @@ class CachedDataPoints {
     }
 
     private void computeWithErrorAllowingNaNs(final Axis yAxis, final DataSet dataSet, final int dimIndex,
-            final int min, final int max) {
+                                              final int min, final int max) {
 
         if (dataSet instanceof DataSetError) {
             dataSet.lock().readLockGuardOptimistic(() -> {
@@ -379,7 +392,7 @@ class CachedDataPoints {
     }
 
     private void computeWithNoError(final Axis axis, final DataSet dataSet, final int dimIndex, final int min,
-            final int max) {
+                                    final int max) {
         // no error attached
         dataSet.lock().readLockGuardOptimistic(() -> {
             final double[] values = dimIndex == DIM_X ? xValues : yValues;
@@ -402,7 +415,7 @@ class CachedDataPoints {
     }
 
     private void computeWithNoErrorAllowingNaNs(final Axis axis, final DataSet dataSet, final int dimIndex,
-            final int min, final int max) {
+                                                final int min, final int max) {
         // no error attached
         dataSet.lock().readLockGuardOptimistic(() -> {
             final double[] values = dimIndex == DIM_X ? xValues : yValues;
@@ -491,7 +504,7 @@ class CachedDataPoints {
     }
 
     protected void reduce(final RendererDataReducer cruncher, final boolean isReducePoints,
-            final int minRequiredReductionSize) {
+                          final int minRequiredReductionSize) {
 
         final long startTimeStamp = ProcessingProfiler.getTimeStamp();
         actualDataCount = 1;
@@ -542,9 +555,8 @@ class CachedDataPoints {
     }
 
     private void setBoundaryConditions(final Axis xAxis, final Axis yAxis, final DataSet dataSet, final int dsIndex,
-            final int min, final int max, final ErrorStyle rendererErrorStyle, final boolean isPolarPlot,
-            final boolean doAllowForNaNs) {
-
+                                       final int min, final int max, final ErrorStyle rendererErrorStyle, final boolean isPolarPlot,
+                                       final boolean doAllowForNaNs) {
         indexMin = min;
         indexMax = max;
         polarPlot = isPolarPlot;

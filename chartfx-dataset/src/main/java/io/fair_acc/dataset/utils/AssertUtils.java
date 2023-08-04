@@ -39,6 +39,13 @@ public final class AssertUtils {
         }
     }
 
+    /**
+     * Return true if the value is in the allowedElements array
+     *
+     * @param name            name to be included in exception message
+     * @param allowedElements int[] array to be checked with
+     * @param value           value to check
+     */
     public static void belongsToEnum(final String name, final int[] allowedElements, final int value) {
         for (final int allowedElement : allowedElements) {
             if (value == allowedElement) {
@@ -48,41 +55,71 @@ public final class AssertUtils {
         throw new IllegalArgumentException("The " + name + " has incorrect value!");
     }
 
+    /**
+     * check if the array length is equal to the defaultLength
+     *
+     * @param name          name to be included in exception message
+     * @param array         array to check
+     * @param defaultLength desired array length
+     */
     public static void checkArrayDimension(final String name, final boolean[] array, final int defaultLength) {
-        AssertUtils.notNull(name, array);
-        AssertUtils.nonEmptyArray(name, array);
+        nonEmptyArray(name, array);
         if (array.length != defaultLength) {
             throw new IllegalArgumentException("The " + name + " boolean array must have a length of " + defaultLength);
         }
     }
 
+    /**
+     * check if the array length is equal to the defaultLength
+     *
+     * @param name          name to be included in exception message
+     * @param array         array to check
+     * @param defaultLength desired array length
+     */
     public static void checkArrayDimension(final String name, final byte[] array, final int defaultLength) {
-        AssertUtils.notNull(name, array);
-        AssertUtils.nonEmptyArray(name, array);
+        nonEmptyArray(name, array);
         if (array.length != defaultLength) {
             throw new IllegalArgumentException("The " + name + " byte array must have a length of " + defaultLength);
         }
     }
 
+    /**
+     * check if the array length is equal to the defaultLength
+     *
+     * @param name          name to be included in exception message
+     * @param array         array to check
+     * @param defaultLength desired array length
+     */
     public static void checkArrayDimension(final String name, final double[] array, final int defaultLength) {
-        AssertUtils.notNull(name, array);
-        AssertUtils.nonEmptyArray(name, array);
+        nonEmptyArray(name, array);
         if (array.length != defaultLength) {
             throw new IllegalArgumentException("The " + name + " double array must have a length of " + defaultLength);
         }
     }
 
+    /**
+     * check if the array length is equal to the defaultLength
+     *
+     * @param name          name to be included in exception message
+     * @param array         array to check
+     * @param defaultLength desired array length
+     */
     public static void checkArrayDimension(final String name, final float[] array, final int defaultLength) {
-        AssertUtils.notNull(name, array);
-        AssertUtils.nonEmptyArray(name, array);
+        nonEmptyArray(name, array);
         if (array.length != defaultLength) {
             throw new IllegalArgumentException("The " + name + " float array must have a length of " + defaultLength);
         }
     }
 
+    /**
+     * check if the array length is equal to the defaultLength
+     *
+     * @param name          name to be included in exception message
+     * @param array         array to check
+     * @param defaultLength desired array length
+     */
     public static void checkArrayDimension(final String name, final int[] array, final int defaultLength) {
-        AssertUtils.notNull(name, array);
-        AssertUtils.nonEmptyArray(name, array);
+        nonEmptyArray(name, array);
         if (array.length != defaultLength) {
             throw new IllegalArgumentException("The " + name + " int array must have a length of " + defaultLength);
         }
@@ -102,7 +139,7 @@ public final class AssertUtils {
     }
 
     /**
-     * Asserts that the specified arrays have the same length.
+     * Asserts that the specified arrays have the <b>same length</b>.
      *
      * @param array1 to be checked
      * @param array2 to be checked
@@ -228,7 +265,7 @@ public final class AssertUtils {
      * @param bounds maximum bound
      */
     public static void indexInBounds(final int index, final int bounds) {
-        AssertUtils.indexInBounds(index, bounds, "The index is out of bounds: 0 <= " + index + " < " + bounds);
+        indexInBounds(index, bounds, "The index is out of bounds: 0 <= " + index + " < " + bounds);
     }
 
     /**
@@ -268,12 +305,12 @@ public final class AssertUtils {
     public static void indexOrder(final int index1, final String name1, final int index2, final String name2) {
         if (index1 > index2) {
             throw new IndexOutOfBoundsException(
-                    "Index " + name1 + "(" + index1 + ") is greated than index " + name2 + "(" + index2 + ")");
+                    "Index " + name1 + "(" + index1 + ") is greater than index " + name2 + "(" + index2 + ")");
         }
     }
 
     /**
-     * Checks if the variable is less or equal than the reference
+     * Checks if the variable is greater or equal than the reference
      *
      * @param name name to be included in exception message.
      * @param ref  reference
@@ -286,7 +323,7 @@ public final class AssertUtils {
     }
 
     /**
-     * Checks if the variable is less or equal than the reference
+     * Checks if the variable is greater or equal than the reference
      *
      * @param name name to be included in exception message.
      * @param ref  reference
@@ -312,7 +349,7 @@ public final class AssertUtils {
     }
 
     /**
-     * Checks if the variable is less or equal than the reference
+     * Checks if the variable is greater or equal than the reference
      *
      * @param name name to be included in exception message.
      * @param ref  reference
@@ -324,34 +361,66 @@ public final class AssertUtils {
         }
     }
 
+    /**
+     * check if the array is empty
+     *
+     * @param name  name of the array to be included in the exception message
+     * @param array array to check
+     */
     public static void nonEmptyArray(final String name, final boolean[] array) {
-        AssertUtils.notNull(name, array);
+        notNull(name, array);
         if (array.length == 0) {
             throw new IllegalArgumentException("The " + name + MUST_BE_NON_EMPTY);
         }
     }
 
+    /**
+     * check if the array is empty
+     *
+     * @param name  name of the array to be included in the exception message
+     * @param array array to check
+     */
     public static void nonEmptyArray(final String name, final byte[] array) {
-        AssertUtils.notNull(name, array);
+        notNull(name, array);
         if (array.length == 0) {
             throw new IllegalArgumentException("The " + name + MUST_BE_NON_EMPTY);
         }
     }
 
+    /**
+     * check if the array is empty
+     *
+     * @param name  name of the array to be included in the exception message
+     * @param array array to check
+     */
     public static void nonEmptyArray(final String name, final double[] array) {
-        AssertUtils.notNull(name, array);
+        notNull(name, array);
+
         if (array.length == 0) {
             throw new IllegalArgumentException("The " + name + MUST_BE_NON_EMPTY);
         }
     }
 
+    /**
+     * check if the array is empty
+     *
+     * @param name  name of the array to be included in the exception message
+     * @param array array to check
+     */
     public static void nonEmptyArray(final String name, final float[] array) {
-        AssertUtils.notNull(name, array);
+        notNull(name, array);
+
         if (array.length == 0) {
             throw new IllegalArgumentException("The " + name + MUST_BE_NON_EMPTY);
         }
     }
 
+    /**
+     * check if the array is empty
+     *
+     * @param name  name of the array to be included in the exception message
+     * @param array array to check
+     */
     public static void nonEmptyArray(final String name, final int[] array) {
         notNull(name, array);
         if (array.length == 0) {
@@ -359,6 +428,12 @@ public final class AssertUtils {
         }
     }
 
+    /**
+     * check if the array is empty, and ensure no element is null.
+     *
+     * @param name  name of the array to be included in the exception message
+     * @param array array to check
+     */
     public static void nonEmptyArray(final String name, final Object[] array) {
         notNull(name, array);
         if (array.length == 0) {

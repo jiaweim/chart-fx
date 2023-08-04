@@ -149,7 +149,6 @@ public class ChartAnatomySample extends Application {
     private static class MyLabel extends Label {
 
         public MyLabel(final String label) {
-
             super(label);
             VBox.setVgrow(this, Priority.ALWAYS);
             HBox.setHgrow(this, Priority.ALWAYS);
@@ -157,7 +156,6 @@ public class ChartAnatomySample extends Application {
         }
 
         public MyLabel(final String label, boolean rotate) {
-
             this(label);
             if (rotate) {
                 setRotate(90);

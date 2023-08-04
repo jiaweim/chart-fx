@@ -13,6 +13,7 @@ import io.fair_acc.dataset.utils.AssertUtils;
  * @since 07 Jun 2020
  */
 public class ArrayMath {
+
     protected static final String DIVISOR = "divisor";
     protected static final String IN = "in";
     protected static final String MULTIPLICATOR = "multiplicator";
@@ -87,6 +88,7 @@ public class ArrayMath {
         }
         return in;
     }
+
     // start: float
     public static float[] add(final float[] in, final float value) {
         return add(in, 0, value, in.length);
@@ -388,6 +390,7 @@ public class ArrayMath {
         }
         return in;
     }
+
     // start: float
     public static float[] decibel(final float[] in) {
         return decibel(in, 0, in.length);
@@ -503,6 +506,7 @@ public class ArrayMath {
         }
         return in;
     }
+
     // start: float
     public static float[] divide(final float[] in, final float divisor) {
         return divide(in, 0, divisor, in.length);
@@ -664,6 +668,7 @@ public class ArrayMath {
         }
         return in;
     }
+
     // start: int
     public static int[] divide(final int[] in, final int divisor) {
         return divide(in, 0, divisor, in.length);
@@ -857,6 +862,7 @@ public class ArrayMath {
         }
         return in;
     }
+
     // start: float
     public static float[] inverseDecibel(final float[] in) {
         return inverseDecibel(in, 0, in.length);
@@ -957,6 +963,7 @@ public class ArrayMath {
         }
         return in;
     }
+
     // start: float
     public static float[] multiply(final float[] in, final float multiplicator) {
         return multiply(in, 0, multiplicator, in.length);
@@ -1246,6 +1253,7 @@ public class ArrayMath {
         ArrayUtils.fillArray(in, offset, offset + length, Double.NaN);
         return in;
     }
+
     // start: float
     public static float[] notANumberFloat(final int length) { //// codegen: subst:float:notANumberFloat:notANumberFloatFloat
         final float[] ret = new float[length];
@@ -1300,6 +1308,7 @@ public class ArrayMath {
         }
         return in;
     }
+
     // start: float
     public static float[] sqr(final float[] in) {
         return sqr(in, 0, in.length);
@@ -1464,6 +1473,7 @@ public class ArrayMath {
         }
         return in;
     }
+
     // start: float
     public static float[] sqrt(final float[] in) {
         return sqrt(in, 0, in.length);
@@ -1499,6 +1509,14 @@ public class ArrayMath {
     //// end codegen
 
     //// codegen: double -> float, int, long, short
+
+    /**
+     * for each element of <code>in</code> array, subtract the <code>value</code>
+     *
+     * @param in    input array
+     * @param value value to subtract from all values in the input array
+     * @return processed array
+     */
     public static double[] subtract(final double[] in, final double value) {
         return subtract(in, 0, value, in.length);
     }
@@ -1522,6 +1540,15 @@ public class ArrayMath {
         return ret;
     }
 
+    /**
+     * for each element in given range of <code>in</code>, subtract value
+     *
+     * @param in     input array
+     * @param offset index offset
+     * @param value  value to subtract from all values in the input array
+     * @param length number of element to process
+     * @return processed array
+     */
     public static double[] subtract(final double[] in, final int offset, final double value, final int length) {
         AssertUtils.notNull(IN, in);
         AssertUtils.gtOrEqual(IN, length + offset, in.length);
@@ -1563,6 +1590,7 @@ public class ArrayMath {
         }
         return in;
     }
+
     // start: float
     public static float[] subtract(final float[] in, final float value) {
         return subtract(in, 0, value, in.length);
@@ -1864,6 +1892,7 @@ public class ArrayMath {
         }
         return in;
     }
+
     // start: float
     public static float[] tenLog10(final float[] in) {
         return tenLog10(in, 0, in.length);

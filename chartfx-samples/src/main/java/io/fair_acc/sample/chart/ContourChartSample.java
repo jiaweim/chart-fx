@@ -1,23 +1,5 @@
 package io.fair_acc.sample.chart;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.Objects;
-
-import javafx.application.Application;
-import javafx.scene.Node;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
 import io.fair_acc.chartfx.plugins.ColormapSelector.ColormapComboBox;
@@ -30,15 +12,32 @@ import io.fair_acc.chartfx.ui.geometry.Side;
 import io.fair_acc.dataset.DataSet;
 import io.fair_acc.dataset.spi.DataSetBuilder;
 import io.fair_acc.dataset.utils.ProcessingProfiler;
+import javafx.application.Application;
+import javafx.scene.Node;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * @author rstein
  */
 public class ContourChartSample extends ChartSample {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(ContourChartSample.class);
 
     private static DataSet createData() {
-        final double[] x = { -12, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 12 };
+        final double[] x = {-12, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 12};
         final double[] y = x;
         final double[][] z = new double[x.length][y.length];
         for (int yIndex = 0; yIndex < y.length; yIndex++) {
@@ -77,7 +76,7 @@ public class ContourChartSample extends ChartSample {
     }
 
     private XYChart getChartPane(final Slider slider1, final Slider slider2, final Slider slider3,
-            final ContourType colorMap) {
+                                 final ContourType colorMap) {
         final DefaultNumericAxis xAxis = new DefaultNumericAxis();
         xAxis.setAnimated(false);
         xAxis.setAutoRangeRounding(false);
@@ -141,7 +140,7 @@ public class ContourChartSample extends ChartSample {
 
     public DataSet readImage() {
         try (BufferedReader reader = new BufferedReader(
-                     new InputStreamReader(Objects.requireNonNull(ContourChartSample.class.getResourceAsStream("./testdata/image.txt"))))) {
+                new InputStreamReader(Objects.requireNonNull(ContourChartSample.class.getResourceAsStream("testdata/image.txt"))))) {
             // final BufferedReader reader = new BufferedReader(new
             // InputStreamReader(
             // ContourChartSampleReference.class.getResourceAsStream("./testdata/image.txt")));

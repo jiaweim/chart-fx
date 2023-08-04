@@ -3,15 +3,19 @@ package io.fair_acc.dataset.utils;
 import java.util.LinkedList;
 
 /**
- * @author rstein
+ * FIFO fixed-size queue implementation.
+ * <p>
+ * In non-concurrent environment, LinkedList offer better throughput than queue.
+ *
  * @param <E> generic list element type
+ * @author rstein
  */
 public class LimitedQueue<E> extends LinkedList<E> {
+
     private static final long serialVersionUID = 7158175707385120597L;
     private int limit;
 
     /**
-     * 
      * @param limit length of queue in terms of number of elements
      */
     public LimitedQueue(final int limit) {
@@ -31,7 +35,6 @@ public class LimitedQueue<E> extends LinkedList<E> {
     }
 
     /**
-     * 
      * @return length of queue in terms of number of elements
      */
     public int getLimit() {
@@ -39,7 +42,6 @@ public class LimitedQueue<E> extends LinkedList<E> {
     }
 
     /**
-     * 
      * @param newLimit length of queue in terms of number of elements
      * @return newly set limit (if valid)
      */

@@ -4,11 +4,9 @@ import io.fair_acc.chartfx.Chart;
 import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.XYChartCss;
 import io.fair_acc.chartfx.axes.Axis;
-import io.fair_acc.chartfx.axes.spi.CategoryAxis;
 import io.fair_acc.chartfx.marker.DefaultMarker;
 import io.fair_acc.chartfx.marker.Marker;
 import io.fair_acc.chartfx.renderer.ErrorStyle;
-import io.fair_acc.chartfx.renderer.Renderer;
 import io.fair_acc.chartfx.renderer.spi.utils.BezierCurve;
 import io.fair_acc.chartfx.renderer.spi.utils.DefaultRenderColorScheme;
 import io.fair_acc.chartfx.utils.StyleParser;
@@ -17,6 +15,8 @@ import io.fair_acc.dataset.DataSetError;
 import io.fair_acc.dataset.spi.utils.Triple;
 import io.fair_acc.dataset.utils.DoubleArrayCache;
 import io.fair_acc.dataset.utils.ProcessingProfiler;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.ObservableList;
 import javafx.geometry.Orientation;
 import javafx.scene.canvas.Canvas;
@@ -29,11 +29,13 @@ import org.slf4j.LoggerFactory;
 import java.security.InvalidParameterException;
 import java.util.*;
 
-public class MassSpectrumRenderer extends AbstractErrorDataSetRendererParameter<MassSpectrumRenderer> implements Renderer {
+public class MassSpectrumRenderer extends AbstractErrorDataSetRendererParameter<MassSpectrumRenderer> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ErrorDataSetRenderer.class);
     private Marker marker = DefaultMarker.RECTANGLE; // default: rectangle
     private long stopStamp;
+
+    private final BooleanProperty drawPeaks = new SimpleBooleanProperty(this, "drawPeaks", true);
 
     /**
      * Creates new <code>ErrorDataSetRenderer</code>.
@@ -52,6 +54,21 @@ public class MassSpectrumRenderer extends AbstractErrorDataSetRendererParameter<
     }
 
     /**
+     * @return the drawBars state
+     */
+    public BooleanProperty drawPeaksProperty() {
+        return drawPeaks;
+    }
+
+    /**
+     * @return true if bars from the data points to the y==0 axis shall be drawn
+     */
+    public boolean isDrawPeaks() {
+        return drawPeaksProperty().get();
+    }
+
+
+    /**
      * @param dataSet for which the representative icon should be generated
      * @param dsIndex index within renderer set
      * @param width   requested width of the returning Canvas
@@ -60,7 +77,6 @@ public class MassSpectrumRenderer extends AbstractErrorDataSetRendererParameter<
      */
     @Override
     public Canvas drawLegendSymbol(final DataSet dataSet, final int dsIndex, final int width, final int height) {
-
         final Canvas canvas = new Canvas(width, height);
         final GraphicsContext gc = canvas.getGraphicsContext2D();
 
@@ -110,7 +126,6 @@ public class MassSpectrumRenderer extends AbstractErrorDataSetRendererParameter<
      * @return the marker to be drawn on the data points
      */
     public Marker getMarker() {
-
         return marker;
     }
 
@@ -141,19 +156,13 @@ public class MassSpectrumRenderer extends AbstractErrorDataSetRendererParameter<
             yAxisTemp = chart.getFirstAxis(Orientation.VERTICAL);
         }
         final Axis yAxis = yAxisTemp;
-        final long start = ProcessingProfiler.getTimeStamp();
         final double xAxisWidth = xAxis.getWidth();
         final boolean xAxisInverted = xAxis.isInvertedAxis();
         final double xMin = xAxis.getValueForDisplay(xAxisInverted ? xAxisWidth : 0.0);
         final double xMax = xAxis.getValueForDisplay(xAxisInverted ? 0.0 : xAxisWidth);
 
-        if (ProcessingProfiler.getDebugState()) {
-            ProcessingProfiler.getTimeDiff(start, "init");
-        }
-
         for (int dataSetIndex = localDataSetList.size() - 1; dataSetIndex >= 0; dataSetIndex--) {
             final int ldataSetIndex = dataSetIndex;
-            stopStamp = ProcessingProfiler.getTimeStamp();
             final DataSet dataSet = localDataSetList.get(dataSetIndex);
             if (!dataSet.isVisible()) {
                 continue;
@@ -162,19 +171,6 @@ public class MassSpectrumRenderer extends AbstractErrorDataSetRendererParameter<
             // N.B. print out for debugging purposes, please keep (used for
             // detecting redundant or too frequent render updates)
             // System.err.println(String.format("render for range [%f,%f] and dataset = '%s'", xMin, xMax, dataSet.getName()));
-
-            // update categories in case of category axes for the first (index == '0') indexed data set
-            if (dataSetIndex == 0) {
-                if (getFirstAxis(Orientation.HORIZONTAL) instanceof CategoryAxis) {
-                    final CategoryAxis axis = (CategoryAxis) getFirstAxis(Orientation.HORIZONTAL);
-                    dataSet.lock().readLockGuard(() -> axis.updateCategories(dataSet));
-                }
-
-                if (getFirstAxis(Orientation.VERTICAL) instanceof CategoryAxis) {
-                    final CategoryAxis axis = (CategoryAxis) getFirstAxis(Orientation.VERTICAL);
-                    dataSet.lock().readLockGuard(() -> axis.updateCategories(dataSet));
-                }
-            }
 
             // check for potentially reduced data range we are supposed to plot
             final Optional<CachedDataPoints> cachedPoints = dataSet.lock().readLockGuard(() -> {
@@ -193,30 +189,19 @@ public class MassSpectrumRenderer extends AbstractErrorDataSetRendererParameter<
                     return Optional.empty();
                 }
 
-                if (ProcessingProfiler.getDebugState()) {
-                    stopStamp = ProcessingProfiler.getTimeDiff(stopStamp,
-                            "get min/max" + String.format(" from:%d to:%d", indexMin, indexMax));
-                }
-
                 final CachedDataPoints localCachedPoints = new CachedDataPoints(indexMin, indexMax,
                         dataSet.getDataCount(), true);
-                if (ProcessingProfiler.getDebugState()) {
-                    stopStamp = ProcessingProfiler.getTimeDiff(stopStamp, "get CachedPoints");
-                }
 
                 // compute local screen coordinates
-                final boolean isPolarPlot = ((XYChart) chart).isPolarPlot();
                 if (isParallelImplementation()) {
                     localCachedPoints.computeScreenCoordinatesInParallel(xAxis, yAxis, dataSet,
-                            dataSetOffset + ldataSetIndex, indexMin, indexMax, getErrorType(), isPolarPlot,
+                            dataSetOffset + ldataSetIndex, indexMin, indexMax, getErrorType(), false,
                             isallowNaNs());
                 } else {
                     localCachedPoints.computeScreenCoordinates(xAxis, yAxis, dataSet, dataSetOffset + ldataSetIndex,
-                            indexMin, indexMax, getErrorType(), isPolarPlot, isallowNaNs());
+                            indexMin, indexMax, getErrorType(), false, isallowNaNs());
                 }
-                if (ProcessingProfiler.getDebugState()) {
-                    stopStamp = ProcessingProfiler.getTimeDiff(stopStamp, "computeScreenCoordinates()");
-                }
+
                 return Optional.of(localCachedPoints);
             });
 
@@ -230,14 +215,7 @@ public class MassSpectrumRenderer extends AbstractErrorDataSetRendererParameter<
 
                 value.release();
             });
-
-            stopStamp = ProcessingProfiler.getTimeStamp();
-
-            if (ProcessingProfiler.getDebugState()) {
-                ProcessingProfiler.getTimeDiff(stopStamp, "localCachedPoints.release()");
-            }
         } // end of 'dataSetIndex' loop
-        ProcessingProfiler.getTimeDiff(start);
 
         return localDataSetList;
     }
@@ -248,8 +226,72 @@ public class MassSpectrumRenderer extends AbstractErrorDataSetRendererParameter<
      * @param marker the marker to be drawn on the data points
      */
     public void setMarker(final Marker marker) {
-
         this.marker = marker;
+    }
+
+    /**
+     * @param gc                the graphics context from the Canvas parent
+     * @param localCachedPoints reference to local cached data point object
+     */
+    protected void drawPeaks(final GraphicsContext gc, final CachedDataPoints localCachedPoints) {
+
+        if (!isDrawPeaks()) {
+            return;
+        }
+
+        final int xOffset = Math.max(localCachedPoints.dataSetIndex, 0);
+        final int minRequiredWidth = Math.max(getDashSize(), localCachedPoints.minDistanceX);
+
+        final double barWPercentage = getBarWidthPercentage();
+        final double dynBarWidth = minRequiredWidth * barWPercentage / 100;
+        final double constBarWidth = getBarWidth();
+        final double localBarWidth = isDynamicBarWidth() ? dynBarWidth : constBarWidth;
+        final double barWidthHalf = localBarWidth / 2 - (isShiftBar() ? xOffset * getShiftBarOffset() : 0);
+
+        gc.save();
+        DefaultRenderColorScheme.setMarkerScheme(gc, localCachedPoints.defaultStyle,
+                localCachedPoints.dataSetIndex + localCachedPoints.dataSetStyleIndex);
+        DefaultRenderColorScheme.setGraphicsContextAttributes(gc, localCachedPoints.defaultStyle);
+
+        if (localCachedPoints.polarPlot) {
+            for (int i = 0; i < localCachedPoints.actualDataCount; i++) {
+                if (localCachedPoints.styles[i] == null) {
+                    gc.strokeLine(localCachedPoints.xZero, localCachedPoints.yZero, localCachedPoints.xValues[i],
+                            localCachedPoints.yValues[i]);
+                } else {
+                    // work-around: bar colour controlled by the marker color
+                    gc.save();
+                    gc.setFill(StyleParser.getColorPropertyValue(localCachedPoints.styles[i], XYChartCss.FILL_COLOR));
+                    gc.setLineWidth(barWidthHalf);
+                    gc.strokeLine(localCachedPoints.xZero, localCachedPoints.yZero, localCachedPoints.xValues[i],
+                            localCachedPoints.yValues[i]);
+                    gc.restore();
+                }
+            }
+        } else {
+            for (int i = 0; i < localCachedPoints.actualDataCount; i++) {
+                double yDiff = localCachedPoints.yValues[i] - localCachedPoints.yZero;
+                final double yMin;
+                if (yDiff > 0) {
+                    yMin = localCachedPoints.yZero;
+                } else {
+                    yMin = localCachedPoints.yValues[i];
+                    yDiff = Math.abs(yDiff);
+                }
+
+                if (localCachedPoints.styles[i] == null) {
+                    gc.fillRect(localCachedPoints.xValues[i] - barWidthHalf, yMin, localBarWidth, yDiff);
+
+                } else {
+                    gc.save();
+                    gc.setFill(StyleParser.getColorPropertyValue(localCachedPoints.styles[i], XYChartCss.FILL_COLOR));
+                    gc.fillRect(localCachedPoints.xValues[i] - barWidthHalf, yMin, localBarWidth, yDiff);
+                    gc.restore();
+                }
+            }
+        }
+
+        gc.restore();
     }
 
     /**
@@ -608,32 +650,11 @@ public class MassSpectrumRenderer extends AbstractErrorDataSetRendererParameter<
         gc.restore();
     }
 
-    protected void drawPeak(final GraphicsContext gc, final CachedDataPoints localCachedPoints) {
-
-        final int n = localCachedPoints.actualDataCount;
-        if (n == 0)
-            return;
-
-
-
-
-        gc.save();
-
-        for (int i = 0; i < localCachedPoints.actualDataCount; i++) {
-            final double x = localCachedPoints.xValues[i];
-            final double y = localCachedPoints.yValues[i];
-
-
-
-        }
-    }
-
     /**
      * @param gc                the graphics context from the Canvas parent
      * @param localCachedPoints reference to local cached data point object
      */
     protected void drawPolyLine(final GraphicsContext gc, final CachedDataPoints localCachedPoints) {
-
         switch (getPolyLineStyle()) {
             case NONE:
                 return;
@@ -660,6 +681,12 @@ public class MassSpectrumRenderer extends AbstractErrorDataSetRendererParameter<
         }
     }
 
+    /**
+     * marker of given dataset style
+     *
+     * @param dataSetStyle dataset css style
+     * @return marker type, marker color, marker size
+     */
     protected Triple<Marker, Color, Double> getDefaultMarker(final String dataSetStyle) {
 
         Marker defaultMarker = getMarker();
@@ -709,7 +736,6 @@ public class MassSpectrumRenderer extends AbstractErrorDataSetRendererParameter<
      */
     @Override
     protected MassSpectrumRenderer getThis() {
-
         return this;
     }
 

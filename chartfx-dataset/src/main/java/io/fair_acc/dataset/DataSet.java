@@ -151,7 +151,6 @@ public interface DataSet extends EventSource, Serializable {
      * @return itself (fluent design) -- N.B. existing update listener are preserved
      */
     default DataSet set(final DataSet other) {
-
         return set(other, true);
     }
 
@@ -160,7 +159,7 @@ public interface DataSet extends EventSource, Serializable {
      *
      * @return true if the dataset should be rendered
      */
-    public boolean isVisible();
+    boolean isVisible();
 
     /**
      * Sets the visibility status of this {@code DataSet}.
@@ -168,5 +167,5 @@ public interface DataSet extends EventSource, Serializable {
      * @param visible true: tells renderers to render this dataset
      * @return itself (fluent design)
      */
-    public DataSet setVisible(boolean visible);
+    DataSet setVisible(boolean visible);
 }

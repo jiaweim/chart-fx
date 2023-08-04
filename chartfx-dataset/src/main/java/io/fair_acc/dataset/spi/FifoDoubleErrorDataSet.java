@@ -35,7 +35,6 @@ public class FifoDoubleErrorDataSet extends AbstractErrorDataSet<DoubleErrorData
      * @throws IllegalArgumentException if <code>name</code> is <code>null</code>
      */
     public FifoDoubleErrorDataSet(final String name, final int initialSize) {
-
         this(name, initialSize, Double.MAX_VALUE);
     }
 
@@ -48,7 +47,6 @@ public class FifoDoubleErrorDataSet extends AbstractErrorDataSet<DoubleErrorData
      * @throws IllegalArgumentException if <code>name</code> is <code>null</code>
      */
     public FifoDoubleErrorDataSet(final String name, final int initialSize, final double maxDistance) {
-
         super(name, 2, ErrorType.NO_ERROR, ErrorType.SYMMETRIC);
         if (initialSize <= 0) {
             throw new IllegalArgumentException("negative or zero initialSize = " + initialSize);
@@ -57,7 +55,7 @@ public class FifoDoubleErrorDataSet extends AbstractErrorDataSet<DoubleErrorData
             throw new IllegalArgumentException("negative or zero maxDistance = " + maxDistance);
         }
         this.maxDistance = maxDistance;
-        data = new LimitedQueue<>(initialSize);
+        this.data = new LimitedQueue<>(initialSize);
     }
 
     /**
@@ -69,8 +67,8 @@ public class FifoDoubleErrorDataSet extends AbstractErrorDataSet<DoubleErrorData
      * @param yErrorPos the +dy error
      * @return itself
      */
-    public FifoDoubleErrorDataSet add(final double x, final double y, final double yErrorNeg, final double yErrorPos) {
-
+    public FifoDoubleErrorDataSet add(final double x, final double y,
+                                      final double yErrorNeg, final double yErrorPos) {
         return add(x, y, yErrorNeg, yErrorPos, null);
     }
 
@@ -86,7 +84,6 @@ public class FifoDoubleErrorDataSet extends AbstractErrorDataSet<DoubleErrorData
      */
     public FifoDoubleErrorDataSet add(final double x, final double y, final double yErrorNeg, final double yErrorPos,
                                       final String tag) {
-
         return add(x, y, yErrorNeg, yErrorPos, tag, null);
     }
 
@@ -101,11 +98,11 @@ public class FifoDoubleErrorDataSet extends AbstractErrorDataSet<DoubleErrorData
      * @param style     the data point style
      * @return itself
      */
-    public FifoDoubleErrorDataSet add(final double x, final double y, final double yErrorNeg, final double yErrorPos,
+    public FifoDoubleErrorDataSet add(final double x, final double y,
+                                      final double yErrorNeg, final double yErrorPos,
                                       final String tag, final String style) {
-
         lock().writeLockGuard(() -> {
-            data.add(new DataBlob(x, y, yErrorNeg, yErrorPos, tag, style));
+            this.data.add(new DataBlob(x, y, yErrorNeg, yErrorPos, tag, style));
             this.getAxisDescription(DIM_X).add(x);
             this.getAxisDescription(DIM_Y).add(y - yErrorNeg);
             this.getAxisDescription(DIM_Y).add(y + yErrorPos);
@@ -123,6 +120,8 @@ public class FifoDoubleErrorDataSet extends AbstractErrorDataSet<DoubleErrorData
      * Initialises the data set with specified data.
      * </p>
      * Note: The method copies values from specified double arrays.
+     * <p>
+     * errors should be positive, no matter the positive errors or the negative errors.
      *
      * @param xVals   the new x coordinates
      * @param yVals   the new y coordinates
@@ -131,7 +130,6 @@ public class FifoDoubleErrorDataSet extends AbstractErrorDataSet<DoubleErrorData
      * @return itself
      */
     public FifoDoubleErrorDataSet add(final double[] xVals, final double[] yVals, final double[] yErrNeg, final double[] yErrPos) {
-
         AssertUtils.notNull("X coordinates", xVals);
         AssertUtils.notNull("Y coordinates", yVals);
         AssertUtils.notNull("Y error neg", yErrNeg);
@@ -153,7 +151,9 @@ public class FifoDoubleErrorDataSet extends AbstractErrorDataSet<DoubleErrorData
      * @param dataCount  maximum number of data points to copy (e.g. in case array store more than needs to be copied)
      * @return itself
      */
-    public FifoDoubleErrorDataSet add(final double[] xValues, final double[] yValues, final double[] yErrorsNeg, final double[] yErrorsPos, final int dataCount) {
+    public FifoDoubleErrorDataSet add(final double[] xValues, final double[] yValues,
+                                      final double[] yErrorsNeg, final double[] yErrorsPos,
+                                      final int dataCount) {
 
         lock().writeLockGuard(() -> {
             for (int i = 0; i < dataCount; i++) {
@@ -172,12 +172,12 @@ public class FifoDoubleErrorDataSet extends AbstractErrorDataSet<DoubleErrorData
      * @return number of items that have been removed
      */
     public int expire(final double now) {
-
         final int dataPointsToRemove = lock().writeLockGuard(() -> {
             final List<DataBlob> toRemoveList = new ArrayList<>(SAFE_BET);
-            for (final DataBlob blob : data) {
+            for (final DataBlob blob : this.data) {
                 final double x = blob.getX();
 
+                // isFinite(NaN) is false
                 if (!Double.isFinite(x) || Math.abs(now - x) > maxDistance) {
                     toRemoveList.add(blob);
                 }
@@ -185,7 +185,7 @@ public class FifoDoubleErrorDataSet extends AbstractErrorDataSet<DoubleErrorData
 
             if (!toRemoveList.isEmpty()) {
                 // remove elements and invalidate ranges if necessary
-                data.removeAll(toRemoveList);
+                this.data.removeAll(toRemoveList);
                 getAxisDescriptions().forEach(AxisDescription::clear);
             }
             return toRemoveList.size();
@@ -198,7 +198,6 @@ public class FifoDoubleErrorDataSet extends AbstractErrorDataSet<DoubleErrorData
 
     @Override
     public final double get(final int dimIndex, final int index) {
-
         return dimIndex == DataSet.DIM_X ? data.get(index).getX() : data.get(index).getY();
     }
 
@@ -206,31 +205,26 @@ public class FifoDoubleErrorDataSet extends AbstractErrorDataSet<DoubleErrorData
      * @return the internal data container (N.B. this is not thread-safe)
      */
     public LimitedQueue<DataBlob> getData() {
-
         return data;
     }
 
     @Override
     public int getDataCount() {
-
         return data.size();
     }
 
     @Override
     public String getDataLabel(final int index) {
-
         return data.get(index).getDataLabel();
     }
 
     @Override
     public double getErrorNegative(final int dimIndex, final int index) {
-
         return dimIndex == DIM_X ? 0.0 : data.get(index).getErrorX();
     }
 
     @Override
     public double getErrorPositive(final int dimIndex, final int index) {
-
         return dimIndex == DIM_X ? 0.0 : data.get(index).getErrorY();
     }
 
@@ -238,13 +232,11 @@ public class FifoDoubleErrorDataSet extends AbstractErrorDataSet<DoubleErrorData
      * @return maximum range before data points are being dropped
      */
     public double getMaxDistance() {
-
         return maxDistance;
     }
 
     @Override
     public String getStyle(final int index) {
-
         return data.get(index).getStyle();
     }
 
@@ -252,7 +244,6 @@ public class FifoDoubleErrorDataSet extends AbstractErrorDataSet<DoubleErrorData
      * remove all data points
      */
     public void reset() {
-
         data.clear();
         fireInvalidated(new RemovedDataEvent(this, "reset"));
     }
@@ -261,7 +252,6 @@ public class FifoDoubleErrorDataSet extends AbstractErrorDataSet<DoubleErrorData
      * @param maxDistance maximum range before data points are being dropped
      */
     public void setMaxDistance(final double maxDistance) {
-
         this.maxDistance = maxDistance;
     }
 
@@ -270,7 +260,9 @@ public class FifoDoubleErrorDataSet extends AbstractErrorDataSet<DoubleErrorData
         protected String style;
         protected String tag;
 
-        protected DataBlob(final double x, final double y, final double errorYNeg, final double errorYPos, final String tag, final String style) {
+        protected DataBlob(final double x, final double y,
+                           final double errorYNeg, final double errorYPos,
+                           final String tag, final String style) {
             //noinspection SuspiciousNameCombination
             super(x, y, errorYNeg, errorYPos); // NOPMD NOSONAR - super's x/y error is reinterpreted as +ey -ey in this class
             this.tag = tag;
@@ -278,12 +270,10 @@ public class FifoDoubleErrorDataSet extends AbstractErrorDataSet<DoubleErrorData
         }
 
         public String getDataLabel() {
-
             return tag;
         }
 
         public String getStyle() {
-
             return style;
         }
     }
